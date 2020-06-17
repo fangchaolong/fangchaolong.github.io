@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>fzl个人博客</title>
+  <title>浅拷贝和深拷贝的区别 - fzl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -15,16 +15,22 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
-  <meta property="og:type" content="website">
-<meta property="og:title" content="fzl个人博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="浅拷贝和深拷贝的区别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅拷贝和深拷贝的区别">
+<meta property="og:url" content="http://yoursite.com/2020/06/17/two/index.html">
 <meta property="og:site_name" content="fzl个人博客">
+<meta property="og:description" content="浅拷贝和深拷贝的区别">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-17T09:19:45.015Z">
+<meta property="article:modified_time" content="2020-06-17T09:53:49.044Z">
 <meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1592389455908">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1592389455887">-->
 <meta name="generator" content="Hexo 4.2.1"></head>
 
 <body class="mdui-drawer-body-left">
@@ -171,56 +177,90 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        <section class="nexmoe-posts">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="https://i.loli.net/2019/07/21/5d33d5dc1531213134.png" data-sizes="auto" alt="浅拷贝和深拷贝的区别" class="lazyload">
+          <h1>浅拷贝和深拷贝的区别</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月17日</a>
+    <a><i class="nexmoefont icon-areachart"></i>427 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
     
-    <div class="nexmoe-post">
-        <a href="/2020/06/17/two/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 62.5%;"> 
-                    <img data-src="https://i.loli.net/2019/07/21/5d33d5dc1531213134.png" data-sizes="auto" alt="浅拷贝和深拷贝的区别" class="lazyload">
-                    <h1>浅拷贝和深拷贝的区别</h1>
-                </div>
-            
-        </a>
+  </div>
 
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月17日</a>
-            <a><i class="nexmoefont icon-areachart"></i>427 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
-        </div>
+  <article>
+    <p>浅拷贝和深拷贝的区别</p>
+<a id="more"></a>
+<h2 id="一、赋值（Copy）"><a href="#一、赋值（Copy）" class="headerlink" title="一、赋值（Copy）"></a>一、赋值（Copy）</h2><p><strong>赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分</strong></p>
+<ol>
+<li>基本数据类型：赋值，赋值之后两个变量互不影响</li>
+<li>引用数据类型：赋址，两个变量具有相同的引用，指向同一个对象，相互之间有影响<br>对基本类型进行赋值操作，两个变量互不影响。</li>
+</ol>
+<blockquote>
+<p>// 木易杨<br>let a = “muyiy”;<br>let b = a;<br>console.log(b);<br>// muyiy<br>a = “change”;<br>console.log(a);<br>// change<br>console.log(b);<br>// muyiy</p>
+</blockquote>
+<p>对引用类型进行赋址操作，两个变量指向同一个对象，改变变量 a 之后会影响变量 b，哪怕改变的只是对象 a 中的基本类型数据。</p>
+<blockquote>
+<p>// 木易杨<br>let a = {<br>    name: “muyiy”,<br>    book: {<br>        title: “You Don’t Know JS”,<br>        price: “45”<br>    }<br>}<br>let b = a;<br>console.log(b);<br>// {<br>//     name: “muyiy”,<br>//     book: {title: “You Don’t Know JS”, price: “45”}<br>// }<br>a.name = “change”;<br>a.book.price = “55”;<br>console.log(a);<br>// {<br>//     name: “change”,<br>//     book: {title: “You Don’t Know JS”, price: “55”}<br>// }<br>console.log(b);<br>// {<br>//     name: “change”,<br>//     book: {title: “You Don’t Know JS”, price: “55”}<br>// } </p>
+</blockquote>
+<h2 id="二、浅拷贝（Shallow-Copy）"><a href="#二、浅拷贝（Shallow-Copy）" class="headerlink" title="二、浅拷贝（Shallow Copy）"></a>二、浅拷贝（Shallow Copy）</h2><p><strong>赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分</strong></p>
+<ol>
+<li>基本数据类型：赋值，赋值之后两个变量互不影响</li>
+<li>引用数据类型：赋址，两个变量具有相同的引用，指向同一个对象，相互之间有影响   </li>
+</ol>
+<h2 id="三、深拷贝（Deep-Copy）"><a href="#三、深拷贝（Deep-Copy）" class="headerlink" title="三、深拷贝（Deep Copy）"></a>三、深拷贝（Deep Copy）</h2><p><strong>赋值是将某一数值或对象赋给某个变量的过程，分为下面 2 部分</strong></p>
+<ol>
+<li>基本数据类型：赋值，赋值之后两个变量互不影响</li>
+<li>引用数据类型：赋址，两个变量具有相同的引用，指向同一个对象，相互之间有影响</li>
+</ol>
 
-        <article>
-            
-                <p>浅拷贝和深拷贝的区别</p>
-            
-        </article>
-    </div>
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
     
-    <div class="nexmoe-post">
-        <a href="/2013/07/13/Hello-word/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 62.5%;"> 
-                    <img data-src="https://i.loli.net/2019/07/21/5d33d5dc1531213134.png" data-sizes="auto" alt="Hello World" class="lazyload">
-                    <h1>Hello World</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2013年07月13日</a>
-            <a><i class="nexmoefont icon-areachart"></i>13 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
-        </div>
-
-        <article>
-            
-                <h1 id="这是一级标题"><a href="#这是一级标题" class="headerlink" title="这是一级标题"></a>这是一级标题</h1>
-            
-        </article>
-    </div>
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/javascript/">javascript</a>
     
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/javascript/" rel="tag">javascript</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <strong>本文链接：</strong><a href="http://yoursite.com/2020/06/17/two/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;17&#x2F;two&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;17&#x2F;two&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81MDUzNS8yNzAxOA==">
+    <script id="livere-comment-js">
+    (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+       if (typeof LivereTower === 'function') { return; }
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+       e.parentNode.insertBefore(j, e);
+    })(document, 'script');
+    </script>
+</div>
 </section>
-
+  </div>
+</div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
@@ -228,7 +268,7 @@
 
 
 
-<script src="/js/app.js?v=1592389455909"></script>
+<script src="/js/app.js?v=1592389455891"></script>
   
 
 
