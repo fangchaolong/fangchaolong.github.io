@@ -29,7 +29,7 @@
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1592537346660">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1592561557240">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
 <meta name="generator" content="Hexo 4.2.1"></head>
 
@@ -56,7 +56,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>11</div>
+        <div><span>文章</span>12</div>
         <div><span>标签</span>11</div>
         <div><span>分类</span>4</div>
     </div>
@@ -111,9 +111,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">社交按钮</h3>
     <div class="nexmoe-widget nexmoe-social">
-        <a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
-            <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/nexmoe/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+        <a class="mdui-ripple" href="https://github.com/fangchaolong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
             <i class="nexmoefont icon-github"></i>
         </a>
     </div>
@@ -142,7 +140,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/js实例/">js实例</a>
-          <span class="category-list-count">2</span>
+          <span class="category-list-count">3</span>
         </li>
 
         
@@ -249,18 +247,20 @@
 
     
     <section class="nexmoe-comment">
-    <div id="lv-container" data-id="city" data-uid="MTAyMC81MDUzNS8yNzAxOA==">
-    <script id="livere-comment-js">
-    (function(d, s) {
-       var j, e = d.getElementsByTagName(s)[0];
-       if (typeof LivereTower === 'function') { return; }
-       j = d.createElement(s);
-       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-       j.async = true;
-       e.parentNode.insertBefore(j, e);
-    })(document, 'script');
-    </script>
-</div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: window.location.pathname,
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
 </section>
   </div>
 </div>
@@ -269,6 +269,11 @@
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
 <script >hljs.initHighlightingOnLoad();</script>
 
+<!-- 点击拷贝 start -->
+<!-- 
+    <script src="/js/copy.js"></script>
+ -->
+<!-- 点击拷贝 end -->
 
 
 <script src="/js/jquery.min.js"></script>
@@ -294,7 +299,10 @@
 
 <script src="/js/totop.js"></script>
 
-<script src="/js/app.js?v=1592537346662"></script>
+
+<script src="/js/copy.js"></script>
+
+<script src="/js/app.js?v=1592561557243"></script>
   
 
 

@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>文章归档：2018/8 - fzl个人博客</title>
+  <title>移动端双指缩放图片JS事件的实践心得 - fzl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -15,16 +15,24 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
-  <meta property="og:type" content="website">
-<meta property="og:title" content="fzl个人博客">
-<meta property="og:url" content="http://yoursite.com/archives/2018/08/index.html">
+  <meta name="description" content="2020年阿里最新面试题汇总免费领取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端双指缩放图片JS事件的实践心得">
+<meta property="og:url" content="http://yoursite.com/2020/06/19/2020-06-19-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%972/index.html">
 <meta property="og:site_name" content="fzl个人博客">
+<meta property="og:description" content="2020年阿里最新面试题汇总免费领取">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.zhangxinxu.com/image/blog/202006/pinch-spread.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/19/2020-06-19-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%972/1.png">
+<meta property="article:published_time" content="2020-06-19T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-06-19T09:30:33.245Z">
 <meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.zhangxinxu.com/image/blog/202006/pinch-spread.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1592561557310">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1592561557205">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
 <meta name="generator" content="Hexo 4.2.1"></head>
 
@@ -193,70 +201,113 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        
-<section class="nexmoe-archives">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592456304673&di=68d9619b50fa3ae2af667fbdfa792590&imgtype=0&src=http%3A%2F%2Faliyunzixunbucket.oss-cn-beijing.aliyuncs.com%2Fjpg%2F33b3b039cb6424bb3f5bf09cb8a3e812.jpg%3Fx-oss-process%3Dimage%2Fresize%2Cp_100%2Fauto-orient%2C1%2Fquality%2Cq_90%2Fformat%2Cjpg%2Fwatermark%2Cimage_eXVuY2VzaGk%3D%2Ct_100" data-sizes="auto" alt="移动端双指缩放图片JS事件的实践心得" class="lazyload">
+          <h1>移动端双指缩放图片JS事件的实践心得</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月19日</a>
+    <a><i class="nexmoefont icon-areachart"></i>911 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
+</div>
 
-    <article>
-        
+  <div class="nexmoe-post-right">
+    
+  </div>
 
-        
-            <h2>
-                2018-<span>08</span>
-            </h2>
-            <ul>
-            
-                <li><span>08-19</span><a href="/2018/08/19/2018-08-19-git%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80/" >git 版本回退</a></li>
-            
-            </ul>
-        
-    </article>
+  <article>
+    <p class="link" style="display: block;"><a href="http://www.mawen.co/?utm_source=zxx-web-2020" style="color:#de0000;font-size:16px;" target="_blank" rel="nofollow noopener" onclick="_gaq.push(['_trackEvent', 'GITEE', 'click', 'ARTICLE TOP']);">2020年阿里最新面试题汇总免费领取</a></p>
+<a id="more"></a>   
+
+<h2 id="一、Chrome浏览器双指触摸的模拟"><a href="#一、Chrome浏览器双指触摸的模拟" class="headerlink" title="一、Chrome浏览器双指触摸的模拟"></a>一、Chrome浏览器双指触摸的模拟</h2><p>结果是模拟不了。</p>
+<p>页面整体缩放行为是可以通过按住Shift键+页面左键模拟的，但是，实际上，还是一个触摸点，因此无法模拟双指缩放行为。</p>
+<p>除非是有触摸板，或者屏幕就是触摸屏。</p>
+<p>否则，只能连手机进行调试了。</p>
+<h2 id="二、触摸屏与event-touches"><a href="#二、触摸屏与event-touches" class="headerlink" title="二、触摸屏与event.touches"></a>二、触摸屏与event.touches</h2><p>在触屏设备下，要判断是单指还是多指操作，可以通过event.touches数组对象的长度判断。</p>
+<p>例如：</p>
+<blockquote>
+<p>document.addEventListener(‘touchstart’, function (event) {<br>    var touches = event.touches;<br>    if (touches.length == 1) {<br>        console.log(‘单指’);<br>    } else if (touches.length &gt;= 2) {<br>        console.log(‘多指’);<br>    }<br>});</p>
+</blockquote>
+<p>按照我们的理解，上面的逻辑应该是无懈可击的。</p>
+<p>实际上并不是。</p>
+<p>我一开始也是在’touchstart’事件中判断是单指还是双指，结果发现了奇怪的现象，有时候是单指，有时候是双指，双指复现的概率可能不到1成。</p>
+<p>这可真是奇怪了。</p>
+<p>后来一番测试，终于弄清楚原因了。</p>
+<p>只有当两个指头同时触摸屏幕的时候，才能在touchstart事件中被识别为双指操作。</p>
+<p>这太难了，没有谁的两个指头是一样长的，很难同一时间戳中屏幕的。</p>
+<p>因此，双指事件的判断需要在<font color=red>touchmove</font>事件中才行。</p>
+<h2 id="三、双指行为的判断"><a href="#三、双指行为的判断" class="headerlink" title="三、双指行为的判断"></a>三、双指行为的判断</h2><p>代码如下：</p>
+<blockquote>
+<p>document.addEventListener(‘touchmove’, function (event) {<br>    if (event.touches &amp;&amp; event.touches.length == 2) {<br>        console.log(‘双指在移动’);<br>    }<br>});</p>
+</blockquote>
+<h2 id="四、双指缩放功能的实现"><a href="#四、双指缩放功能的实现" class="headerlink" title="四、双指缩放功能的实现"></a>四、双指缩放功能的实现</h2><p>双指缩放功能的实现的难点就是缩放比例的计算。</p>
+<p><font color=red>event.touches</font>中的每一项都是触摸点对象，包含了触碰的元素以及触摸点的坐标。</p>
+<p>其中，触摸点的坐标就可以用来计算缩放比例。</p>
+<p>我们记录下第一次双指行为发生时候的两个手指点的坐标值，于是就可以计算出这两个指头之间的距离；</p>
+<p>然后继续<font color=red>touchmove</font>的时候，实时计算出新的两个手指的坐标距离。</p>
+<p>一开始的距离/现在的距离 = 应该缩放的比例。</p>
+<p>如下图所示：<br><img data-sizes="auto" data-src="https://image.zhangxinxu.com/image/blog/202006/pinch-spread.png" alt="active" class="lazyload"></p>
+<p><strong>实例演示</strong><br>假设页面上有一张图片元素，要实现这种图片的双指缩放预览效果：</p>
+<blockquote>
+<img id="image" src="1.png">
+
+</blockquote>
+<p>则可以试试使用下面所示的JS代码：</p>
+<blockquote>
+<p>  var eleImg = document.querySelector(‘#image’);<br>var store = {<br>    scale: 1<br>};<br>// 缩放事件的处理<br>eleImg.addEventListener(‘touchstart’, function (event) {<br>    var touches = event.touches;<br>    var events = touches[0];<br>    var events2 = touches[1];<br>    event.preventDefault();<br>    // 第一个触摸点的坐标<br>    store.pageX = events.pageX;<br>    store.pageY = events.pageY;<br>    store.moveable = true;<br>    if (events2) {<br>        store.pageX2 = events2.pageX;<br>        store.pageY2 = events2.pageY;<br>    }<br>    store.originScale = store.scale || 1;<br>});<br>document.addEventListener(‘touchmove’, function (event) {<br>    if (!store.moveable) {<br>        return;<br>    }<br>    event.preventDefault();<br>    var touches = event.touches;<br>    var events = touches[0];<br>    var events2 = touches[1];<br>    // 双指移动<br>    if (events2) {<br>        // 第2个指头坐标在touchmove时候获取<br>        if (!store.pageX2) {<br>            store.pageX2 = events2.pageX;<br>        }<br>        if (!store.pageY2) {<br>            store.pageY2 = events2.pageY;<br>        }<br>        // 获取坐标之间的举例<br>        var getDistance = function (start, stop) {<br>            return Math.hypot(stop.x - start.x, stop.y - start.y);<br>        };<br>        // 双指缩放比例计算<br>        var zoom = getDistance({<br>            x: events.pageX,<br>            y: events.pageY<br>        }, {<br>            x: events2.pageX,<br>            y: events2.pageY<br>        }) /<br>        getDistance({<br>            x: store.pageX,<br>            y: store.pageY<br>        }, {<br>            x: store.pageX2,<br>            y: store.pageY2<br>        });<br>        // 应用在元素上的缩放比例<br>        var newScale = store.originScale * zoom;<br>        // 最大缩放比例限制<br>        if (newScale &gt; 3) {<br>            newScale = 3;<br>        }<br>        // 记住使用的缩放值<br>        store.scale = newScale;<br>        // 图像应用缩放效果<br>        eleImg.style.transform = ‘scale(‘+ newScale +’)’;<br>    }<br>});<br>document.addEventListener(‘touchend’, function () {<br>    store.moveable = false;<br>    delete store.pageX2;<br>    delete store.pageY2;<br>});<br>document.addEventListener(‘touchcancel’, function () {<br>    store.moveable = false;<br>    delete store.pageX2;<br>    delete store.pageY2;<br>});</p>
+</blockquote>
+<h2 id="五、结语以及其他"><a href="#五、结语以及其他" class="headerlink" title="五、结语以及其他"></a>五、结语以及其他</h2><p>demo页面的touchmove没有设置passive:false也没有报错，是因为html标签设置了如下CSS：</p>
+<blockquote>
+<p>html { touch-action: none; }</p>
+</blockquote>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/js%E5%AE%9E%E4%BE%8B/">js实例</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/javascript/" rel="tag">javascript</a>
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/06/19/2020-06-19-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%972/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;19&#x2F;2020-06-19-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%972&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;19&#x2F;2020-06-19-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%972&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: window.location.pathname,
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
 </section>
-
-<style>
-.nexmoe-archives article > *:first-child {
-    margin-top: 0;
-}
-.nexmoe-archives article > *:last-child {
-    margin-bottom: 0;
-}
-.nexmoe-archives ul {
-    list-style: none;
-    padding-left: 0!important;
-}
-.nexmoe-archives li {
-    position: relative;
-    padding: 10px 0;
-}
-.nexmoe-archives li::before {
-    content: "";
-    width: 14px;
-    height: 14px;
-    background: #ff4e6a;
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: -2px;
-    margin-right: 11px;
-    border-radius: 100%;
-    border: 3px solid #fff;
-    z-index: 100;
-    position: relative;
-}
-.nexmoe-archives li::after {
-    content: "";
-    height: 100%;
-    width: 2px;
-    background: rgba(255, 78, 106, 0.2);
-    position: absolute;
-    left: 6px;
-    top: 20px;
-}
-.nexmoe-archives li:last-child:after {
-    display: none;
-}
-.nexmoe-archives span {
-    margin-right: 15px;
-}
-</style>
+  </div>
+</div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
@@ -295,7 +346,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1592561557313"></script>
+<script src="/js/app.js?v=1592561557207"></script>
   
 
 
