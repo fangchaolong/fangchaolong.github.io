@@ -5,11 +5,12 @@ var photoobj = {
         var that = this;
         console.log('ccc')
         $.getJSON("/photo/main.json", function (data) {
+            data[0].list = data[0].list.reverse()
             data[0].list.map(item => {
                 that.render(that.page, item);
             })
 
-            that.scroll(data);
+            that.scroll(data[0]);
         });
     },
 
@@ -40,17 +41,17 @@ var photoobj = {
 
     scroll: function (data) {
         var that = this;
-        $(window).scroll(function() {
-            var windowPageYOffset = window.pageYOffset;
-            var windowPageYOffsetAddHeight = windowPageYOffset + window.innerHeight;
-            var sensitivity = 0;
+        // $(window).scroll(function() {
+        //     var windowPageYOffset = window.pageYOffset;
+        //     var windowPageYOffsetAddHeight = windowPageYOffset + window.innerHeight;
+        //     var sensitivity = 0;
 
-            var offsetTop = $(".instagram").offset().top + $(".instagram").height();
+        //     var offsetTop = $(".instagram").offset().top + $(".instagram").height();
 
-            if (offsetTop >= windowPageYOffset && offsetTop < windowPageYOffsetAddHeight + sensitivity) {
-                that.render(++that.page, data);
-            }
-        })
+        //     if (offsetTop >= windowPageYOffset && offsetTop < windowPageYOffsetAddHeight + sensitivity) {
+        //         that.render(++that.page, data);
+        //     }
+        // })
     }
 }
 photoobj.init()

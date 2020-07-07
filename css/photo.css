@@ -6,10 +6,12 @@
 .img-box{
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 .img-bg{
     width: 25%;
     display: block;
+    min-height: 100px;
     max-height: 250px;
     line-height: 1.2em;
     display: inline-block;
