@@ -23,10 +23,12 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="fangchaolong">
 <meta name="twitter:card" content="summary">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
+  <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1593315613345">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1594115677403">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
+  <script src="/js/jquery.min.js"></script>
   
 <script src="/js/common.js"></script>
 
@@ -55,8 +57,8 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>15</div>
-        <div><span>标签</span>13</div>
+        <div><span>文章</span>16</div>
+        <div><span>标签</span>14</div>
         <div><span>分类</span>4</div>
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
@@ -93,6 +95,13 @@
             <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
             <div class="mdui-list-item-content">
                 请我喝茶
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/photo.html" title="我的相册">
+            <i class="mdui-list-item-icon nexmoefont icon-twitter"></i>
+            <div class="mdui-list-item-content">
+                我的相册
             </div>
         </a>
         
@@ -146,7 +155,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/前端/">前端</a>
-          <span class="category-list-count">11</span>
+          <span class="category-list-count">12</span>
         </li>
 
         
@@ -168,7 +177,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">标签云</h3>
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 15px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 15px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 10px;">前端</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
     </div>
     
   </div>
@@ -200,19 +209,63 @@
         <section class="nexmoe-posts">
     
     <div class="nexmoe-post">
-        <a href="/2020/06/22/2020-06-22-http-https%E7%9A%84%E5%8C%BA%E5%88%AB/">
+        <a href="/2020/06/30/2020-06-30-gulp%E4%BB%8B%E7%BB%8D/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 62.5%;"> 
+                    <img data-src="/images/gulp/0630.jpg" height="100%" data-sizes="auto" alt="gulp介绍" class="lazyload">
+                    <h1>gulp介绍</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月30日</a>
+            <a><i class="nexmoefont icon-areachart"></i>333 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+        </div>
+        <article>
+            
+                <p>gulp是基于node.js的前端自动化构建工具，前端集成开发环境。一些常见丶重复的任务，例如网页自动刷新丶css预处理丶代码检测丶压缩图片丶等等……只需要简单的命令就能全部完成。使用它，可以简化工作。</p>
+            
+        </article>
+    </div>
+    
+    <div class="nexmoe-post">
+        <a href="/2020/06/22/2020-06-22-%E4%BB%8E%E8%BE%93%E5%85%A5%E4%B8%80%E4%B8%AAurl%E5%88%B0%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E9%83%BD%E7%BB%8F%E5%8E%86%E4%BA%86%E5%93%AA%E4%BA%9B%E8%BF%87%E7%A8%8B/">
             
                 <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
-                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="http与https的区别" class="lazyload">
-                    <h1>http与https的区别</h1>
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="从输入一个url到浏览器页面展示都经历了哪些过程？" class="lazyload">
+                    <h1>从输入一个url到浏览器页面展示都经历了哪些过程？</h1>
                 </div>
             
         </a>
 
         <div class="nexmoe-post-meta nexmoe-rainbow">
             <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月22日</a>
-            <a><i class="nexmoefont icon-areachart"></i>2.3k 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 9 分钟</a>
+            <a><i class="nexmoefont icon-areachart"></i>333 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+        </div>
+        <article>
+            
+                <p>具体可以分为一下几步：</p>
+            
+        </article>
+    </div>
+    
+    <div class="nexmoe-post">
+        <a href="/2020/06/22/2020-06-22-http%E7%8A%B6%E6%80%81%E7%A0%81/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="http常见的状态码" class="lazyload">
+                    <h1>http常见的状态码</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月22日</a>
+            <a><i class="nexmoefont icon-areachart"></i>1.4k 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
         </div>
         <article>
             
@@ -244,45 +297,23 @@
     </div>
     
     <div class="nexmoe-post">
-        <a href="/2020/06/22/2020-06-22-http%E7%8A%B6%E6%80%81%E7%A0%81/">
+        <a href="/2020/06/22/2020-06-22-http-https%E7%9A%84%E5%8C%BA%E5%88%AB/">
             
                 <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
-                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="http常见的状态码" class="lazyload">
-                    <h1>http常见的状态码</h1>
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="http与https的区别" class="lazyload">
+                    <h1>http与https的区别</h1>
                 </div>
             
         </a>
 
         <div class="nexmoe-post-meta nexmoe-rainbow">
             <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月22日</a>
-            <a><i class="nexmoefont icon-areachart"></i>1.4k 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
+            <a><i class="nexmoefont icon-areachart"></i>2.3k 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 9 分钟</a>
         </div>
         <article>
             
                 <p class="link" style="display: block;"><a href="http://www.mawen.co/?utm_source=zxx-web-2020" style="color:#de0000;font-size:16px;" target="_blank" rel="nofollow noopener" onclick="_gaq.push(['_trackEvent', 'GITEE', 'click', 'ARTICLE TOP']);">2020年阿里最新面试题汇总免费领取</a></p>
-            
-        </article>
-    </div>
-    
-    <div class="nexmoe-post">
-        <a href="/2020/06/22/2020-06-22-%E4%BB%8E%E8%BE%93%E5%85%A5%E4%B8%80%E4%B8%AAurl%E5%88%B0%E6%B5%8F%E8%A7%88%E5%99%A8%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E9%83%BD%E7%BB%8F%E5%8E%86%E4%BA%86%E5%93%AA%E4%BA%9B%E8%BF%87%E7%A8%8B/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
-                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="从输入一个url到浏览器页面展示都经历了哪些过程？" class="lazyload">
-                    <h1>从输入一个url到浏览器页面展示都经历了哪些过程？</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月22日</a>
-            <a><i class="nexmoefont icon-areachart"></i>333 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
-        </div>
-        <article>
-            
-                <p>具体可以分为一下几步：</p>
             
         </article>
     </div>
@@ -397,28 +428,6 @@
         </article>
     </div>
     
-    <div class="nexmoe-post">
-        <a href="/2018/07/19/2018-07-19-%E6%B5%85%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B7%B1%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8C%BA%E5%88%AB/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 62.5%;"> 
-                    <img data-src="https://i.loli.net/2019/07/21/5d33d5dc1531213134.png" height="100%" data-sizes="auto" alt="浅拷贝和深拷贝的区别" class="lazyload">
-                    <h1>浅拷贝和深拷贝的区别</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2018年07月19日</a>
-            <a><i class="nexmoefont icon-areachart"></i>1.7k 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 7 分钟</a>
-        </div>
-        <article>
-            
-                <p>浅拷贝和深拷贝的区别</p>
-            
-        </article>
-    </div>
-    
 </section>
 
     <nav class="nexmoe-page-nav">
@@ -472,7 +481,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1593315613350"></script>
+<script src="/js/app.js?v=1594115677404"></script>
   
 
 
@@ -489,6 +498,6 @@
     })();
 </script>
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/haru02.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 
 </html>

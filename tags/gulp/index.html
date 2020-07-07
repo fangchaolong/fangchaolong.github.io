@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>git 版本回退 - fcl个人博客</title>
+  <title>标签：gulp - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,24 +16,17 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
-  <meta name="description" content="git 代码回滚操作">
-<meta property="og:type" content="article">
-<meta property="og:title" content="git 版本回退">
-<meta property="og:url" content="http://yoursite.com/2018/08/19/2018-08-19-git%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="fcl个人博客">
+<meta property="og:url" content="http://yoursite.com/tags/gulp/index.html">
 <meta property="og:site_name" content="fcl个人博客">
-<meta property="og:description" content="git 代码回滚操作">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/c82812c7f7b06cb02facedd6a4acaef3/xmlnote/WEBRESOURCEeaa8f79b19abeeafa01285dbcde507a5/27">
-<meta property="article:published_time" content="2018-08-19T12:46:25.000Z">
-<meta property="article:modified_time" content="2020-07-02T08:04:13.183Z">
 <meta property="article:author" content="fangchaolong">
-<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/c82812c7f7b06cb02facedd6a4acaef3/xmlnote/WEBRESOURCEeaa8f79b19abeeafa01285dbcde507a5/27">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1594115677378">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1594115677479">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -213,264 +206,71 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        <div class="nexmoe-post">
-  
-      <div class="nexmoe-post-cover" style="padding-bottom: 41.81818181818181%;"> 
-          <img data-src="https://www.runoob.com/wp-content/uploads/2015/02/f7246b600c338744a9591cd7530fd9f9d62aa0f8.png" height="100%" data-sizes="auto" alt="git 版本回退" class="lazyload">
-          <h1>git 版本回退</h1>
-      </div>
-  
-  
-  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2018年08月19日</a>
-    <a><i class="nexmoefont icon-areachart"></i>276 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
-</div>
+        
+<section class="nexmoe-archives">
 
-  <div class="nexmoe-post-right">
-    
-  </div>
+    <article>
+        
 
-  <article>
-    <p>git 代码回滚操作</p>
-<a id="more"></a>
-
-<p><strong>1.git revert “log日志提交的版本好”</strong><br>git revert 撤销 某次操作，此次操作之前和之后的commit和history都会保留，并且把这次撤销<br>作为一次最新的提交</p>
-<p><img data-sizes="auto" data-src="https://note.youdao.com/yws/public/resource/c82812c7f7b06cb02facedd6a4acaef3/xmlnote/WEBRESOURCEeaa8f79b19abeeafa01285dbcde507a5/27" alt="active" class="lazyload"></p>
-<p><strong>2，git reset –hard “log日志提交的版本好”</strong><br>git push -f -u origin 當前分支<br>先回退到指定的版本，在强制提交，在git log 日志，就是回退到你想要回退的提交日志中，不會有新的提交日志</p>
-<p>回退到某个版本（最后的一串字符是 版本变更编号，通常这个编号可以在 git 后台看到，也可以通过  $ git log -300 显示最近300次提交记录）<br>git reset –hard 139dcfaa558e3276b30b6b2e5cbbb9c00bbdca96 </p>
-<p>强制提交到master分支（具体哪个分支请酌情修改）<br>git push -f -u origin master</p>
-<p><strong>3，或者更简单的做法(恢复上一个版本)是：</strong></p>
-<p>git reset –hard HEAD~1<br>git add .<br>git commit ‘roll-back’<br>git push -f origin master</p>
-<p><font color=red>回退版本之后本地代码未更新，可以尝试切到别的分支，删除本地分支，然后git checkout origin ‘分支名’</font></p>
-
-  </article>
-
-  <div class="nexmoe-post-meta nexmoe-rainbow">
-    
-        <a class="nexmoefont icon-appstore-fill -link" href="/categories/git/">git</a>
-    
-    
-        <a class="nexmoefont icon-tag-fill -link" href="/tags/git/" rel="tag">git</a>
-    
-</div>
-  <div style="text-align: center;">
-  <style>
-    .tooltip {
-      display: inline;
-      position: relative;
-      z-index: 999;
-    }
-    .tooltip:after {
-      content:"";
-      position:absolute;
-      width:100%;
-      height:20px;
-      bottom:100%;
-      left:50%;
-      pointer-events:none;
-      -webkit-transform:translateX(-50%);
-      transform:translateX(-50%)
-    }
-    .tooltip:hover:after {
-      pointer-events:auto
-    }
-    .tooltip-content {
-      position:absolute;
-      z-index:9999;
-      width:370px;
-      left:50%;
-      bottom:100%;
-      font-size:20px;
-      line-height:1.4;
-      text-align:center;
-      font-weight:400;
-      color:#4d4d4d;
-      background:transparent;
-      opacity:0;
-      margin:0 0 -10px -185px;
-      cursor:default;
-      pointer-events:none;
-      font-family:Satisfy,cursive;
-      -webkit-font-smoothing:antialiased;
-      transition:opacity .3s .3s;
-      padding-bottom:80px;
-    }
-    .tooltip:hover .tooltip-content {
-      opacity:1;
-      pointer-events:auto;
-      transition-delay:0s
-    }
-    .tooltip-content span {
-      display:block
-    }
-    .tooltip-text {
-      border-bottom:10px solid #4d4d4d;
-      overflow:hidden;
-      -webkit-transform:scaleX(0);
-      transform:scaleX(0);
-      transition:-webkit-transform .3s .3s;
-      transition:transform .3s .3s;
-      transition:transform .3s .3s,-webkit-transform .3s .3s
-    }
-    .tooltip:hover .tooltip-text {
-      transition-delay:0s;
-      -webkit-transform:scaleX(1);
-      transform:scaleX(1)
-    }
-    .tooltip-inner {
-      background:rgba(36,193,246,.9);
-      padding:40px;
-      -webkit-transform:translate3d(0,100%,0);
-      transform:translate3d(0,100%,0);
-      -webkit-transition:-webkit-transform .3s;
-      transition:-webkit-transform .3s;
-      transition:transform .3s;
-      transition:transform .3s,-webkit-transform .3s
-    }
-    .tooltip:hover .tooltip-inner {
-      transition-delay:.3s;
-      -webkit-transform:translateZ(0);
-      transform:translateZ(0)
-    }
-    .tooltip-content:after {
-      content:"";
-      left:50%;
-      border:solid transparent;
-      height:0;
-      width:0;
-      position:absolute;
-      pointer-events:none;
-      border-color:transparent;
-      border-top-color:#4d4d4d;
-      border-width:10px;
-      margin-left:-10px
-    }
-    .shang{
-      text-align: center;
-      position: relative;
-      display: inline-block;
-      margin: 0px auto;
-      margin-bottom: 20px;
-      width: 56px;
-      height: 56px;
-      line-height: 56px;
-      font-size: 20px;
-      color: #fff;
-      background: #f44336;
-      border-radius: 50%;
-      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-      transition: .4s ease-in-out;
-    }
-    .shang:hover{
-      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
-    }
-    .tooltip-content {
-      position: absolute;
-      z-index: 9999;
-      width: 370px;
-      left: 50%;
-      bottom: 100%;
-      font-size: 20px;
-      line-height: 1.4;
-      text-align: center;
-      font-weight: 400;
-      color: #4d4d4d;
-      background: transparent;
-      opacity: 0;
-      margin: 0 0 -10px -185px;
-      cursor: default;
-      pointer-events: none;
-      font-family: Satisfy,cursive;
-      -webkit-font-smoothing: antialiased;
-      transition: opacity .3s .3s;
-      padding-bottom: 80px;
-    }
-    .tooltip-content .reward-p{
-      color: #FFF;
-      margin: 0px;
-      margin-bottom: 20px;
-    }
-    .tooltip-content .reward-box {
-      display:-webkit-box;
-      display:-ms-flexbox;
-      display:flex;
-      -ms-flex-pack:distribute;
-      justify-content:space-around
-    }
-    .tooltip-content .reward-img{
-      width: 250px;
-    }
-    .tooltip-content .reward-type {
-      font-size:16px;
-      display:block;
-      color: #fff;
-    }
-    .tooltip-content .reward-img {
-      width:130px;
-      height:130px;
-      border:6px solid #fff;
-      border-radius:3px
-    }
-  </style>
-  <div class="tooltip">
-    <span class="shang">赏</span>
-    <span class="tooltip-content">
-      <span class="tooltip-text">
-        <span class="tooltip-inner">
-          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
-          <div class="reward-box">
+        
+            <h2>
+                2020
+            </h2>
+            <ul>
             
-            <div class="reward-box-item">
-              <img class="reward-img" src="/images/wx_pay.jpg">
-              <span class="reward-type">微信</span>
-            </div>
+                <li><span>06-30</span><a href="/2020/06/30/2020-06-30-gulp%E4%BB%8B%E7%BB%8D/" >gulp介绍</a></li>
             
-            <div class="reward-box-item">
-              <img class="reward-img" src="/images/zfbpay.png">
-              <span class="reward-type">支付宝</span>
-            </div>
-
-          </div>
-        </span>
-      </span>
-    </span>
-  </div>
-</div>
-  <div class="nexmoe-post-footer">
-    
-      
-  <div class="nexmoe-post-copyright">
-    <strong>本文作者：</strong>fangchaolong<br>
-    <!-- 本文链接 -->
-    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2018/08/19/2018-08-19-git%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;08&#x2F;19&#x2F;2018-08-19-git%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;08&#x2F;19&#x2F;2018-08-19-git%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80&#x2F;</a><br> -->
-    
-      <strong>欢迎大家借鉴和讨论</strong>
-    
-  </div>
-
-
-    
-    <section class="nexmoe-comment">
-    
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
-<div id="gitalk"></div>
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
-<script type="text/javascript">
-    var gitalk = new Gitalk({
-        clientID: '3f3682a9ee5f972998df',
-        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
-        id: localStorage.getItem('user') || '',
-        repo: 'fangchaolong.github.io',
-        owner: 'fangchaolong',
-        admin: 'fangchaolong'
-    })
-    gitalk.render('gitalk')
-</script>
+            </ul>
+        
+    </article>
     
 </section>
-  </div>
-</div>
+
+<style>
+.nexmoe-archives article > *:first-child {
+    margin-top: 0;
+}
+.nexmoe-archives article > *:last-child {
+    margin-bottom: 0;
+}
+.nexmoe-archives ul {
+    list-style: none;
+    padding-left: 0!important;
+}
+.nexmoe-archives li {
+    position: relative;
+    padding: 10px 0;
+}
+.nexmoe-archives li::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    background: #ff4e6a;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 11px;
+    border-radius: 100%;
+    border: 3px solid #fff;
+    z-index: 100;
+    position: relative;
+}
+.nexmoe-archives li::after {
+    content: "";
+    height: 100%;
+    width: 2px;
+    background: rgba(255, 78, 106, 0.2);
+    position: absolute;
+    left: 6px;
+    top: 20px;
+}
+.nexmoe-archives li:last-child:after {
+    display: none;
+}
+.nexmoe-archives span {
+    margin-right: 15px;
+}
+</style>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
@@ -509,7 +309,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1594115677380"></script>
+<script src="/js/app.js?v=1594115677481"></script>
   
 
 
