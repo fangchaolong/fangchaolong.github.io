@@ -4,7 +4,7 @@ var photoobj = {
     init: function () {
         var that = this;
         console.log('ccc')
-        $.getJSON("/photo/output.json", function (data) {
+        $.getJSON("/photo/main.json", function (data) {
             console.log(data)
             that.render(that.page, data);
 
@@ -19,8 +19,8 @@ var photoobj = {
         var html, li = "";
         for (var i = begin; i < end && i < data.length; i++) {
             li += '<li><div class="img-box">' +
-                '<a class="img-bg" rel="example_group" href="https://github.com/lwzhang/blog/blob/master/photos/' + data[i] + '?raw=true"></a>' +
-                '<img data-src="https://github.com/fangchaolong/blog/blob/master/photos/' + data[i] + '?raw=true" class="lazyload"/>' +
+                '<a class="img-bg" rel="example_group" href="https://github.com/fangchaolong/fangchaolong.github.io/blob/master/photo' + data[i] + '?raw=true"></a>' +
+                '<img data-src="https://github.com/fangchaolong/fangchaolong.github.io/blob/master/photo' + data[i] + '?raw=true" class="lazyload"/>' +
                 '</li>';
         }
 
