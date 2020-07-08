@@ -61,6 +61,7 @@
       }
       // 如果是目录则递归调用自身
       else if (st.isDirectory()) {
+
       if (obj.length <= 0) {
        obj.push({
        name: path,
@@ -77,6 +78,7 @@
         })
        } else {
         value.forEach(function(vv) {
+        console.log(vv, item.name)
         if (vv == item.name) {
          obj.push({
          name: path,
