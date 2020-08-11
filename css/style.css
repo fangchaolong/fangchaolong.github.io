@@ -454,10 +454,10 @@ article p {
   line-height: 24px;
 }
 article code {
-  background-color: rgba(27,31,35,0.05);
-  border-radius: 6px;
-  font-size: 85%;
-  padding: 0.2em 0.4em;
+  background-color: #fff5f5;
+  color: #ff502c;
+  font-size: 0.87em;
+  padding: 0.065em 0.4em;
 }
 article code::-webkit-scrollbar {
   width: 10px;
