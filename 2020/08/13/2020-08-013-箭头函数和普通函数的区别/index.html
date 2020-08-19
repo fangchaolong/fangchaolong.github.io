@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>vue性能优化 - fcl个人博客</title>
+  <title>箭头函数和普通函数 - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,22 +16,29 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta name="description" content="当一个 Vue 实例被创建时，它将 data 对象中的所有的 property 加入到 Vue 的响应式系统中。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。但是这个过程实际上是比较消耗性能的">
+  <meta name="description" content="本文主要讲箭头函数和普通函数的区别">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vue性能优化">
-<meta property="og:url" content="http://yoursite.com/2020/07/20/2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:title" content="箭头函数和普通函数">
+<meta property="og:url" content="http://yoursite.com/2020/08/13/2020-08-013-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%92%8C%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="fcl个人博客">
-<meta property="og:description" content="当一个 Vue 实例被创建时，它将 data 对象中的所有的 property 加入到 Vue 的响应式系统中。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。但是这个过程实际上是比较消耗性能的">
+<meta property="og:description" content="本文主要讲箭头函数和普通函数的区别">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-07-20T12:46:25.000Z">
-<meta property="article:modified_time" content="2020-07-20T03:14:36.544Z">
+<meta property="og:image" content="http://yoursite.com/images/js/1.webp">
+<meta property="og:image" content="http://yoursite.com/images/js/2.webp">
+<meta property="og:image" content="http://yoursite.com/images/js/3.webp">
+<meta property="og:image" content="http://yoursite.com/images/js/5.webp">
+<meta property="og:image" content="http://yoursite.com/images/js/4.webp">
+<meta property="og:image" content="http://yoursite.com/images/js/6.webp">
+<meta property="article:published_time" content="2020-08-13T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-08-19T06:06:03.990Z">
 <meta property="article:author" content="fangchaolong">
-<meta property="article:tag" content="vue">
+<meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/js/1.webp">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1597136712495">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1597836261469">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -62,7 +69,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>30</div>
+        <div><span>文章</span>31</div>
         <div><span>标签</span>16</div>
         <div><span>分类</span>9</div>
     </div>
@@ -242,15 +249,15 @@
         <div class="nexmoe-post">
   
       <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
-          <img data-src="/images/vue.png" height="100%" data-sizes="auto" alt="vue性能优化" class="lazyload">
-          <h1>vue性能优化</h1>
+          <img data-src="/images/js/1.jpg" height="100%" data-sizes="auto" alt="箭头函数和普通函数" class="lazyload">
+          <h1>箭头函数和普通函数</h1>
       </div>
   
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2020年07月20日</a>
-    <a><i class="nexmoefont icon-areachart"></i>559 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年08月13日</a>
+    <a><i class="nexmoefont icon-areachart"></i>401 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
 </div>
 
   <div class="nexmoe-post-right">
@@ -258,74 +265,58 @@
   </div>
 
   <article>
-    <p>当一个 Vue 实例被创建时，它将 data 对象中的所有的 property 加入到 Vue 的响应式系统中。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。但是这个过程实际上是比较消耗性能的</p>
+    <p>本文主要讲箭头函数和普通函数的区别</p>
 <a id="more"></a>
-<p>对于一些有大量数据但只是展示的界面来说，并不需要将property加入到响应式系统中，这样可以提高渲染性能</p>
-<p>在Vue官网中，有这样一段话：这里唯一的例外是使用 Object.freeze()，这会阻止修改现有的 property，也意味着响应系统无法再追踪变化。这段话的意思是，如果我们的数据使用了Object.freeze，就可以让数据脱离响应式系统，那么该如何做呢?</p>
-<p>比如下面这个表格，因为只是渲染数据，这时候我们就可以通过Object.freeze来优化性能</p>
-<pre><code class="hljs copyable">&lt;template&gt;
-  &lt;el-table :data="tableData" style="width: 100%"&gt;
-    &lt;el-table-column prop="date" label="日期" width="180" /&gt;
-    &lt;el-table-column prop="name" label="姓名" width="180" /&gt;
-    &lt;el-table-column prop="address" label="地址" /&gt;
-  &lt;/el-table&gt;
-&lt;/template&gt;
-&lt;script&gt;
-export default {
-  data() {
-    const data = Array(1000)
-      .fill(1)
-      .map((item, index) =&gt; {
-        return {
-          date: '2020-07-11',
-          name: `子君${index}`,
-          address: '大西安'
-        }
-      })
-    return {
-      // 在这里我们用了Object.freeze
-      tableData: Object.freeze(data)
-    }
-  }
+<h2 id="区别大致有以下六点："><a href="#区别大致有以下六点：" class="headerlink" title="区别大致有以下六点："></a>区别大致有以下六点：</h2><blockquote>
+<p>1：写法不一样</p>
+<p>2：普通函数存在变量提升的现象</p>
+<p>3：箭头函数不能作为构造函数使用</p>
+<p>4：两者this的指向不同</p>
+<p>5：箭头函数的arguments指向它的父级函数所在作用域的arguments</p>
+<p>6：箭头函数没有new.target</p>
+<p>7. 箭头函数没有原型属性</p>
+</blockquote>
+
+<h2 id="1：写法不一样"><a href="#1：写法不一样" class="headerlink" title="1：写法不一样"></a>1：写法不一样</h2><p><img data-sizes="auto" data-src="/images/js/1.webp" alt="" class="lazyload"></p>
+<h2 id="2：普通函数存在变量提升的现象"><a href="#2：普通函数存在变量提升的现象" class="headerlink" title="2：普通函数存在变量提升的现象"></a>2：普通函数存在变量提升的现象</h2><p><img data-sizes="auto" data-src="/images/js/2.webp" alt="" class="lazyload"></p>
+<h2 id="3：箭头函数不能作为构造函数使用"><a href="#3：箭头函数不能作为构造函数使用" class="headerlink" title="3：箭头函数不能作为构造函数使用"></a>3：箭头函数不能作为构造函数使用</h2><p><img data-sizes="auto" data-src="/images/js/3.webp" alt="" class="lazyload"></p>
+<h2 id="4：两者的this指向不同"><a href="#4：两者的this指向不同" class="headerlink" title="4：两者的this指向不同"></a>4：两者的this指向不同</h2><blockquote>
+<p>普通函数的this指向的是谁调用该函数就指向谁</p>
+<p>箭头函数的this指向的是在你书写代码时候的上下文环境对象的this，如果没有上下文环境对象，那么就指向最外层对象window。</p>
+</blockquote>
+
+<p><img data-sizes="auto" data-src="/images/js/5.webp" alt="" class="lazyload"></p>
+<h2 id="5：箭头函数的arguments指向其父级函数作用域的arguments"><a href="#5：箭头函数的arguments指向其父级函数作用域的arguments" class="headerlink" title="5：箭头函数的arguments指向其父级函数作用域的arguments"></a>5：箭头函数的arguments指向其父级函数作用域的arguments</h2><p><img data-sizes="auto" data-src="/images/js/4.webp" alt="" class="lazyload"></p>
+<h2 id="6：箭头函数没有new-target"><a href="#6：箭头函数没有new-target" class="headerlink" title="6：箭头函数没有new.target"></a>6：箭头函数没有new.target</h2><blockquote>
+<p>先说明下new.target是干嘛的，这家伙是用来检测函数是否被当做构造函数使用，他会返回一个指向构造函数的引用。</p>
+<p>因为箭头函数不能当做构造函数使用，自然是没有new.target的。</p>
+</blockquote>
+
+<p><img data-sizes="auto" data-src="/images/js/6.webp" alt="" class="lazyload"></p>
+<h2 id="7-箭头函数没有原型属性"><a href="#7-箭头函数没有原型属性" class="headerlink" title="7: 箭头函数没有原型属性"></a>7: 箭头函数没有原型属性</h2><pre><span style="color: #0000ff;">var</span> a = ()=&gt;<span style="color: #000000;">{
+  </span><span style="color: #0000ff;">return</span> 1<span style="color: #000000;">;
 }
-&lt;/script&gt;</code></pre>
 
-<p>有的同学可能会有疑问，如果我这个表格的数据是滚动加载的，你这样写我不就没法再给tableData添加数据了吗？是，确实没办法去添加数据了，但还是有办法解决的，比如像下面这样</p>
-<pre ><code class="hljs copyable"><span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">default</span> {
-<span>  data() {
-<span>    <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">return</span> {
-<span>      <span style="color: #986801; line-height: 26px;" class="hljs-attr">tableData</span>: []
-<span>    }
-<span>  },
-<span>  created() {
-<span>    setInterval(<span style="line-height: 26px;" class="hljs-function"><span style="line-height: 26px;" class="hljs-params">()</span> =&gt;</span> {
-<span>      <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">const</span> data = <span style="color: #c18401; line-height: 26px;" class="hljs-built_in">Array</span>(<span style="color: #986801; line-height: 26px;" class="hljs-number">1000</span>)
-<span>        .fill(<span style="color: #986801; line-height: 26px;" class="hljs-number">1</span>)
-<span>        .map(<span style="line-height: 26px;" class="hljs-function">(<span style="line-height: 26px;" class="hljs-params">item, index</span>) =&gt;</span> {
-<span>          <span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// 虽然不能冻结整个数组，但是可以冻结每一项数据</span>
-<span>          <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #c18401; line-height: 26px;" class="hljs-built_in">Object</span>.freeze({
-<span>            <span style="color: #986801; line-height: 26px;" class="hljs-attr">date</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'2020-07-11'</span>,
-<span>            <span style="color: #986801; line-height: 26px;" class="hljs-attr">name</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">`子君<span style="color: #e45649; line-height: 26px;" class="hljs-subst">${index}</span>`</span>,
-<span>            <span style="color: #986801; line-height: 26px;" class="hljs-attr">address</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'大西安'</span>
-<span>          })
-<span>        })
-<span>      <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.tableData = <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.tableData.concat(data)
-<span>    }, <span style="color: #986801; line-height: 26px;" class="hljs-number">2000</span>)
-<span>  }
-<span>}
-<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+</span><span style="color: #0000ff;">function</span><span style="color: #000000;"> b(){
+  </span><span style="color: #0000ff;">return</span> 2<span style="color: #000000;">;
+}
 
-<p>合理的使用Object.freeze，是可以节省不少渲染性能，特别对于IE浏览器，效果还是很明显的，赶快去试试吧。</p>
-<p>最后如果你现在需要开发移动端项目，可以了解一下小编整理的一个开箱即用框架 <a style="word-wrap: break-word; font-weight: bold; color: #48b378; text-decoration: none; border-bottom: 1px solid #48b378;" href="https://github.com/snowzijun/vue-vant-base" target="_blank" rel="nofollow noopener noreferrer">vue-vant-base</a>,也许可以帮到你哦</p>
+console.log(a.prototype);  </span><span style="color: #008000;">//</span><span style="color: #008000;"> undefined</span>
+console.log(b.prototype);   <span style="color: #008000;">//</span><span style="color: #008000;"> {constructor: ƒ}</span></pre>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>箭头函数的 this 永远指向其上下文的  this ，任何方法都改变不了其指向，如 call() ,  bind() ,  apply() </li>
+<li>普通函数的this指向调用它的那个对象</li>
+</ol>
 
   </article>
 
   <div class="nexmoe-post-meta nexmoe-rainbow">
     
-        <a class="nexmoefont icon-appstore-fill -link" href="/categories/vue/">vue</a>
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/js/">js</a>
     
     
-        <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a>
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/js/" rel="tag">js</a>
     
 </div>
   <div style="text-align: center;">
@@ -517,7 +508,7 @@ export default {
   <div class="nexmoe-post-copyright">
     <strong>本文作者：</strong>fangchaolong<br>
     <!-- 本文链接 -->
-    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/07/20/2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;07&#x2F;20&#x2F;2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;07&#x2F;20&#x2F;2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96&#x2F;</a><br> -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/08/13/2020-08-013-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%92%8C%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%8C%BA%E5%88%AB/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;13&#x2F;2020-08-013-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%92%8C%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;13&#x2F;2020-08-013-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%92%8C%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;</a><br> -->
     
       <strong>欢迎大家借鉴和讨论</strong>
     
@@ -586,7 +577,7 @@ export default {
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1597136712498"></script>
+<script src="/js/app.js?v=1597836261471"></script>
   
 
 
