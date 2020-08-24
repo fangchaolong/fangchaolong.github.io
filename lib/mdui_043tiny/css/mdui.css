@@ -4855,7 +4855,15 @@ select.mdui-select[multiple] option:last-child {
   width: 7200px;
   height: 100%;
   background: url(https://qidian.gtimg.com/yuewen/v1/css/images/ip2/book/book-line1-min.png) repeat-x center;
-  transform: translateX(0);
+  animation: yundong 20s linear infinite;
+}
+@keyframes yundong{
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-3600px);
+  }
 }
 /* 手机 */
 .mdui-toolbar {

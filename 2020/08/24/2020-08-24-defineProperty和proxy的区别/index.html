@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>export、export default、module.export区别 - fcl个人博客</title>
+  <title>defineProperty和proxy的区别 - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,27 +16,26 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta name="description" content="首先要知道export，import ，export default是什么">
+  <meta name="description" content="vue3.0中，响应式数据部分弃用了 Object.defineProperty，使用 Proxy 来代替它。本文将主要通过以下方面来分析为什么vue选择弃用 Object.defineProperty。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="export、export default、module.export区别">
-<meta property="og:url" content="http://yoursite.com/2018/10/11/2018-10-11-export-exportdefault-moduleexport/index.html">
+<meta property="og:title" content="defineProperty和proxy的区别">
+<meta property="og:url" content="http://yoursite.com/2020/08/24/2020-08-24-defineProperty%E5%92%8Cproxy%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="fcl个人博客">
-<meta property="og:description" content="首先要知道export，import ，export default是什么">
+<meta property="og:description" content="vue3.0中，响应式数据部分弃用了 Object.defineProperty，使用 Proxy 来代替它。本文将主要通过以下方面来分析为什么vue选择弃用 Object.defineProperty。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCE3b8337734a0ffd46e4fa2169eccdfff0/362">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCE4b43fe3376bb21431f1d82ef8ba3c294/372">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCEf2bc16ee125548735918c212b33ce344/375">
-<meta property="og:image" content="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCEb3f8f41a7623b1db7e0164e117c68e48/378">
-<meta property="article:published_time" content="2018-10-11T12:46:25.000Z">
-<meta property="article:modified_time" content="2020-07-02T08:04:11.148Z">
+<meta property="og:image" content="http://yoursite.com/images/vue/19.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/20.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/21.jpg">
+<meta property="article:published_time" content="2020-08-24T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-08-24T11:34:12.302Z">
 <meta property="article:author" content="fangchaolong">
-<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="vue">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCE3b8337734a0ffd46e4fa2169eccdfff0/362">
+<meta name="twitter:image" content="http://yoursite.com/images/vue/19.jpg">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1598268974859">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1598268974767">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -253,15 +252,15 @@
         <div class="nexmoe-post">
   
       <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
-          <img data-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592456304673&di=68d9619b50fa3ae2af667fbdfa792590&imgtype=0&src=http%3A%2F%2Faliyunzixunbucket.oss-cn-beijing.aliyuncs.com%2Fjpg%2F33b3b039cb6424bb3f5bf09cb8a3e812.jpg%3Fx-oss-process%3Dimage%2Fresize%2Cp_100%2Fauto-orient%2C1%2Fquality%2Cq_90%2Fformat%2Cjpg%2Fwatermark%2Cimage_eXVuY2VzaGk%3D%2Ct_100" height="100%" data-sizes="auto" alt="export、export default、module.export区别" class="lazyload">
-          <h1>export、export default、module.export区别</h1>
+          <img data-src="/images/vue/18.png" height="100%" data-sizes="auto" alt="defineProperty和proxy的区别" class="lazyload">
+          <h1>defineProperty和proxy的区别</h1>
       </div>
   
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2018年10月11日</a>
-    <a><i class="nexmoefont icon-areachart"></i>570 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年08月24日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.5k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 7 分钟</a>
 </div>
 
   <div class="nexmoe-post-right">
@@ -269,38 +268,138 @@
   </div>
 
   <article>
-    <p><strong>首先要知道export，import ，export default是什么</strong></p>
+    <p>vue3.0中，响应式数据部分弃用了 Object.defineProperty，使用 Proxy 来代替它。本文将主要通过以下方面来分析为什么vue选择弃用 Object.defineProperty。</p>
 <a id="more"></a>
-<p>ES6模块主要有两个功能：export和import<br>export用于对外输出本模块（一个文件可以理解为一个模块）变量的接口<br>import用于在一个模块中加载另一个含有export接口的模块。<br>也就是说使用export命令定义了模块的对外接口以后，其他JS文件就可以通过import命令加载这个模块（文件）。这几个都是ES6的语法。</p>
-<h2 id="export和import（一个导出一个导入）"><a href="#export和import（一个导出一个导入）" class="headerlink" title="export和import（一个导出一个导入）##"></a>export和import（一个导出一个导入）##</h2><p>一个a.js文件有如下代码：<br>export var name=”李四”;<br>在其它文件里引用如下：</p>
-<p><img data-sizes="auto" data-src="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCE3b8337734a0ffd46e4fa2169eccdfff0/362" alt="active" class="lazyload"></p>
-<p>上面的例子是导出单个变量的写法，如果是导出多个变量就应该按照下边的方法，用大括号包裹着需要导出的变量：</p>
-<blockquote>
-<p>var name1=”李四”;<br>var name2=”张三”;<br>export { name1 ,name2 }</p>
-</blockquote>
-<p>在其他文件里引用如下：</p>
-<p><img data-sizes="auto" data-src="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCE4b43fe3376bb21431f1d82ef8ba3c294/372" alt="active2" class="lazyload"></p>
-<p>如果导出的是个函数呢，那应该怎么用呢,其实一样，如下<br><img data-sizes="auto" data-src="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCEf2bc16ee125548735918c212b33ce344/375" alt="active3" class="lazyload"></p>
-<p>在其他文件里引用如下：<br><img data-sizes="auto" data-src="https://note.youdao.com/yws/public/resource/a04b821c0ce2d48573eaea957c86c936/xmlnote/WEBRESOURCEb3f8f41a7623b1db7e0164e117c68e48/378" alt="active4" class="lazyload"></p>
-<h2 id="export与export-default"><a href="#export与export-default" class="headerlink" title="export与export default##"></a>export与export default##</h2><p><font color=red>这2者区别：在同一个文件里面可以有多个export， 一个文件里面只能有1个export default </font><br>看完上面这几个例子，想必你一定了解了如何使用export，import,如果还是不懂可以自己动手试一试。上面讲的是export和import，但是export跟export default 有什么区别呢？如下：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=530 height=86 src="//music.163.com/outchain/player?type=2&id=4341314&auto=1&height=66"></iframe>
+
+<pre><code>
+Object.defineProperty(obj,"name",{
+  set:function(val){
+      if(var==='lisi'){
+            console.log("誓死不叫这么土的名字")
+      }else{
+              objCopy.name = val
+      }
+  },
+  get:function(){
+    return objCopy.name.replace(/san/,'先生')
+   }
+})
+这个对每个data中的属性进行遍历绑定。
+而，
+var objCopy = new Proxy(obj,{
+          get:function(target,key){
+                if(key=='name'){
+                      return target[key].replace(/san/,'先生');
+                }
+          },
+          set:function(target,key,value){
+                if(key == 'name'){
+                    value=='lisi'?target[key]:target[key] = value;
+                }else{
+                    target[key] = value;
+                }
+          }
+   })
+</code></pre>
+
+<p>get，set方法的target参数即obj对象，key参数是要操作的属性，value参数是赋值动作时的值。<br>此后，可通过objCopy.name的方式访问obj的name属性，也可以通过objCopy.name=’lisi’的方式设置obj的name属性，而且不用给每个属性都设置set,get方法，不会触发循环调用，很是爽的。<br>这样我们通过对objCopy对象的操作就实现了对obj对象的操作，objCopy对象就是obj对象的代理对象。<br>vue3.0使用了Proxy替换了原先遍历对象使用Object.defineProperty方法给属性添加set,get访问器的笨拙做法。<br> 也就是说不应遍历了，而是直接监控data对象了。</p>
+<h2 id="Object-defineProperty-VS-Proxy"><a href="#Object-defineProperty-VS-Proxy" class="headerlink" title="Object.defineProperty VS Proxy"></a>Object.defineProperty VS Proxy</h2><p><strong>1. Object.defineProperty只能劫持对象的属性，而Proxy是直接代理对象。</strong><br>由于 Object.defineProperty 只能对属性进行劫持，需要遍历对象的每个属性。而 Proxy 可以直接代理对象。</p>
+<p><strong>2. Object.defineProperty对新增属性需要手动进行Observe。</strong><br>由于 Object.defineProperty 劫持的是对象的属性，所以新增属性时，需要重新遍历对象，对其新增属性再使用 Object.defineProperty 进行劫持。</p>
+<p>也正是因为这个原因，使用vue给 data 中的数组或对象新增属性时，需要使用 vm.$set 才能保证新增的属性也是响应式的。</p>
+<p>下面看一下vue的 set 方法是如何实现的，set 方法定义在 core/observer/index.js ，下面是核心代码。</p>
+<pre><code>
+
+/**
+ * Set a property on an object. Adds the new property and
+ * triggers change notification if the property doesn't
+ * already exist.
+ */
+export function set (target: Array<any> | Object, key: any, val: any): any {
+  // 如果target是数组，且key是有效的数组索引，会调用数组的splice方法，
+  // 我们上面说过，数组的splice方法会被重写，重写的方法中会手动Observe
+  // 所以vue的set方法，对于数组，就是直接调用重写splice方法
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.length = Math.max(target.length, key)
+    target.splice(key, 1, val)
+    return val
+  }
+  // 对于对象，如果key本来就是对象中的属性，直接修改值就可以触发更新
+  if (key in target && !(key in Object.prototype)) {
+    target[key] = val
+    return val
+  }
+  // vue的响应式对象中都会添加了__ob__属性，所以可以根据是否有__ob__属性判断是否为响应式对象
+  const ob = (target: any).__ob__
+  // 如果不是响应式对象，直接赋值
+  if (!ob) {
+    target[key] = val
+    return val
+  }
+  // 调用defineReactive给数据添加了 getter 和 setter，
+  // 所以vue的set方法，对于响应式的对象，就会调用defineReactive重新定义响应式对象，defineReactive 函数
+  defineReactive(ob.value, key, val)
+  ob.dep.notify()
+  return val
+}
+</code></pre>
+
+<p>在 set 方法中，对 target 是数组和对象做了分别的处理，target 是数组时，会调用重写过的 splice 方法进行手动 Observe 。</p>
+<p>对于对象，如果 key 本来就是对象的属性，则直接修改值触发更新，否则调用 defineReactive方法重新定义响应式对象。</p>
+<p>如果采用 proxy 实现，Proxy 通过 set(target, propKey, value, receiver) 拦截对象属性的设置，是可以拦截到对象的新增属性的。</p>
+<p><img data-sizes="auto" data-src="/images/vue/19.jpg" alt="" class="lazyload"></p>
+<p>不止如此，Proxy 对数组的方法也可以监测到，不需要像上面vue2.x源码中那样进行 hack。</p>
+<p><img data-sizes="auto" data-src="/images/vue/20.jpg" alt="" class="lazyload"></p>
+<p><strong>3. Proxy支持13种拦截操作，这是defineProperty所不具有的</strong></p>
 <ol>
-<li>export与export default均可用于导出常量、函数、文件、模块等</li>
-<li>你可以在其它文件或模块中通过import+(常量 | 函数 | 文件 | 模块)名的方式，将其导入，以便能够对其进行使用</li>
-<li>在一个文件或模块中，export、import可以有多个，export default仅有一个</li>
-<li>通过export方式导出，在导入时要加{ }，export default则不需要</li>
+<li><p>get(target, propKey, receiver)：拦截对象属性的读取，比如 proxy.foo 和 proxy[‘foo’]。</p>
+</li>
+<li><p>set(target, propKey, value, receiver)：拦截对象属性的设置，比如 proxy.foo = v 或 proxy[‘foo’] = v ，返回一个布尔值。</p>
+</li>
+<li><p>has(target, propKey)：拦截 propKey in proxy 的操作，返回一个布尔值。</p>
+</li>
+<li><p>deleteProperty(target, propKey)：拦截 delete proxy[propKey] 的操作，返回一个布尔值。</p>
+</li>
+<li><p>ownKeys(target)：拦截 Object.getOwnPropertyNames(proxy) 、 Object.getOwnPropertySymbols(proxy) 、Object.keys(proxy) 、for…in 循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而 Object.keys() 的返回结果仅包括目标对象自身的可遍历属性。</p>
+</li>
+<li><p>getOwnPropertyDescriptor(target, propKey)：拦截 Object.getOwnPropertyDescriptor(proxy, propKey) ，返回属性的描述对象。</p>
+</li>
+<li><p>defineProperty(target, propKey, propDesc)：拦截 Object.defineProperty(proxy, propKey, propDesc） 、Object.defineProperties(proxy, propDescs) ，返回一个布尔值。</p>
+</li>
+<li><p>preventExtensions(target)：拦截 Object.preventExtensions(proxy) ，返回一个布尔值。</p>
+</li>
+<li><p>getPrototypeOf(target)：拦截 Object.getPrototypeOf(proxy) ，返回一个对象。</p>
+</li>
+<li><p>isExtensible(target)：拦截 Object.isExtensible(proxy) ，返回一个布尔值。</p>
+</li>
+<li><p>setPrototypeOf(target, proto)：拦截 Object.setPrototypeOf(proxy, proto) ，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。</p>
+</li>
+<li><p>apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如 proxy(…args)、proxy.call(object, …args) 、proxy.apply(…) 。</p>
+</li>
+<li><p>construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如 new proxy(…args) 。</p>
+</li>
 </ol>
-<p>这样来说其实很多时候export与export default可以实现同样的目的，只是用法有些区别。<font color=red>注意第四条，通过export方式导出，在导入时要加{ }，export default则不需要</font>。使用export default命令，为模块指定默认输出，这样就不需要知道所要加载模块的变量名。</p>
-<div style="white-space: pre-wrap;" yne-bulb-block="paragraph"><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">在es5中，用</span><span style="font-size:22px;font-family:Courier New;color:#c7254e;background-color:#f6f6f6;font-weight:bold;">module.exports</span><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">和</span><span style="font-size:22px;font-family:Courier New;color:#c7254e;background-color:#f6f6f6;font-weight:bold;">exports</span><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">导出模块，用</span><span style="font-size:22px;font-family:Courier New;color:#c7254e;background-color:#f6f6f6;font-weight:bold;">require</span><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">引入模块。</span></div>
-<div style="white-space: pre-wrap;" yne-bulb-block="paragraph"><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">es6新增</span><span style="font-size:22px;font-family:Courier New;color:#c7254e;background-color:#f6f6f6;font-weight:bold;">export</span><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">和</span><span style="font-size:22px;font-family:Courier New;color:#c7254e;background-color:#f6f6f6;font-weight:bold;">export default</span><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">导出模块，</span><span style="font-size:22px;font-family:Courier New;color:#c7254e;background-color:#f6f6f6;font-weight:bold;">import</span><span style="font-size:22px;color:#2f2f2f;background-color:#ffffff;font-weight:bold;">导入模块。</span></div>
+<h2 id="4-新标准性能红利"><a href="#4-新标准性能红利" class="headerlink" title="4. 新标准性能红利"></a>4. 新标准性能红利</h2><p>Proxy 作为新标准，长远来看，JS引擎会继续优化 Proxy ，但 getter 和 setter 基本不会再有针对性优化。</p>
+<h2 id="5-Proxy兼容性差"><a href="#5-Proxy兼容性差" class="headerlink" title="5. Proxy兼容性差"></a>5. Proxy兼容性差</h2><p><img data-sizes="auto" data-src="/images/vue/21.jpg" alt="" class="lazyload"></p>
+<p>可以看到，Proxy 对于IE浏览器来说简直是灾难。</p>
+<p>并且目前并没有一个完整支持 Proxy 所有拦截方法的Polyfill方案，有一个google编写的 proxy-polyfill 也只支持了 get，set，apply，construct 四种拦截，可以支持到IE9+和Safari 6+。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><p>Object.defineProperty 对数组和对象的表现一直，并非不能监控数组下标的变化，vue2.x中无法通过数组索引来实现响应式数据的自动更新是vue本身的设计导致的，不是 defineProperty 的锅。</p>
+</li>
+<li><p>Object.defineProperty 和 Proxy 本质差别是，defineProperty 只能对属性进行劫持，新增属性需要手动 Observe 的问题。</p>
+</li>
+<li><p>Proxy 作为新标准，浏览器厂商势必会对其进行持续优化，但它的兼容性也是块硬伤，并且目前还没有完整的polifill方案。</p>
+</li>
+</ol>
 
   </article>
 
   <div class="nexmoe-post-meta nexmoe-rainbow">
     
-        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/vue/">vue</a>
     
     
-        <a class="nexmoefont icon-tag-fill -link" href="/tags/javascript/" rel="tag">javascript</a>
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a>
     
 </div>
   <div style="text-align: center;">
@@ -492,7 +591,7 @@
   <div class="nexmoe-post-copyright">
     <strong>本文作者：</strong>fangchaolong<br>
     <!-- 本文链接 -->
-    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2018/10/11/2018-10-11-export-exportdefault-moduleexport/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;10&#x2F;11&#x2F;2018-10-11-export-exportdefault-moduleexport&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;10&#x2F;11&#x2F;2018-10-11-export-exportdefault-moduleexport&#x2F;</a><br> -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/08/24/2020-08-24-defineProperty%E5%92%8Cproxy%E7%9A%84%E5%8C%BA%E5%88%AB/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;24&#x2F;2020-08-24-defineProperty%E5%92%8Cproxy%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;24&#x2F;2020-08-24-defineProperty%E5%92%8Cproxy%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;</a><br> -->
     
       <strong>欢迎大家借鉴和讨论</strong>
     
@@ -558,7 +657,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1598268974861"></script>
+<script src="/js/app.js?v=1598268974771"></script>
   
 
 
