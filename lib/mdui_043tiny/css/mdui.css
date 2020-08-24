@@ -4845,11 +4845,17 @@ select.mdui-select[multiple] option:last-child {
 }
 .mdui-toolbar-spacer {
   margin: 0;
-
+  height: 100%;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
           flex-grow: 1;
+}
+.ulbox{
+  width: 7200px;
+  height: 100%;
+  background: url(https://qidian.gtimg.com/yuewen/v1/css/images/ip2/book/book-line1-min.png) repeat-x center;
+  transform: translateX(0);
 }
 /* 手机 */
 .mdui-toolbar {
