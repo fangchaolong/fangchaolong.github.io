@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>标签：缓存 - fcl个人博客</title>
+  <title>宏任务与微任务 - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,17 +16,25 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta property="og:type" content="website">
-<meta property="og:title" content="fcl个人博客">
-<meta property="og:url" content="http://yoursite.com/tags/%E7%BC%93%E5%AD%98/index.html">
+  <meta name="description" content="宏任务（macrotask ）和微任务（microtask ）表示异步任务的两种分类。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="宏任务与微任务">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/2020-12-24-js%20%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1/index.html">
 <meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="宏任务（macrotask ）和微任务（microtask ）表示异步任务的两种分类。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/js/9.png">
+<meta property="og:image" content="http://yoursite.com/images/js/10.png">
+<meta property="article:published_time" content="2020-12-24T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-12-23T12:23:27.852Z">
 <meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/js/9.png">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1608726334812">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1608726334450">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -261,71 +269,363 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        
-<section class="nexmoe-archives">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="/images/js/11.png" height="100%" data-sizes="auto" alt="宏任务与微任务" class="lazyload">
+          <h1>宏任务与微任务</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年12月24日</a>
+    <a><i class="nexmoefont icon-areachart"></i>868 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+</div>
 
-    <article>
-        
+  <div class="nexmoe-post-right">
+    
+  </div>
 
-        
-            <h2>
-                2017
-            </h2>
-            <ul>
+  <article>
+    <p>宏任务（macrotask ）和微任务（microtask ）表示异步任务的两种分类。</p>
+<a id="more"></a>
+<p>在挂起任务时，主进程的任务执行完成，JS 引擎会将所有异步事件任务按照类别分到这两个队列中，首先在 宏任务（macrotask ） 的队列（这个队列也被叫做 task queue）中取出第一个任务，执行完毕后取出 当前宏任务下的所有微任务（microtask ） 顺序执行；之后再取 宏任务（macrotask ），周而复始，直至两个队列的任务都取完</p>
+<h2 id="宏任务包含"><a href="#宏任务包含" class="headerlink" title="宏任务包含"></a>宏任务包含</h2><p><strong>script标签下的上下文就是一个大的宏任务</strong></p>
+<pre>
+  <code class="hljs language-javascript copyable">
+    script(整体代码)
+    setTimeout
+    setInterval
+    I/O
+    UI交互事件
+    postMessage
+    MessageChannel
+    setImmediate(Node.js 环境)
+  </code>
+</pre>
+
+<h2 id="微任务包含"><a href="#微任务包含" class="headerlink" title="微任务包含"></a>微任务包含</h2><pre>
+  <code class="hljs language-javascript copyable">
+    Promise.then
+    Object.observe
+    MutaionObserver
+    process.nextTick(Node.js 环境)
+  </code>
+</pre>
+
+<p>如图所示：</p>
+<h2 id="主进程与异步事件的执行机制"><a href="#主进程与异步事件的执行机制" class="headerlink" title="主进程与异步事件的执行机制"></a>主进程与异步事件的执行机制</h2><p><img data-sizes="auto" data-src="/images/js/9.png" alt="active" class="lazyload"></p>
+<h2 id="宏任务和微任务之间的关系"><a href="#宏任务和微任务之间的关系" class="headerlink" title="宏任务和微任务之间的关系"></a>宏任务和微任务之间的关系</h2><p><img data-sizes="auto" data-src="/images/js/10.png" alt="active" class="lazyload"></p>
+<p>举个例子</p>
+<pre><code class="hljs language-javascript copyable">
+setTimeout(() => {
+    //执行后 回调一个宏事件
+    console.log('内层宏事件3')
+}, 0)
+console.log('外层宏事件1');
+
+new Promise((resolve) => {
+    console.log('外层宏事件2');
+    resolve()
+}).then(() => {
+    console.log('微事件1');
+}).then(()=>{
+    console.log('微事件2')
+})
+</code></pre>
+<p>• 首先浏览器执行js进入第一个宏任务(script上下文)进入主线程, 遇到 setTimeout（第二个宏任务）  分发到宏任务Event Queue中</p>
+<p>• 遇到 console.log() 直接执行 输出 外层宏事件1</p>
+<p>• 遇到 Promise， new Promise 直接执行 输出 外层宏事件2</p>
+<p>• 执行then 被分发到微任务Event Queue中</p>
+<p>•第一轮宏任务执行结束，开始执行微任务 打印 ‘微事件1’ ‘微事件2’</p>
+<p>•第一轮微任务执行完毕，执行第二轮宏事件，打印setTimeout里面内容’内层宏事件3’</p>
+<p><strong>再来看一个例子</strong></p>
+<pre>
+  <code class="hljs language-javascript copyable">
+//主线程直接执行
+console.log('1');
+//丢到宏事件队列中
+setTimeout(function() {
+    console.log('2');
+    process.nextTick(function() {
+        console.log('3');
+    })
+    new Promise(function(resolve) {
+        console.log('4');
+        resolve();
+    }).then(function() {
+        console.log('5')
+    })
+})
+//微事件1
+process.nextTick(function() {
+    console.log('6');
+})
+//主线程直接执行
+new Promise(function(resolve) {
+    console.log('7');
+    resolve();
+}).then(function() {
+    //微事件2
+    console.log('8')
+})
+//丢到宏事件队列中
+setTimeout(function() {
+    console.log('9');
+    process.nextTick(function() {
+        console.log('10');
+    })
+    new Promise(function(resolve) {
+        console.log('11');
+        resolve();
+    }).then(function() {
+        console.log('12')
+    })
+})
+  </code>
+</pre>
+
+<p>• 首先浏览器执行js进入第一个宏任务进入主线程, 直接打印console.log(‘1’)</p>
+<p>• 遇到 setTimeout  分发到宏任务Event Queue中</p>
+<p>• 遇到 process.nextTick 丢到微任务Event Queue中</p>
+<p>• 遇到 Promise， new Promise 直接执行 输出 console.log(‘7’);</p>
+<p>• 执行then 被分发到微任务Event Queue中</p>
+<p>•第一轮宏任务执行结束，开始执行微任务 打印 6,8</p>
+<p>•第一轮微任务执行完毕，执行第二轮宏事件，执行setTimeout</p>
+<p>•先执行主线程宏任务，在执行微任务，打印’2,4,3,5’</p>
+<p>•在执行第二个setTimeout,同理打印 ‘9,11,10,12’</p>
+<p>•整段代码，共进行了三次事件循环，完整的输出为1，7，6，8，2，4，3，5，9，11，10，12。</p>
+<p>以上是在浏览器环境下执行的数据，只作为宏任务和微任务的分析，我在node环境下测试打印出来的顺序为：1，7，6，8，2，4，9，11，3，10，5，12。node环境执行结果和浏览器执行结果不一致的原因是：浏览器的Event loop是在HTML5中定义的规范，而node中则由libuv库实现。libuv库流程大体分为6个阶段：timers，I/O callbacks，idle、prepare，poll，check，close callbacks，和浏览器的microtask，macrotask那一套有区别。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/js/" rel="tag">js</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
             
-                <li><span>08-13</span><a href="/2017/08/13/2017-08-13-http%E5%BC%BA%E7%BC%93%E5%AD%98%E5%92%8C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/" >HTTP 强缓存&协商缓存</a></li>
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
             
-            </ul>
-        
-    </article>
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/12/24/2020-12-24-js%20%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;12&#x2F;24&#x2F;2020-12-24-js%20%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;12&#x2F;24&#x2F;2020-12-24-js%20%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
     
 </section>
-
-<style>
-.nexmoe-archives article > *:first-child {
-    margin-top: 0;
-}
-.nexmoe-archives article > *:last-child {
-    margin-bottom: 0;
-}
-.nexmoe-archives ul {
-    list-style: none;
-    padding-left: 0!important;
-}
-.nexmoe-archives li {
-    position: relative;
-    padding: 10px 0;
-}
-.nexmoe-archives li::before {
-    content: "";
-    width: 14px;
-    height: 14px;
-    background: #ff4e6a;
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: -2px;
-    margin-right: 11px;
-    border-radius: 100%;
-    border: 3px solid #fff;
-    z-index: 100;
-    position: relative;
-}
-.nexmoe-archives li::after {
-    content: "";
-    height: 100%;
-    width: 2px;
-    background: rgba(255, 78, 106, 0.2);
-    position: absolute;
-    left: 6px;
-    top: 20px;
-}
-.nexmoe-archives li:last-child:after {
-    display: none;
-}
-.nexmoe-archives span {
-    margin-right: 15px;
-}
-</style>
+  </div>
+</div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
@@ -365,7 +665,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1608726334816"></script>
+<script src="/js/app.js?v=1608726334455"></script>
   
 
 
