@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>vue性能优化二期 - fcl个人博客</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="baidu-site-verification" content="SrLfZ8s83m" />
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="http://www.baidu.com" />
+
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
+  <meta name="description" content="当一个 Vue 实例被创建时，它将 data 对象中的所有的 property 加入到 Vue 的响应式系统中。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。但是这个过程实际上是比较消耗性能的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue性能优化二期">
+<meta property="og:url" content="http://yoursite.com/2020/08/17/2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="当一个 Vue 实例被创建时，它将 data 对象中的所有的 property 加入到 Vue 的响应式系统中。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。但是这个过程实际上是比较消耗性能的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/vue/14.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/15.jpg">
+<meta property="article:published_time" content="2020-08-17T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-08-24T10:20:57.600Z">
+<meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/vue/14.jpg">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
+  <link rel="stylesheet" href="/css/index.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1636964062059">-->
+  <link rel="stylesheet" href="/css/jsdelivr.css">
+  <script src="/js/jquery.min.js"></script>
+  
+<script src="/js/common.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body class="mdui-drawer-body-left">
+  <script>
+    var url = 'http://localhost:4000/video/petal.ts';
+    var player = new JSMpeg.Player(
+        url,
+        {
+            canvas: document.getElementById('canvas'),
+            loop: true,
+            autoplay: true,
+            disableWebAssembly: true,
+            // 分片大小
+            chunkSize: 1 * 1024 * 1024,
+            videoBufferSize: 512 * 1024,
+        }
+    );
+  </script>
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg">
+      <div class="bg1"></div>
+      <div class="bg1 bg2"></div>
+    </div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-box">
+        <div class="mdui-toolbar">
+          <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+          <div class="mdui-toolbar-spacer">
+            <ul class="ulbox">坚持做到每日一更,上一次更新:2020/12/24</ul>
+            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2020/12/24</ul>
+          </div>
+          <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+          <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="fangchaolong">
+            <img src="/images/timg.png" alt="fangchaolong" alt="fangchaolong">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>45</div>
+        <div><span>标签</span>20</div>
+        <div><span>分类</span>10</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/donate.html" title="请我喝茶">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                请我喝茶
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/photo" title="我的相册">
+            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
+            <div class="mdui-list-item-content">
+                我的相册
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/leave" title="学习资源">
+            <i class="mdui-list-item-icon nexmoefont icon-dribbble"></i>
+            <div class="mdui-list-item-content">
+                学习资源
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="版本迭代">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                版本迭代
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/fangchaolong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/git/">git</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/http/">http</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/js/">js</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js实例/">js实例</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/vue/">vue</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/">前端</a>
+          <span class="category-list-count">23</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/快应用/">快应用</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/生活/">生活</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 12.5px;">computed</a> <a href="/tags/es6/" style="font-size: 12.5px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 17.5px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 17.5px;">javascript</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/watch/" style="font-size: 12.5px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 15px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+    <!-- 左侧任务的footer -->
+    <div class="nexmoe-copyright">
+        &copy; 2021 fangchaolong
+        Powered by 搭建时间：2020-06-17
+        <!-- &copy; 2021 fangchaolong
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a> -->
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="/images/vue/16.jpg" height="100%" data-sizes="auto" alt="vue性能优化二期" class="lazyload">
+          <h1>vue性能优化二期</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年08月17日</a>
+    <a><i class="nexmoefont icon-areachart"></i>1.8k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 7 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <p>当一个 Vue 实例被创建时，它将 data 对象中的所有的 property 加入到 Vue 的响应式系统中。当这些 property 的值发生改变时，视图将会产生“响应”，即匹配更新为新的值。但是这个过程实际上是比较消耗性能的</p>
+<a id="more"></a>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=2919622&auto=1&height=66"></iframe>
+
+<h2 id="冻结-Object-freeze"><a href="#冻结-Object-freeze" class="headerlink" title="冻结 Object.freeze()"></a>冻结 Object.freeze()</h2><p>对于一些有大量数据但只是展示的界面来说，并不需要将property加入到响应式系统中，这样可以提高渲染性能</p>
+<p>在Vue官网中，有这样一段话：这里唯一的例外是使用 Object.freeze()，这会阻止修改现有的 property，也意味着响应系统无法再追踪变化。这段话的意思是，如果我们的数据使用了Object.freeze，就可以让数据脱离响应式系统，那么该如何做呢?</p>
+<p>比如下面这个表格，因为只是渲染数据，这时候我们就可以通过Object.freeze来优化性能</p>
+<pre><code class="hljs copyable">&lt;template&gt;
+  &lt;el-table :data="tableData" style="width: 100%"&gt;
+    &lt;el-table-column prop="date" label="日期" width="180" /&gt;
+    &lt;el-table-column prop="name" label="姓名" width="180" /&gt;
+    &lt;el-table-column prop="address" label="地址" /&gt;
+  &lt;/el-table&gt;
+&lt;/template&gt;
+&lt;script&gt;
+export default {
+  data() {
+    const data = Array(1000)
+      .fill(1)
+      .map((item, index) =&gt; {
+        return {
+          date: '2020-07-11',
+          name: `子君${index}`,
+          address: '大西安'
+        }
+      })
+    return {
+      // 在这里我们用了Object.freeze
+      tableData: Object.freeze(data)
+    }
+  }
+}
+&lt;/script&gt;</code></pre>
+
+<p>有的同学可能会有疑问，如果我这个表格的数据是滚动加载的，你这样写我不就没法再给tableData添加数据了吗？是，确实没办法去添加数据了，但还是有办法解决的，比如像下面这样</p>
+<pre ><code class="hljs copyable"><span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">default</span> {
+<span>  data() {
+<span>    <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">return</span> {
+<span>      <span style="color: #986801; line-height: 26px;" class="hljs-attr">tableData</span>: []
+<span>    }
+<span>  },
+<span>  created() {
+<span>    setInterval(<span style="line-height: 26px;" class="hljs-function"><span style="line-height: 26px;" class="hljs-params">()</span> =&gt;</span> {
+<span>      <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">const</span> data = <span style="color: #c18401; line-height: 26px;" class="hljs-built_in">Array</span>(<span style="color: #986801; line-height: 26px;" class="hljs-number">1000</span>)
+<span>        .fill(<span style="color: #986801; line-height: 26px;" class="hljs-number">1</span>)
+<span>        .map(<span style="line-height: 26px;" class="hljs-function">(<span style="line-height: 26px;" class="hljs-params">item, index</span>) =&gt;</span> {
+<span>          <span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// 虽然不能冻结整个数组，但是可以冻结每一项数据</span>
+<span>          <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #c18401; line-height: 26px;" class="hljs-built_in">Object</span>.freeze({
+<span>            <span style="color: #986801; line-height: 26px;" class="hljs-attr">date</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'2020-07-11'</span>,
+<span>            <span style="color: #986801; line-height: 26px;" class="hljs-attr">name</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">`子君<span style="color: #e45649; line-height: 26px;" class="hljs-subst">${index}</span>`</span>,
+<span>            <span style="color: #986801; line-height: 26px;" class="hljs-attr">address</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'大西安'</span>
+<span>          })
+<span>        })
+<span>      <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.tableData = <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.tableData.concat(data)
+<span>    }, <span style="color: #986801; line-height: 26px;" class="hljs-number">2000</span>)
+<span>  }
+<span>}
+<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+<p>合理的使用Object.freeze，是可以节省不少渲染性能，特别对于IE浏览器，效果还是很明显的，赶快去试试吧。</p>
+<h2 id="vFor和vIf不要一起使用"><a href="#vFor和vIf不要一起使用" class="headerlink" title="vFor和vIf不要一起使用"></a>vFor和vIf不要一起使用</h2><p style="padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; font-size: .9em; text-indent: 2em; letter-spacing: 2px;"><code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vFor</code>&nbsp;的优先级其实是比 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vIF</code>&nbsp;高的，所以当两个指令出现来一个DOM中，那么 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vFor</code>&nbsp;渲染的当前列表，每一次都需要进行一次 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vIf</code>&nbsp;的判断。而相应的列表也会重新变化，这个看起来是非常不合理的。因此当你需要进行同步指令的时候。尽量使用计算属性，先将 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vIf</code>&nbsp;不需要的值先过滤掉。他看起像是下面这样的。</p>
+
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable"><span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// 计算属性</span>
+<span>computed: {
+<span>  <span style="color: #986801; line-height: 26px;" class="hljs-attr">filterList</span>: <span style="line-height: 26px;" class="hljs-function"><span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">function</span> (<span style="line-height: 26px;" class="hljs-params"></span>) </span>{
+<span>  <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.showData.filter(<span style="line-height: 26px;" class="hljs-function"><span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">function</span> (<span style="line-height: 26px;" class="hljs-params">data</span>) </span>{
+<span>    <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">return</span> data.isShow
+<span>  })
+<span>}
+<span>  
+<span><span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// DOM</span>
+<span>  
+<span>&lt;ul&gt;
+<span>  <span style="line-height: 26px;" class="xml"><span style="line-height: 26px;" class="hljs-tag">&lt;<span style="color: #e45649; line-height: 26px;" class="hljs-name">li</span> <span style="color: #986801; line-height: 26px;" class="hljs-attr">v-for</span>=<span style="color: #50a14f; line-height: 26px;" class="hljs-string">"item in filterList"</span> <span style="color: #986801; line-height: 26px;" class="hljs-attr">:key</span>=<span style="color: #50a14f; line-height: 26px;" class="hljs-string">"item.id"</span>&gt;</span>
+<span>  
+<span>  <span style="line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #e45649; line-height: 26px;" class="hljs-name">li</span>&gt;</span></span>
+<span><span style="line-height: 26px;" class="xml"><span style="line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #e45649; line-height: 26px;" class="hljs-name">ul</span>&gt;</span></span>
+<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+<p><img data-sizes="auto" data-src="/images/vue/14.jpg" alt="" class="lazyload"></p>
+<h2 id="vFor-key避免使用index作为标识"><a href="#vFor-key避免使用index作为标识" class="headerlink" title="vFor key避免使用index作为标识"></a>vFor key避免使用index作为标识</h2><p style="padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; font-size: .9em; text-indent: 2em; letter-spacing: 2px;">其实大家都知道 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vFor</code>&nbsp;是不推荐使用 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">index</code>&nbsp;下标来作为 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">key</code>&nbsp;的值，这是一个非常好理解的知识点，可以从图中看到，当index作为标识的时候，插入一条数据的时候，列表中它后面的key都发生了变化，那么当前的 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">vFor</code>&nbsp;都会对key变化的 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Element</code>&nbsp;重新渲染，但是其实它们除了插入的 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Element</code>&nbsp;数据都没有发生改变，这就导致了没有必要的开销。所以，尽量不要用index作为标识，而去采用数据中的唯一值，如 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">id</code>&nbsp;等字段。</p>
+
+<p><img data-sizes="auto" data-src="/images/vue/15.jpg" alt="" class="lazyload"></p>
+<h2 id="释放组件资源"><a href="#释放组件资源" class="headerlink" title="释放组件资源"></a>释放组件资源</h2><p>什么是资源? 每创建出一个事物都需要消耗资源，资源不是凭空产生的，是分配出来的。所以说，当组件销毁后，尽量把我们开辟出来的资源块给销毁掉，比如 setInterval , addEventListener等，如果你不去手动给释放掉，那么它们依旧会占用一部分资源。这就导致了没有必要的资源浪费。多来几次后，可以想象下资源占用率肯定是上升的。</p>
+<p>添加的事件</p>
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable">created() {
+<span>  addEventListener(<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'click'</span>, <span style="color: #c18401; line-height: 26px;" class="hljs-built_in">Function</span>, <span style="color: #0184bb; line-height: 26px;" class="hljs-literal">false</span>)
+<span>},
+<span>beforeDestroy() {
+<span>  removeEventListener(<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'click'</span>, <span style="color: #c18401; line-height: 26px;" class="hljs-built_in">Function</span> <span style="color: #0184bb; line-height: 26px;" class="hljs-literal">false</span>)
+<span>}
+<span></span></span></span></span></span></span></code></pre>
+
+<p>定时器</p>
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable">created() {
+<span>  <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.currentInterVal = setInterval(code,millisec,lang)
+<span>},
+<span>beforeDestroy() {
+<span>  clearInterval(<span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">this</span>.currentInterVal)
+<span>}
+<span></span></span></span></span></span></span></code></pre>
+
+
+<h2 id="路由器按需加载"><a href="#路由器按需加载" class="headerlink" title="路由器按需加载"></a>路由器按需加载</h2><p style="padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; font-size: .9em; text-indent: 2em; letter-spacing: 2px;">对于路由的懒加载，如果还不会的话，那么就真该好好的重新去学习一下了。路由懒加载的方式有两种，一种是<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">require</code>&nbsp;另一种是 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">import</code>&nbsp;。当路由按需加载后，那么Vue服务在第一次加载时的压力就能够相应的小一些，不会出现 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">超长白屏P0问题</code>&nbsp;。下面是两种路由懒加载的写法：</p>
+
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable"><span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// require法</span>
+<span>component: <span style="line-height: 26px;" class="hljs-function"><span style="line-height: 26px;" class="hljs-params">resolve</span>=&gt;</span>(<span style="color: #c18401; line-height: 26px;" class="hljs-built_in">require</span>([<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'@/components/HelloWorld'</span>],resolve))
+<span>
+<span><span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// import</span>
+<span>component: <span style="line-height: 26px;" class="hljs-function"><span style="line-height: 26px;" class="hljs-params">()</span> =&gt;</span> <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">import</span>(<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'@/components/HelloWorld'</span>)
+<span></span></span></span></span></span></code></pre>
+
+<h2 id="UI框架使用方式"><a href="#UI框架使用方式" class="headerlink" title="UI框架使用方式"></a>UI框架使用方式</h2><p style="padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; font-size: .9em; text-indent: 2em; letter-spacing: 2px;">确保在使用UI框架如， <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Element</code>&nbsp;， <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">And Design</code>&nbsp;等UI框架的时候，都使用官方给暴露出来的按需加载组件。只有真正用到它的时候时候才会加载当前UI框架的组件，而不是一开始就将整个组件库给加载出来，我们都知道，一个UI框架其实很大，相对比其他的东西来说。因此，它在方便我们开发者的同时，也无形中产生了多余的开销。但是项目周期开发的时候，不得不依赖它。所以建议尽量的使用按需加载。合理的对项目进行止损，如果你不在意，非常嫌麻烦，那么可以进行全局引入。</p>
+
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable"><span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">import</span> { Button } <span style="color: #a626a4; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'xxxx
+<span></span></span></code></pre>
+
+<h2 id="首屏优化"><a href="#首屏优化" class="headerlink" title="首屏优化"></a>首屏优化</h2><p>众所周知，第一次打开Vue的时候，如果你的项目够大，那么首次加载资源时，会非常的久。由于资源没有加载完毕，界面的DOM也不会渲染，会造成白屏的问题。用户此时并不知道是加载的问题，所以会带来一个不好的体验。因此通常会在public下写一个加载动画，告诉用户，网页在加载中这个提示。当页面加载成功后，页面渲染出来的这一个体验比白屏等开机要好太多了。因此，推荐大家都设计一个自家公司的loading加载方式放入index.html中吧。</p>
+<h2 id="最小化JS文件"><a href="#最小化JS文件" class="headerlink" title="最小化JS文件"></a>最小化JS文件</h2><p>可以通过webpack处理打包的JavaScript文件，让其更加的精简。在配置中，你可以这么做</p>
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable">config.optimization.minimize(<span style="color: #0184bb; line-height: 26px;" class="hljs-literal">true</span>);
+<span></span></code></pre>
+
+<h2 id="图片资源压缩"><a href="#图片资源压缩" class="headerlink" title="图片资源压缩"></a>图片资源压缩</h2><p style="padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; font-size: .9em; text-indent: 2em; letter-spacing: 2px;">可以通过 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">image-webpack-loader</code>&nbsp;插件对打包的图片进行压缩，看起来会对图片的加载有一些提升。如果担心破坏图片，可以放弃使用它。</p>
+
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); padding-top: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; font-style: normal; position: relative; padding: 10px; padding-bottom: 25px; position: relative; line-height: 1.8; text-indent: 0; border: none; color: #888; background: rgba(119,175,156, .22);"><span style="display: inline; color: #6E7783; font-size: 4em; font-family: Arial, serif; line-height: 1em;">“</span>
+<p style="padding-top: 8px; padding-bottom: 8px; font-size: .9em; text-indent: 2em; letter-spacing: 2px; margin: 0px; color: black; line-height: 26px; display: inline;">$ yarn add &nbsp;image-webpack-loader</p>
+<span style="display: inline; position: absolute; bottom: 5px; right: 15px; color: #6E7783; font-size: .9em;">- - QAQ</span></blockquote>
+
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable">config.module
+<span>  .rule(<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'images'</span>)
+<span>  .use(<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'image-webpack-loader'</span>)
+<span>  .loader(<span style="color: #50a14f; line-height: 26px;" class="hljs-string">'image-webpack-loader'</span>)
+<span>  .options({
+<span>    <span style="color: #986801; line-height: 26px;" class="hljs-attr">bypassOnDebug</span>: <span style="color: #0184bb; line-height: 26px;" class="hljs-literal">true</span>
+<span>  })
+<span>  .end()
+<span></span></span></span></span></span></span></span></span></code></pre>
+
+<h2 id="依赖库CDN加速"><a href="#依赖库CDN加速" class="headerlink" title="依赖库CDN加速"></a>依赖库CDN加速</h2><p style="padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; font-size: .9em; text-indent: 2em; letter-spacing: 2px;">看到有小伙伴使用CDN的方式引入一些依赖包，觉得非常的 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Nice</code>&nbsp;，然后我也开始使用了。我将 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Vue</code>&nbsp;<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Axios</code>&nbsp;<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; background: rgba(119,175,156, .22); border-radius: 0; padding: 2px 5px; border-left: 2px solid rgba(119,175,156); color: #6E7783;">Echarts</code>&nbsp;等等都分离了出来，在正式环境下，通过CDN，确实有了一些明显的提升，所以说大家可以进行尝试。</p>
+
+<pre style="margin-top: 10px; margin-bottom: 10px;" class="custom"><code style="overflow-x: auto; padding: 16px; color: #383a42; background: #fafafa; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; border-radius: 0px; font-size: 12px; -webkit-overflow-scrolling: touch;" class="hljs copyable"><span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// 在html引入script标签后。在vue的配置中，进行声明</span>
+<span>
+<span>configureWebpack: {
+<span>  <span style="color: #986801; line-height: 26px;" class="hljs-attr">externals</span>: {
+<span>    <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'echarts'</span>: <span style="color: #50a14f; line-height: 26px;" class="hljs-string">'echarts'</span> <span style="color: #a0a1a7; font-style: italic; line-height: 26px;" class="hljs-comment">// 配置使用CDN</span>
+<span>  }
+<span>}
+<span></span></span></span></span></span></span></span></code></pre>
+
+<h2 id="GZIP"><a href="#GZIP" class="headerlink" title="GZIP"></a>GZIP</h2><p>最后如果你现在需要开发移动端项目，可以了解一下小编整理的一个开箱即用框架 <a style="word-wrap: break-word; font-weight: bold; color: #48b378; text-decoration: none; border-bottom: 1px solid #48b378;" href="https://github.com/snowzijun/vue-vant-base" target="_blank" rel="nofollow noopener noreferrer">vue-vant-base</a>,也许可以帮到你哦</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/vue/">vue</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/08/17/2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;17&#x2F;2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;17&#x2F;2020-07-20-vue%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
+    
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+
+<!-- 点击拷贝 start -->
+<!-- 
+    <script src="/js/copy.js"></script>
+ -->
+<!-- 点击拷贝 end -->
+
+
+<script src="/js/jquery.min.js"></script>
+
+<style>
+    @media screen and (max-width: 1023px) {
+        html,body{
+            overflow-x: hidden;
+        }
+    }
+    #totop{
+        position:fixed;
+        z-index:100;
+        bottom:-150px;
+        right:20px;
+        cursor: pointer;
+        transition: all 1.5s;
+        filter: drop-shadow(4px 8px 12px #fff);
+    }
+</style>
+<div id="totop">
+<a title="返回顶部"><svg t="1592474071178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2765" width="64" height="64"><path d="M752.736 431.063C757.159 140.575 520.41 8.97 504.518 0.41V0l-0.45 0.205-0.41-0.205v0.41c-15.934 8.56-252.723 140.165-248.259 430.653-48.21 31.457-98.713 87.368-90.685 184.074 8.028 96.666 101.007 160.768 136.601 157.287 35.595-3.482 25.232-30.31 25.232-30.31l12.206-50.095s52.47 80.569 69.304 80.528c15.114-1.23 87-0.123 95.6 0h0.82c8.602-0.123 80.486-1.23 95.6 0 16.794 0 69.305-80.528 69.305-80.528l12.165 50.094s-10.322 26.83 25.272 30.31c35.595 3.482 128.574-60.62 136.602-157.286 8.028-96.665-42.475-152.617-90.685-184.074z m-248.669-4.26c-6.758-0.123-94.781-3.359-102.891-107.192 2.95-98.714 95.97-107.438 102.891-107.93 6.964 0.492 99.943 9.216 102.892 107.93-8.11 103.833-96.174 107.07-102.892 107.192z m-52.019 500.531c0 11.838-9.42 21.382-21.012 21.382a21.217 21.217 0 0 1-21.054-21.34V821.74c0-11.797 9.421-21.382 21.054-21.382 11.591 0 21.012 9.585 21.012 21.382v105.635z m77.333 57.222a21.504 21.504 0 0 1-21.34 21.626 21.504 21.504 0 0 1-21.34-21.626V827.474c0-11.96 9.543-21.668 21.299-21.668 11.796 0 21.38 9.708 21.38 21.668v157.082z m71.147-82.043c0 11.796-9.42 21.34-21.053 21.34a21.217 21.217 0 0 1-21.013-21.34v-75.367c0-11.755 9.421-21.299 21.013-21.299 11.632 0 21.053 9.544 21.053 21.3v75.366z" fill="#d81e06" p-id="2766"></path></svg></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+<script src="/js/copy.js"></script>
+
+<script src="/js/app.js?v=1636964062062"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?f413bd7fe4e7c85daa3bc890f089390b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"./live2d_models/live2d-widget-model-haru/02"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>

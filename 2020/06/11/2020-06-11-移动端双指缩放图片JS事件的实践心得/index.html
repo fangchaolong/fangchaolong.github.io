@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>移动端双指缩放图片JS事件的实践心得 - fcl个人博客</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="baidu-site-verification" content="SrLfZ8s83m" />
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="http://www.baidu.com" />
+
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
+  <meta name="description" content="2020年阿里最新面试题汇总免费领取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端双指缩放图片JS事件的实践心得">
+<meta property="og:url" content="http://yoursite.com/2020/06/11/2020-06-11-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%97/index.html">
+<meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="2020年阿里最新面试题汇总免费领取">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.zhangxinxu.com/image/blog/202006/pinch-spread.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/11/2020-06-11-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%97/1.png">
+<meta property="article:published_time" content="2020-06-11T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-07-02T08:04:08.551Z">
+<meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.zhangxinxu.com/image/blog/202006/pinch-spread.png">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
+  <link rel="stylesheet" href="/css/index.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1636964062158">-->
+  <link rel="stylesheet" href="/css/jsdelivr.css">
+  <script src="/js/jquery.min.js"></script>
+  
+<script src="/js/common.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body class="mdui-drawer-body-left">
+  <script>
+    var url = 'http://localhost:4000/video/petal.ts';
+    var player = new JSMpeg.Player(
+        url,
+        {
+            canvas: document.getElementById('canvas'),
+            loop: true,
+            autoplay: true,
+            disableWebAssembly: true,
+            // 分片大小
+            chunkSize: 1 * 1024 * 1024,
+            videoBufferSize: 512 * 1024,
+        }
+    );
+  </script>
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg">
+      <div class="bg1"></div>
+      <div class="bg1 bg2"></div>
+    </div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-box">
+        <div class="mdui-toolbar">
+          <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+          <div class="mdui-toolbar-spacer">
+            <ul class="ulbox">坚持做到每日一更,上一次更新:2020/12/24</ul>
+            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2020/12/24</ul>
+          </div>
+          <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+          <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="fangchaolong">
+            <img src="/images/timg.png" alt="fangchaolong" alt="fangchaolong">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>45</div>
+        <div><span>标签</span>20</div>
+        <div><span>分类</span>10</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/donate.html" title="请我喝茶">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                请我喝茶
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/photo" title="我的相册">
+            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
+            <div class="mdui-list-item-content">
+                我的相册
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/leave" title="学习资源">
+            <i class="mdui-list-item-icon nexmoefont icon-dribbble"></i>
+            <div class="mdui-list-item-content">
+                学习资源
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="版本迭代">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                版本迭代
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/fangchaolong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/git/">git</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/http/">http</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/js/">js</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js实例/">js实例</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/vue/">vue</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/">前端</a>
+          <span class="category-list-count">23</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/快应用/">快应用</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/生活/">生活</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 12.5px;">computed</a> <a href="/tags/es6/" style="font-size: 12.5px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 17.5px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 17.5px;">javascript</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/watch/" style="font-size: 12.5px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 15px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+    <!-- 左侧任务的footer -->
+    <div class="nexmoe-copyright">
+        &copy; 2021 fangchaolong
+        Powered by 搭建时间：2020-06-17
+        <!-- &copy; 2021 fangchaolong
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a> -->
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592456304673&di=68d9619b50fa3ae2af667fbdfa792590&imgtype=0&src=http%3A%2F%2Faliyunzixunbucket.oss-cn-beijing.aliyuncs.com%2Fjpg%2F33b3b039cb6424bb3f5bf09cb8a3e812.jpg%3Fx-oss-process%3Dimage%2Fresize%2Cp_100%2Fauto-orient%2C1%2Fquality%2Cq_90%2Fformat%2Cjpg%2Fwatermark%2Cimage_eXVuY2VzaGk%3D%2Ct_100" height="100%" data-sizes="auto" alt="移动端双指缩放图片JS事件的实践心得" class="lazyload">
+          <h1>移动端双指缩放图片JS事件的实践心得</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年06月11日</a>
+    <a><i class="nexmoefont icon-areachart"></i>911 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <p class="link" style="display: block;"><a href="http://www.mawen.co/?utm_source=zxx-web-2020" style="color:#de0000;font-size:16px;" target="_blank" rel="nofollow noopener" onclick="_gaq.push(['_trackEvent', 'GITEE', 'click', 'ARTICLE TOP']);">2020年阿里最新面试题汇总免费领取</a></p>
+<a id="more"></a>   
+
+<h2 id="一、Chrome浏览器双指触摸的模拟"><a href="#一、Chrome浏览器双指触摸的模拟" class="headerlink" title="一、Chrome浏览器双指触摸的模拟"></a>一、Chrome浏览器双指触摸的模拟</h2><p>结果是模拟不了。</p>
+<p>页面整体缩放行为是可以通过按住Shift键+页面左键模拟的，但是，实际上，还是一个触摸点，因此无法模拟双指缩放行为。</p>
+<p>除非是有触摸板，或者屏幕就是触摸屏。</p>
+<p>否则，只能连手机进行调试了。</p>
+<h2 id="二、触摸屏与event-touches"><a href="#二、触摸屏与event-touches" class="headerlink" title="二、触摸屏与event.touches"></a>二、触摸屏与event.touches</h2><p>在触屏设备下，要判断是单指还是多指操作，可以通过event.touches数组对象的长度判断。</p>
+<p>例如：</p>
+<blockquote>
+<p>document.addEventListener(‘touchstart’, function (event) {<br>    var touches = event.touches;<br>    if (touches.length == 1) {<br>        console.log(‘单指’);<br>    } else if (touches.length &gt;= 2) {<br>        console.log(‘多指’);<br>    }<br>});</p>
+</blockquote>
+<p>按照我们的理解，上面的逻辑应该是无懈可击的。</p>
+<p>实际上并不是。</p>
+<p>我一开始也是在’touchstart’事件中判断是单指还是双指，结果发现了奇怪的现象，有时候是单指，有时候是双指，双指复现的概率可能不到1成。</p>
+<p>这可真是奇怪了。</p>
+<p>后来一番测试，终于弄清楚原因了。</p>
+<p>只有当两个指头同时触摸屏幕的时候，才能在touchstart事件中被识别为双指操作。</p>
+<p>这太难了，没有谁的两个指头是一样长的，很难同一时间戳中屏幕的。</p>
+<p>因此，双指事件的判断需要在<font color=red>touchmove</font>事件中才行。</p>
+<h2 id="三、双指行为的判断"><a href="#三、双指行为的判断" class="headerlink" title="三、双指行为的判断"></a>三、双指行为的判断</h2><p>代码如下：</p>
+<blockquote>
+<p>document.addEventListener(‘touchmove’, function (event) {<br>    if (event.touches &amp;&amp; event.touches.length == 2) {<br>        console.log(‘双指在移动’);<br>    }<br>});</p>
+</blockquote>
+<h2 id="四、双指缩放功能的实现"><a href="#四、双指缩放功能的实现" class="headerlink" title="四、双指缩放功能的实现"></a>四、双指缩放功能的实现</h2><p>双指缩放功能的实现的难点就是缩放比例的计算。</p>
+<p><font color=red>event.touches</font>中的每一项都是触摸点对象，包含了触碰的元素以及触摸点的坐标。</p>
+<p>其中，触摸点的坐标就可以用来计算缩放比例。</p>
+<p>我们记录下第一次双指行为发生时候的两个手指点的坐标值，于是就可以计算出这两个指头之间的距离；</p>
+<p>然后继续<font color=red>touchmove</font>的时候，实时计算出新的两个手指的坐标距离。</p>
+<p>一开始的距离/现在的距离 = 应该缩放的比例。</p>
+<p>如下图所示：<br><img data-sizes="auto" data-src="https://image.zhangxinxu.com/image/blog/202006/pinch-spread.png" alt="active" class="lazyload"></p>
+<p><strong>实例演示</strong><br>假设页面上有一张图片元素，要实现这种图片的双指缩放预览效果：</p>
+<blockquote>
+<img id="image" src="1.png">
+
+</blockquote>
+<p>则可以试试使用下面所示的JS代码：</p>
+<blockquote>
+<p>  var eleImg = document.querySelector(‘#image’);<br>var store = {<br>    scale: 1<br>};<br>// 缩放事件的处理<br>eleImg.addEventListener(‘touchstart’, function (event) {<br>    var touches = event.touches;<br>    var events = touches[0];<br>    var events2 = touches[1];<br>    event.preventDefault();<br>    // 第一个触摸点的坐标<br>    store.pageX = events.pageX;<br>    store.pageY = events.pageY;<br>    store.moveable = true;<br>    if (events2) {<br>        store.pageX2 = events2.pageX;<br>        store.pageY2 = events2.pageY;<br>    }<br>    store.originScale = store.scale || 1;<br>});<br>document.addEventListener(‘touchmove’, function (event) {<br>    if (!store.moveable) {<br>        return;<br>    }<br>    event.preventDefault();<br>    var touches = event.touches;<br>    var events = touches[0];<br>    var events2 = touches[1];<br>    // 双指移动<br>    if (events2) {<br>        // 第2个指头坐标在touchmove时候获取<br>        if (!store.pageX2) {<br>            store.pageX2 = events2.pageX;<br>        }<br>        if (!store.pageY2) {<br>            store.pageY2 = events2.pageY;<br>        }<br>        // 获取坐标之间的举例<br>        var getDistance = function (start, stop) {<br>            return Math.hypot(stop.x - start.x, stop.y - start.y);<br>        };<br>        // 双指缩放比例计算<br>        var zoom = getDistance({<br>            x: events.pageX,<br>            y: events.pageY<br>        }, {<br>            x: events2.pageX,<br>            y: events2.pageY<br>        }) /<br>        getDistance({<br>            x: store.pageX,<br>            y: store.pageY<br>        }, {<br>            x: store.pageX2,<br>            y: store.pageY2<br>        });<br>        // 应用在元素上的缩放比例<br>        var newScale = store.originScale * zoom;<br>        // 最大缩放比例限制<br>        if (newScale &gt; 3) {<br>            newScale = 3;<br>        }<br>        // 记住使用的缩放值<br>        store.scale = newScale;<br>        // 图像应用缩放效果<br>        eleImg.style.transform = ‘scale(‘+ newScale +’)’;<br>    }<br>});<br>document.addEventListener(‘touchend’, function () {<br>    store.moveable = false;<br>    delete store.pageX2;<br>    delete store.pageY2;<br>});<br>document.addEventListener(‘touchcancel’, function () {<br>    store.moveable = false;<br>    delete store.pageX2;<br>    delete store.pageY2;<br>});</p>
+</blockquote>
+<h2 id="五、结语以及其他"><a href="#五、结语以及其他" class="headerlink" title="五、结语以及其他"></a>五、结语以及其他</h2><p>demo页面的touchmove没有设置passive:false也没有报错，是因为html标签设置了如下CSS：</p>
+<blockquote>
+<p>html { touch-action: none; }</p>
+</blockquote>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/js%E5%AE%9E%E4%BE%8B/">js实例</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/javascript/" rel="tag">javascript</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/06/11/2020-06-11-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%97/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;11&#x2F;2020-06-11-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%97&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;11&#x2F;2020-06-11-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%8F%8C%E6%8C%87%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87JS%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%97&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
+    
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+
+<!-- 点击拷贝 start -->
+<!-- 
+    <script src="/js/copy.js"></script>
+ -->
+<!-- 点击拷贝 end -->
+
+
+<script src="/js/jquery.min.js"></script>
+
+<style>
+    @media screen and (max-width: 1023px) {
+        html,body{
+            overflow-x: hidden;
+        }
+    }
+    #totop{
+        position:fixed;
+        z-index:100;
+        bottom:-150px;
+        right:20px;
+        cursor: pointer;
+        transition: all 1.5s;
+        filter: drop-shadow(4px 8px 12px #fff);
+    }
+</style>
+<div id="totop">
+<a title="返回顶部"><svg t="1592474071178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2765" width="64" height="64"><path d="M752.736 431.063C757.159 140.575 520.41 8.97 504.518 0.41V0l-0.45 0.205-0.41-0.205v0.41c-15.934 8.56-252.723 140.165-248.259 430.653-48.21 31.457-98.713 87.368-90.685 184.074 8.028 96.666 101.007 160.768 136.601 157.287 35.595-3.482 25.232-30.31 25.232-30.31l12.206-50.095s52.47 80.569 69.304 80.528c15.114-1.23 87-0.123 95.6 0h0.82c8.602-0.123 80.486-1.23 95.6 0 16.794 0 69.305-80.528 69.305-80.528l12.165 50.094s-10.322 26.83 25.272 30.31c35.595 3.482 128.574-60.62 136.602-157.286 8.028-96.665-42.475-152.617-90.685-184.074z m-248.669-4.26c-6.758-0.123-94.781-3.359-102.891-107.192 2.95-98.714 95.97-107.438 102.891-107.93 6.964 0.492 99.943 9.216 102.892 107.93-8.11 103.833-96.174 107.07-102.892 107.192z m-52.019 500.531c0 11.838-9.42 21.382-21.012 21.382a21.217 21.217 0 0 1-21.054-21.34V821.74c0-11.797 9.421-21.382 21.054-21.382 11.591 0 21.012 9.585 21.012 21.382v105.635z m77.333 57.222a21.504 21.504 0 0 1-21.34 21.626 21.504 21.504 0 0 1-21.34-21.626V827.474c0-11.96 9.543-21.668 21.299-21.668 11.796 0 21.38 9.708 21.38 21.668v157.082z m71.147-82.043c0 11.796-9.42 21.34-21.053 21.34a21.217 21.217 0 0 1-21.013-21.34v-75.367c0-11.755 9.421-21.299 21.013-21.299 11.632 0 21.053 9.544 21.053 21.3v75.366z" fill="#d81e06" p-id="2766"></path></svg></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+<script src="/js/copy.js"></script>
+
+<script src="/js/app.js?v=1636964062163"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?f413bd7fe4e7c85daa3bc890f089390b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"./live2d_models/live2d-widget-model-haru/02"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>

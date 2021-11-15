@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>Promise 理解与实现 - fcl个人博客</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="baidu-site-verification" content="SrLfZ8s83m" />
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="http://www.baidu.com" />
+
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
+  <meta name="description" content="本章主要讲解关于Promise汇总性的介绍，其中顺便也扩展了一些涉及到的知识。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise 理解与实现">
+<meta property="og:url" content="http://yoursite.com/2020/08/06/2020-08-06-Promise%20%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="本章主要讲解关于Promise汇总性的介绍，其中顺便也扩展了一些涉及到的知识。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-06T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-12-23T09:10:59.814Z">
+<meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="promise">
+<meta name="twitter:card" content="summary">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
+  <link rel="stylesheet" href="/css/index.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1636964062072">-->
+  <link rel="stylesheet" href="/css/jsdelivr.css">
+  <script src="/js/jquery.min.js"></script>
+  
+<script src="/js/common.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body class="mdui-drawer-body-left">
+  <script>
+    var url = 'http://localhost:4000/video/petal.ts';
+    var player = new JSMpeg.Player(
+        url,
+        {
+            canvas: document.getElementById('canvas'),
+            loop: true,
+            autoplay: true,
+            disableWebAssembly: true,
+            // 分片大小
+            chunkSize: 1 * 1024 * 1024,
+            videoBufferSize: 512 * 1024,
+        }
+    );
+  </script>
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg">
+      <div class="bg1"></div>
+      <div class="bg1 bg2"></div>
+    </div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-box">
+        <div class="mdui-toolbar">
+          <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+          <div class="mdui-toolbar-spacer">
+            <ul class="ulbox">坚持做到每日一更,上一次更新:2020/12/24</ul>
+            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2020/12/24</ul>
+          </div>
+          <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+          <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="fangchaolong">
+            <img src="/images/timg.png" alt="fangchaolong" alt="fangchaolong">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>45</div>
+        <div><span>标签</span>20</div>
+        <div><span>分类</span>10</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/donate.html" title="请我喝茶">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                请我喝茶
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/photo" title="我的相册">
+            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
+            <div class="mdui-list-item-content">
+                我的相册
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/leave" title="学习资源">
+            <i class="mdui-list-item-icon nexmoefont icon-dribbble"></i>
+            <div class="mdui-list-item-content">
+                学习资源
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="版本迭代">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                版本迭代
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/fangchaolong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/git/">git</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/http/">http</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/js/">js</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js实例/">js实例</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/vue/">vue</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/">前端</a>
+          <span class="category-list-count">23</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/快应用/">快应用</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/生活/">生活</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 12.5px;">computed</a> <a href="/tags/es6/" style="font-size: 12.5px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 17.5px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 17.5px;">javascript</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/watch/" style="font-size: 12.5px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 15px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+    <!-- 左侧任务的footer -->
+    <div class="nexmoe-copyright">
+        &copy; 2021 fangchaolong
+        Powered by 搭建时间：2020-06-17
+        <!-- &copy; 2021 fangchaolong
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a> -->
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="/images/promise/2.jpg" height="100%" data-sizes="auto" alt="Promise 理解与实现" class="lazyload">
+          <h1>Promise 理解与实现</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年08月06日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.6k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 11 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <p>本章主要讲解关于Promise汇总性的介绍，其中顺便也扩展了一些涉及到的知识。</p>
+<a id="more"></a>
+<h2 data-id="heading-1">为什么需要<code>Promise</code>?</h2>
+
+<p>任何一个事物的产生都定有它存在的意义，所以我们需要清楚Promise为什么出现，它解决了什么问题。</p>
+<p>回调嵌套</p>
+<p>在Promise未诞生以前，我们通过回调表达程序异步和管理并发，当然现在一些老的项目为了保证兼容性仍在使用。回调是JavaScript中实现异步最简单的方式，你可以将回调理解为程序的延续，即在当前同步代码执行完毕以后才会在未来某个时间执行。当我们的回调需要用到上一个回调的结果时，就产生了嵌套，类似下面这样：</p>
+<pre><code class="hljs language-javascript copyable" lang="javascript">ajax1(<span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">value1</span>) </span>{
+    ajax2(value1, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value2</span>) </span>{
+        ajax3(value2, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value3</span>) </span>{
+            ajax4(value3, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">value4</span>) </span>{
+                <span class="hljs-comment">// Do something with value4</span>
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>嵌套的层级多了，就产生了所谓的<code>回调地狱</code>，也称<code>毁灭金字塔</code>。但实际情况远比上面展现的要复杂得多，这使得追踪代码执行顺序的难度成倍增加。你也一定遇到过结尾少写<code>})</code>，排查大半天的情况，这就是因为代码太复杂了。</p>
+
+<p>回调地狱所表现出来的问题，归纳下面几点：</p>
+<ol>
+<li>难以追踪代码的执行顺序</li>
+<li>代码复杂且极其脆弱</li>
+<li>程序若出现执行顺序偏离的异常情况，结果难以预测（前面的回调会阻塞后面代码的执行，若前面失败，后面都不会执行）</li>
+</ol>
+<p><strong>信任问题</strong><br><strong>就是多个异步调用的时候缓和其他三方的接口，如果三方的接口出问题或者改了什么造成回调失败</strong></p>
+<p>我们经常使用第三方的 <code>API</code>（如<code>Ajax</code>），在将回调交付给第三方时，就意味着将控制权转交给了<code>第三方</code>，这叫<code>控制反转</code>。我们的回调由第三方负责调用，但对于第三方，我们能充分信任吗？</p>
+
+<p>这里列举一些情况：</p>
+<ol>
+<li>调用回调过早</li>
+<li>调用回调过晚</li>
+<li>调用回调的次数过多</li>
+<li>回调未调用</li>
+<li>未能传递参数/环境值</li>
+<li>吞掉可能出现的错误或异常</li>
+</ol>
+<p>对于这些情况，我们可能都要在回调函数中做些处理，并且是每次执行回调函数的时候都要做这些相同的处理，这就带来了很多重复的代码。</p>
+<p>所以<code>Promise</code>的出现致力于解决这两大主要问题。</p>
+
+<h2 data-id="heading-4"><code>Promise</code>是如何解决上述问题的?</h2>
+
+<p><strong>回调嵌套</strong></p>
+<p><code>Promise</code>对于回调而言，也只是改变了回调的位置，让代码看上去更有顺序性。</p>
+
+<p>在<code>Promise</code>对象的原型链上定义了<code>then</code>方法，调用<code>then</code>方法会自动创建一个新的 <code>Promise</code> 从调用返回，从而支持链式调用。链式调用的目的就是，让程序顺序执行，解决回调嵌套，以更符合我们人类大脑顺序思考的方式。上面的例子，我们使用<code>Promise</code>后如下：</p>
+
+<pre><code class="hljs language-javascript copyable" lang="javascript"><span class="hljs-comment">// request 方法</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">request</span>(<span class="hljs-params">param</span>)</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resolve, reject</span>)</span>{
+        ajax(param, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>)</span>{
+            resolve(val)
+        })
+    })
+}
+<span class="hljs-comment">// 链式调用，顺序执行（1,2,3,4为了表明顺序）</span>
+request1(<span class="hljs-literal">null</span>)
+.then(<span class="hljs-function"><span class="hljs-params">value1</span> =&gt;</span> request2(value1))
+.then(<span class="hljs-function"><span class="hljs-params">value2</span> =&gt;</span> request3(value2))
+.then(<span class="hljs-function"><span class="hljs-params">value3</span> =&gt;</span> request4(value3))
+</code></pre>
+
+<h2 id="Promise的含义"><a href="#Promise的含义" class="headerlink" title="Promise的含义"></a>Promise的含义</h2><p><code>Promise</code> 是异步编程的一种解决方案，ES6将其写进了语言标准。所谓<code>Promise</code>就是一个容器，里面保存着未来才会结束的事件（通常是一个异步操作）的<strong>结果</strong>。</p>
+
+<p><strong><code>Promise</code>对象有以下两个特点：</strong></p>
+
+<ul>
+<li>对象的状态不受外界影响。<code>Promise</code>对象代表一个异步操作，有三种状态：<code>pending</code>（进行中）、<code>fulfilled/resolved</code>（已成功）、<code>rejected</code>（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。</li>
+<li>一旦状态改变，就不会再改变，任何时候都可以得到这个结果。<code>Promise</code>对象的状态改变，只有两种可能：从<code>pending</code>变为<code>fulfilled</code>和从<code>pending</code>变为<code>rejected</code>。只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果，这时就称为 <code>resolved</code>（已定型）。如果改变已经发生了，你再对<code>Promise</code>对象添加回调函数，也会立即得到这个结果。</li>
+</ul>
+
+<p><strong><code>Promise</code>的优点：</strong></p>
+
+<p>可以将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数。</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>ES6 规定，<code>Promise</code>对象是一个构造函数，用来生成<code>Promise</code>实例。</p>
+
+<pre><code class="hljs bash copyable" lang="bash">const promise = new Promise((resolve,reject)=&gt;{
+//此处执行一些异步操作（调用后台API，定时器等）
+ <span class="hljs-keyword">if</span>(/*异步操作成功*/){
+     resolve(value);
+ }<span class="hljs-keyword">else</span>{
+     reject(error)
+ }
+}) 
+//其中两个函数的参数值分别为成功和失败后想要传递的结果
+</code></pre>
+
+<p><code>Promise</code>构造函数接受一个函数作为参数，该函数的两个参数分别是<code>resolve</code>和<code>reject</code>。它们是两个函数，由 <code>JavaScript</code> 引擎提供，不用自己部署。</p>
+
+<p><code>resolve</code>函数的作用是，将<code>Promise</code>对象的状态从“未完成”变为“成功”（即从 <code>pending</code> 变为 <code>resolved</code>），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去；<code>reject</code>函数的作用是，将<code>Promise</code>对象的状态从“未完成”变为“失败”（即从 <code>pending</code>变为 <code>rejected</code>），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
+
+<p><code>then</code>方法可以接受两个回调函数作为参数。第一个回调函数是<code>Promise</code>对象的状态变为<code>resolved</code>时调用，第二个回调函数是<code>Promise</code>对象的状态变为<code>rejected</code>时调用。其中，第二个函数是可选的，不一定要提供。这两个函数都接受<code>Promise</code>对象传出的值作为参数。</p>
+
+<pre><code class="hljs bash copyable" lang="bash">promise.then(res=&gt;{
+    //对于成功回调接受的数据做处理
+},err=&gt;{
+    //对于失败的回调数据做处理
+})
+</code></pre>
+
+<p>注：<code>Promise</code>新建后就会立即执行。</p>
+
+<p><strong><code>Promise.prototype.then()</code></strong>
+<code>Promise</code>实例具有<code>then</code>方法，也就是说，<code>then</code>方法是定义在原型对象上<code>Promise.prototype</code>上的，它的作用是为 <code>Promise</code>实例添加状态改变时的回调函数。前面说过，<code>then</code>方法的第一个参数是<code>resolved</code>状态的回调函数，第二个参数（可选）<code>是rejected</code>状态的回调函数。</p>
+
+<p><code>then</code>方法返回的是一个新的<code>Promise</code>实例（注意，不是原来那个<code>Promise</code>实例）。因此可以采用链式写法，即<code>then</code>方法后面再调用另一个<code>then</code>方法。第一个回调函数完成以后，会将返回结果作为参数，春如第二个回调函数。</p>
+
+<p>采用链式的 <code>then</code>，可以指定一组按照次序调用的回调函数。（ES7中的<code>async/await</code>）也可以实现链式调用，除此之外，<code>Promise</code>的<code>all</code>方法可以实现并行执行。</p>
+
+<p>了解了基础的 <code>Promise</code>和 <code>then</code>之后，我们便可以自己创建一个 <code>Promise</code>。</p>
+
+<h2 id="Promise-all-批量执行"><a href="#Promise-all-批量执行" class="headerlink" title="Promise.all() 批量执行"></a>Promise.all() 批量执行</h2><p>Promise.all([p1, p2, p3])用于将多个promise实例，包装成一个新的Promise实例，返回的实例就是普通的promise<br>它接收一个数组作为参数<br>数组里可以是Promise对象，也可以是别的值，只有Promise会等待状态改变<br>当所有的子Promise都完成，该Promise完成，返回值是全部值得数组<br>有任何一个失败，该Promise失败，返回值是第一个失败的子Promise结果</p>
+<pre><code>
+//切菜
+    function cutUp(){
+        console.log('开始切菜。');
+        var p = new Promise(function(resolve, reject){        //做一些异步操作
+            setTimeout(function(){
+                console.log('切菜完毕！');
+                resolve('切好的菜');
+            }, 1000);
+        });
+        return p;
+    }
+
+    //烧水
+    function boil(){
+        console.log('开始烧水。');
+        var p = new Promise(function(resolve, reject){        //做一些异步操作
+            setTimeout(function(){
+                console.log('烧水完毕！');
+                resolve('烧好的水');
+            }, 1000);
+        });
+        return p;
+    }
+
+    Promise.all([cutUp(), boil()])
+        .then((result) => {
+            console.log('准备工作完毕');
+            console.log(result);
+        })
+</code></pre>
+
+<p><strong>Promise.race() 类似于Promise.all() ，区别在于它有任意一个完成就算完成</strong></p>
+<pre><code>
+let p1 = new Promise(resolve => {
+        setTimeout(() => {
+            resolve('I\`m p1 ')
+        }, 1000)
+    });
+    let p2 = new Promise(resolve => {
+        setTimeout(() => {
+            resolve('I\`m p2 ')
+        }, 2000)
+    });
+    Promise.race([p1, p2])
+        .then(value => {
+            console.log(value)
+        })
+</code></pre>
+
+
+<h2 id="手写Promise"><a href="#手写Promise" class="headerlink" title="手写Promise"></a>手写Promise</h2><p>首先写 <code>Promise</code>构造函数，由以上<code>Promise</code>的使用可知，其参数为一个函数，又被称为执行器函数（executor），并且执行器函数会被立即调用，执行器函数也会接收两个参数，且这两个参数均为函数。</p>
+
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-keyword">function</span> Promise(executor) {
+    executor(resolve, reject);
+}
+</code></pre>
+
+<p><code>Promise</code>最重要的方法就是<code>then</code>方法，因此为了能够让实例调用这个方法，我们必须将这个方法写在其原型链上，并且它接受两个参数，一个为成功的回调，一个为失败得回调。</p>
+
+<pre><code class="hljs bash copyable" lang="bash">Promise.prototype.then=<span class="hljs-keyword">function</span>(onResolved,onRejected){
+
+}
+</code></pre>
+
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-keyword">function</span> Promise(executor) {
+    <span class="hljs-built_in">let</span> self=this;                   //保留this。防止后面方法出现this只想不明的问题
+    self.status=<span class="hljs-string">'pending'</span>;           //promise的默认状态是pending
+
+    <span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">resolve</span></span>(){
+        self.status=<span class="hljs-string">'resolved'</span>;      //成功函数将其状态修改为resolved
+    }
+    <span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">reject</span></span>(){
+        self.status=<span class="hljs-string">'rejected'</span>;      //失败函数将其函数修改为rejected
+    }
+    executor(resolve, reject);
+}
+</code></pre>
+
+<p>为了保证 <code>Promise</code>实例状态一旦变更不能再次改变，需要进行判断</p>
+
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-keyword">function</span> Promise(executor) {
+    <span class="hljs-built_in">let</span> self = this;                       //保留this。防止后面方法出现this只想不明的问题
+    self.status = <span class="hljs-string">'pending'</span>;               //promise的默认状态是pending
+    self.success = undefined;              //保存成功回调传递的值
+    self.error = undefined;                //保存失败回调传递的值
+
+    <span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">resolve</span></span>() {
+        <span class="hljs-keyword">if</span> (self.status === <span class="hljs-string">'pending'</span>) {
+            self.status = <span class="hljs-string">'resolved'</span>;      //成功函数将其状态修改为resolved
+        }
+    }
+    <span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">reject</span></span>() {
+        <span class="hljs-keyword">if</span> (self.status === <span class="hljs-string">'pending'</span>) {
+            self.status = <span class="hljs-string">'rejected'</span>;      //失败函数将其函数修改为rejected
+        }
+    }
+    executor(resolve, reject);
+}
+</code></pre>
+
+<p>之后需要将调用之后的成功或失败的结果保存起来</p>
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-keyword">function</span> Promise(executor) {
+    <span class="hljs-built_in">let</span> self = this;                       //保留this。防止后面方法出现this只想不明的问题
+    self.status = <span class="hljs-string">'pending'</span>;               //promise的默认状态是pending
+    self.success = undefined;              //保存成功回调传递的值
+    self.error = undefined;                //保存失败回调传递的值
+
+    <span class="hljs-keyword">function</span> resolve(success) {
+        <span class="hljs-keyword">if</span> (self.status === <span class="hljs-string">'pending'</span>) {
+            self.status = <span class="hljs-string">'resolved'</span>;      //成功函数将其状态修改为resolved
+            self.success=success;          //将成功的值保存起来
+        }
+    }
+    <span class="hljs-keyword">function</span> reject(error) {
+        <span class="hljs-keyword">if</span> (self.status === <span class="hljs-string">'pending'</span>) {
+            self.status = <span class="hljs-string">'rejected'</span>;      //失败函数将其函数修改为rejected
+            self.error=error;              //将失败的值保存起来
+        }
+    }
+    executor(resolve, reject);
+}
+</code></pre>
+
+
+
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/js/">js</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/js/" rel="tag">js</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/promise/" rel="tag">promise</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/08/06/2020-08-06-Promise%20%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;06&#x2F;2020-08-06-Promise%20%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;08&#x2F;06&#x2F;2020-08-06-Promise%20%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
+    
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+
+<!-- 点击拷贝 start -->
+<!-- 
+    <script src="/js/copy.js"></script>
+ -->
+<!-- 点击拷贝 end -->
+
+
+<script src="/js/jquery.min.js"></script>
+
+<style>
+    @media screen and (max-width: 1023px) {
+        html,body{
+            overflow-x: hidden;
+        }
+    }
+    #totop{
+        position:fixed;
+        z-index:100;
+        bottom:-150px;
+        right:20px;
+        cursor: pointer;
+        transition: all 1.5s;
+        filter: drop-shadow(4px 8px 12px #fff);
+    }
+</style>
+<div id="totop">
+<a title="返回顶部"><svg t="1592474071178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2765" width="64" height="64"><path d="M752.736 431.063C757.159 140.575 520.41 8.97 504.518 0.41V0l-0.45 0.205-0.41-0.205v0.41c-15.934 8.56-252.723 140.165-248.259 430.653-48.21 31.457-98.713 87.368-90.685 184.074 8.028 96.666 101.007 160.768 136.601 157.287 35.595-3.482 25.232-30.31 25.232-30.31l12.206-50.095s52.47 80.569 69.304 80.528c15.114-1.23 87-0.123 95.6 0h0.82c8.602-0.123 80.486-1.23 95.6 0 16.794 0 69.305-80.528 69.305-80.528l12.165 50.094s-10.322 26.83 25.272 30.31c35.595 3.482 128.574-60.62 136.602-157.286 8.028-96.665-42.475-152.617-90.685-184.074z m-248.669-4.26c-6.758-0.123-94.781-3.359-102.891-107.192 2.95-98.714 95.97-107.438 102.891-107.93 6.964 0.492 99.943 9.216 102.892 107.93-8.11 103.833-96.174 107.07-102.892 107.192z m-52.019 500.531c0 11.838-9.42 21.382-21.012 21.382a21.217 21.217 0 0 1-21.054-21.34V821.74c0-11.797 9.421-21.382 21.054-21.382 11.591 0 21.012 9.585 21.012 21.382v105.635z m77.333 57.222a21.504 21.504 0 0 1-21.34 21.626 21.504 21.504 0 0 1-21.34-21.626V827.474c0-11.96 9.543-21.668 21.299-21.668 11.796 0 21.38 9.708 21.38 21.668v157.082z m71.147-82.043c0 11.796-9.42 21.34-21.053 21.34a21.217 21.217 0 0 1-21.013-21.34v-75.367c0-11.755 9.421-21.299 21.013-21.299 11.632 0 21.053 9.544 21.053 21.3v75.366z" fill="#d81e06" p-id="2766"></path></svg></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+<script src="/js/copy.js"></script>
+
+<script src="/js/app.js?v=1636964062075"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?f413bd7fe4e7c85daa3bc890f089390b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"./live2d_models/live2d-widget-model-haru/02"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>

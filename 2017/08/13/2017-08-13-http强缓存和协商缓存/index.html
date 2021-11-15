@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>HTTP 强缓存&amp;协商缓存 - fcl个人博客</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="baidu-site-verification" content="SrLfZ8s83m" />
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="http://www.baidu.com" />
+
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
+  <meta name="description" content="首先，什么是缓存？我的理解，缓存就是一个资源副本。当我们向服务器请求资源后，会根据情况将资源 copy 一份副本存在本地，以方便下次读取。它与本地存储 localStorage 、cookie 等不同，本地存储更多是数据记录，存储量较小，为了本地操作方便。而缓存更多是为了减少资源请求，多用于存储文件，存储量相对较大。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 强缓存&amp;协商缓存">
+<meta property="og:url" content="http://yoursite.com/2017/08/13/2017-08-13-http%E5%BC%BA%E7%BC%93%E5%AD%98%E5%92%8C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="首先，什么是缓存？我的理解，缓存就是一个资源副本。当我们向服务器请求资源后，会根据情况将资源 copy 一份副本存在本地，以方便下次读取。它与本地存储 localStorage 、cookie 等不同，本地存储更多是数据记录，存储量较小，为了本地操作方便。而缓存更多是为了减少资源请求，多用于存储文件，存储量相对较大。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-08-13T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-07-02T07:45:29.295Z">
+<meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="http">
+<meta property="article:tag" content="缓存">
+<meta name="twitter:card" content="summary">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
+  <link rel="stylesheet" href="/css/index.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1636964062253">-->
+  <link rel="stylesheet" href="/css/jsdelivr.css">
+  <script src="/js/jquery.min.js"></script>
+  
+<script src="/js/common.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body class="mdui-drawer-body-left">
+  <script>
+    var url = 'http://localhost:4000/video/petal.ts';
+    var player = new JSMpeg.Player(
+        url,
+        {
+            canvas: document.getElementById('canvas'),
+            loop: true,
+            autoplay: true,
+            disableWebAssembly: true,
+            // 分片大小
+            chunkSize: 1 * 1024 * 1024,
+            videoBufferSize: 512 * 1024,
+        }
+    );
+  </script>
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg">
+      <div class="bg1"></div>
+      <div class="bg1 bg2"></div>
+    </div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-box">
+        <div class="mdui-toolbar">
+          <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+          <div class="mdui-toolbar-spacer">
+            <ul class="ulbox">坚持做到每日一更,上一次更新:2020/12/24</ul>
+            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2020/12/24</ul>
+          </div>
+          <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+          <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="fangchaolong">
+            <img src="/images/timg.png" alt="fangchaolong" alt="fangchaolong">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>45</div>
+        <div><span>标签</span>20</div>
+        <div><span>分类</span>10</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/donate.html" title="请我喝茶">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                请我喝茶
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/photo" title="我的相册">
+            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
+            <div class="mdui-list-item-content">
+                我的相册
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/leave" title="学习资源">
+            <i class="mdui-list-item-icon nexmoefont icon-dribbble"></i>
+            <div class="mdui-list-item-content">
+                学习资源
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="版本迭代">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                版本迭代
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/fangchaolong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/git/">git</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/http/">http</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/js/">js</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js实例/">js实例</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/vue/">vue</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/">前端</a>
+          <span class="category-list-count">23</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/快应用/">快应用</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/生活/">生活</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 12.5px;">computed</a> <a href="/tags/es6/" style="font-size: 12.5px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 17.5px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 17.5px;">javascript</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/watch/" style="font-size: 12.5px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 15px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+    <!-- 左侧任务的footer -->
+    <div class="nexmoe-copyright">
+        &copy; 2021 fangchaolong
+        Powered by 搭建时间：2020-06-17
+        <!-- &copy; 2021 fangchaolong
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a> -->
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" height="100%" data-sizes="auto" alt="HTTP 强缓存&amp;协商缓存" class="lazyload">
+          <h1>HTTP 强缓存&amp;协商缓存</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2017年08月13日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.4k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 10 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <p>首先，什么是缓存？我的理解，缓存就是一个资源副本。当我们向服务器请求资源后，会根据情况将资源 copy 一份副本存在本地，以方便下次读取。它与本地存储 localStorage 、cookie 等不同，本地存储更多是数据记录，存储量较小，为了本地操作方便。而缓存更多是为了减少资源请求，多用于存储文件，存储量相对较大。</p>
+<a id="more"></a>
+<p>那缓存有啥用呢？缓存最根本的作用就是<strong>减少没必要请求</strong>。有些资源，比如用户头像图片，很久才改变一次，但每次都要去请求这张一样的图片，通信一来一回增加了页面的显示时长，过多没必要请求也增加了服务器的压力。如果把这张图片直接缓存在本地，那每次就可以直接本地读取加载，不再发起请求。所以缓存的好处也就显而易见了，<strong>减少了时长从而优化用户体验，也减少了流量消耗，减轻了服务器的压力</strong>。</p>
+<p>那么，缓存有哪些呢？就浏览器而言，一般缓存我们分为四类，按浏览器读取优先级顺序依次为：<font color=red>Memory Cache、Service Worker Cache、HTTP Cache、Push Cache</font>。而本篇文章主要讲的就是 HTTP Cache ，其他有兴趣可以自行搜索。</p>
+<h2 id="二、HTTP-Cache"><a href="#二、HTTP-Cache" class="headerlink" title="二、HTTP Cache"></a>二、HTTP Cache</h2><p><strong>HTTP Cache</strong> 是我们开发中接触最多的缓存，它分为强缓存和协商缓存。</p>
+<ol>
+<li>强缓存：直接从本地副本比对读取，不去请求服务器，返回的状态码是 <strong>200</strong>。</li>
+<li>协商缓存：会去服务器比对，若没改变才直接读取本地缓存，返回的状态码是 <strong>304</strong></li>
+</ol>
+<h3 id="（一）、强缓存"><a href="#（一）、强缓存" class="headerlink" title="（一）、强缓存"></a>（一）、强缓存</h3><p>强缓存主要包括 <strong>expires</strong> 和 <strong>cache-control</strong>。<br><strong>1、expires</strong></p>
+<p><font color=red>expires</font> 是 HTTP1.0 中定义的缓存字段。当我们请求一个资源，服务器返回时，可以在 <strong>Response Headers</strong> 中增加 <font color=red>expires</font> 字段表示资源的过期时间。</p>
+<p><font color=red>expires</font>: Thu, 03 Jan 2019 11:43:04 GMT<br>它是一个时间戳（准确点应该叫格林尼治时间），当客户端再次请求该资源的时候，会把客户端时间与该时间戳进行对比，如果大于该时间戳则已过期，否则直接使用该缓存资源。</p>
+<p>但是，有个大问题，发送请求时是使用的客户端时间去对比。一是客户端和服务端时间可能快慢不一致，另一方面是客户端的时间是可以自行修改的（比如浏览器是跟随系统时间的，修改系统时间会影响到），所以不一定满足预期。</p>
+<p><strong>2、cache-control</strong><br>正由于上面说的可能存在的问题，HTTP1.1 新增了 <font color=red>cache-control</font> 字段来解决该问题，所以当 <font color=red>cache-control</font> 和 <font color=red>expires</font> 都存在时，<font color=red>cache-control</font> 优先级更高。该字段是一个时间长度，单位秒，表示该资源过了多少秒后失效。当客户端请求资源的时候，发现该资源还在有效时间内则使用该缓存，它不依赖客户端时间。<font color=red>cache-control</font> 主要有 max-age 和 s-maxage、public 和 private、no-cache 和 no-store 等值。</p>
+<p><font color=red>cache-control</font>: public, max-age=3600, s-maxage=3600<br>（1）max-age 和 s-maxage<br>两者是 <font color=red>cache-control</font> 的主要字段，它们是一个数字，表示资源过了多少秒之后变为无效。在浏览器中，max-age 和 s-maxage 都起作用，而且 s-maxage 的优先级高于 max-age。在代理服务器中，只有 s-maxage 起作用。 可以通过设置 max-age 为 0 表示立马过期来向服务器请求资源。<br>（2）public 和 private<br>public 表示该资源可以被所有客户端和代理服务器缓存，而 private 表示该资源仅能客户端缓存。默认值是 private，当设置了 s-maxage 的时候表示允许代理服务器缓存，相当于 public。<br>（3）no-cache 和 no-store<br>no-cache 表示的是不直接询问浏览器缓存情况，而是去向服务器验证当前资源是否更新（即协商缓存）。no-store 则更狠，完全不使用缓存策略，不缓存请求或响应的任何内容，直接向服务器请求最新。由于两者都不考虑缓存情况而是直接与服务器交互，所以当 no-cache 和 no-store 存在时会直接忽略 max-age 等。</p>
+<p>3、pragma<br>既然讲到了 no-cache 和 no-store，就顺便把 pragma 也讲了。他的值有 no-cache 和 no-store，表示意思同 <font color=red>cache-control</font>，优先级高于 <font color=red>cache-control</font> 和 <font color=red>expires</font>，即三者同时出现时，先看 pragma -&gt; cache-control -&gt; expires。</p>
+<p>pragma: no-cache<br>（二）、协商缓存<br>上面的 <font color=red>expires</font> 和 <font color=red>cache-control</font> 都会访问本地缓存直接验证看是否过期，如果没过期直接使用本地缓存，并返回 200。但如果设置了 no-cache 和 no-store 则本地缓存会被忽略，会去请求服务器验证资源是否更新，如果没更新才继续使用本地缓存，此时返回的是 304，这就是协商缓存。协商缓存主要包括 last-modified 和 etag。</p>
+<p>1、last-modified<br>last-modified 记录资源最后修改的时间。启用后，请求资源之后的响应头会增加一个 last-modified 字段，如下：</p>
+<p>last-modified: Thu, 20 Dec 2018 11:36:00 GMT<br>当再次请求该资源时，请求头中会带有 if-modified-since 字段，值是之前返回的 last-modified 的值，如：if-modified-since:Thu, 20 Dec 2018 11:36:00 GMT。服务端会对比该字段和资源的最后修改时间，若一致则证明没有被修改，告知浏览器可直接使用缓存并返回 304；若不一致则直接返回修改后的资源，并修改 last-modified 为新的值。</p>
+<p>但 last-modified 有以下两个缺点：</p>
+<p>只要编辑了，不管内容是否真的有改变，都会以这最后修改的时间作为判断依据，当成新资源返回，从而导致了没必要的请求响应，而这正是缓存本来的作用即避免没必要的请求。<br>时间的精确度只能到秒，如果在一秒内的修改是检测不到更新的，仍会告知浏览器使用旧的缓存。<br>2、etag<br>为了解决 last-modified 上述问题，有了 etag。 etag 会基于资源的内容编码生成一串唯一的标识字符串，只要内容不同，就会生成不同的 etag。启用 etag 之后，请求资源后的响应返回会增加一个 etag 字段，如下：</p>
+<p>etag: “FllOiaIvA1f-ftHGziLgMIMVkVw_”<br>当再次请求该资源时，请求头会带有 if-no-match 字段，值是之前返回的 etag 值，如：if-no-match:”FllOiaIvA1f-ftHGziLgMIMVkVw_”。服务端会根据该资源当前的内容生成对应的标识字符串和该字段进行对比，若一致则代表未改变可直接使用本地缓存并返回 304；若不一致则返回新的资源（状态码200）并修改返回的 etag 字段为新的值。</p>
+<p>可以看出 etag 比 last-modified 更加精准地感知了变化，所以 etag 优先级也更高。不过从上面也可以看出 etag 存在的问题，就是每次生成标识字符串会增加服务器的开销。所以要如何使用 last-modified 和 etag 还需要根据具体需求进行权衡。</p>
+<p>三、访问刷新分析<br>我们将访问和刷新分为以下三种情况：</p>
+<p>标签进入、输入url回车进入<br>按刷新按钮、F5 刷新、网页右键“重新加载”<br>ctrl + F5 强制刷新<br>假设当前有这么一个 index 页面，返回的响应信息如下：</p>
+<p><font color=red>cache-control</font>: max-age=72000<br><font color=red>expires</font>: Tue, 20 Nov 2018 20:41:14 GMT<br>last-modified: Tue, 20 Nov 2018 00:41:14 GMT<br>1、标签进入、输入url回车进入<br>这种情况下会根据实际设计的缓存策略去判断。</p>
+<p>由于该例没有设置 no-cache 和 no-store，所以默认先走强缓存路线。根据 <font color=red>cache-control</font> （<font color=red>expires</font> 优先级低）判断缓存是否过期，若没有过期则此时返回 200(from cache)。<br>若本地缓存已经过期再走协商缓存路线，根据之前的 last-modified 值去与服务器比对，若这个时间之后没有改过则去读取本地缓存，返回 304(not modified)。<br>否则返回新的资源，状态码 200(ok)，并更新返回响应的 last-modified 值。<br>2、按刷新按钮、F5 刷新、网页右键“重新加载”<br>这种情况下，实际是浏览器将 <font color=red>cache-control</font> 的 max-age 直接设置成了 0，让缓存立即过期，直接走协商缓存路线。发送的请求头如下：</p>
+<p><font color=red>cache-control</font>: max-age=0<br>if-modified-since: Tue, 20 Nov 2018 00:41:14 GMT<br>3、ctrl + F5 强制刷新<br>强制刷新的情况下，浏览器会强行设置 no-cache，强制获取最新的资源，就连 if-modified-since 等其他缓存协议字段都会被吃掉。此时发送的请求头如下：</p>
+<p><font color=red>cache-control</font>: no-cache<br>pragma: no-cache</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>强缓存：每次客户端请求资源的时候都会去校验本地缓存是否过期，如果过期请求服务端拿到最新的，如果没有过期就使用直接使用本地缓存，响应的状态码：200<br>协商缓存：cache-control：no-cache ；但如果设置了 no-cache 和 no-store 则本地缓存会被忽略，会去请求服务器验证资源是否更新，如果没更新才继续使用本地缓存，此时返回的是 304，这就是协商缓存。协商缓存主要包括 last-modified 和 etag</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/http/" rel="tag">http</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2017/08/13/2017-08-13-http%E5%BC%BA%E7%BC%93%E5%AD%98%E5%92%8C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;08&#x2F;13&#x2F;2017-08-13-http%E5%BC%BA%E7%BC%93%E5%AD%98%E5%92%8C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;08&#x2F;13&#x2F;2017-08-13-http%E5%BC%BA%E7%BC%93%E5%AD%98%E5%92%8C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
+    
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+
+<!-- 点击拷贝 start -->
+<!-- 
+    <script src="/js/copy.js"></script>
+ -->
+<!-- 点击拷贝 end -->
+
+
+<script src="/js/jquery.min.js"></script>
+
+<style>
+    @media screen and (max-width: 1023px) {
+        html,body{
+            overflow-x: hidden;
+        }
+    }
+    #totop{
+        position:fixed;
+        z-index:100;
+        bottom:-150px;
+        right:20px;
+        cursor: pointer;
+        transition: all 1.5s;
+        filter: drop-shadow(4px 8px 12px #fff);
+    }
+</style>
+<div id="totop">
+<a title="返回顶部"><svg t="1592474071178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2765" width="64" height="64"><path d="M752.736 431.063C757.159 140.575 520.41 8.97 504.518 0.41V0l-0.45 0.205-0.41-0.205v0.41c-15.934 8.56-252.723 140.165-248.259 430.653-48.21 31.457-98.713 87.368-90.685 184.074 8.028 96.666 101.007 160.768 136.601 157.287 35.595-3.482 25.232-30.31 25.232-30.31l12.206-50.095s52.47 80.569 69.304 80.528c15.114-1.23 87-0.123 95.6 0h0.82c8.602-0.123 80.486-1.23 95.6 0 16.794 0 69.305-80.528 69.305-80.528l12.165 50.094s-10.322 26.83 25.272 30.31c35.595 3.482 128.574-60.62 136.602-157.286 8.028-96.665-42.475-152.617-90.685-184.074z m-248.669-4.26c-6.758-0.123-94.781-3.359-102.891-107.192 2.95-98.714 95.97-107.438 102.891-107.93 6.964 0.492 99.943 9.216 102.892 107.93-8.11 103.833-96.174 107.07-102.892 107.192z m-52.019 500.531c0 11.838-9.42 21.382-21.012 21.382a21.217 21.217 0 0 1-21.054-21.34V821.74c0-11.797 9.421-21.382 21.054-21.382 11.591 0 21.012 9.585 21.012 21.382v105.635z m77.333 57.222a21.504 21.504 0 0 1-21.34 21.626 21.504 21.504 0 0 1-21.34-21.626V827.474c0-11.96 9.543-21.668 21.299-21.668 11.796 0 21.38 9.708 21.38 21.668v157.082z m71.147-82.043c0 11.796-9.42 21.34-21.053 21.34a21.217 21.217 0 0 1-21.013-21.34v-75.367c0-11.755 9.421-21.299 21.013-21.299 11.632 0 21.053 9.544 21.053 21.3v75.366z" fill="#d81e06" p-id="2766"></path></svg></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+<script src="/js/copy.js"></script>
+
+<script src="/js/app.js?v=1636964062257"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?f413bd7fe4e7c85daa3bc890f089390b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"./live2d_models/live2d-widget-model-haru/02"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>

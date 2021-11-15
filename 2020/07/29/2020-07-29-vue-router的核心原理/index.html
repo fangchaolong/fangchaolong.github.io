@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+  
+  <title>vue-router的核心原理 - fcl个人博客</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="baidu-site-verification" content="SrLfZ8s83m" />
+  
+  
+
+    <!-- Site Verification -->
+    <meta name="baidu-site-verification" content="http://www.baidu.com" />
+
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
+  <meta name="description" content="手写Vue-router核心原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-router的核心原理">
+<meta property="og:url" content="http://yoursite.com/2020/07/29/2020-07-29-vue-router%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="手写Vue-router核心原理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/images/vue/9.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/10.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/11.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/12.jpg">
+<meta property="og:image" content="http://yoursite.com/images/vue/13.jpg">
+<meta property="article:published_time" content="2020-07-29T12:46:25.000Z">
+<meta property="article:modified_time" content="2020-07-29T10:33:56.868Z">
+<meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/vue/9.jpg">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
+  <link rel="stylesheet" href="/css/index.css" crossorigin>
+  
+  <!--<link rel="stylesheet" href="/css/style.css?v=1636964062080">-->
+  <link rel="stylesheet" href="/css/jsdelivr.css">
+  <script src="/js/jquery.min.js"></script>
+  
+<script src="/js/common.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body class="mdui-drawer-body-left">
+  <script>
+    var url = 'http://localhost:4000/video/petal.ts';
+    var player = new JSMpeg.Player(
+        url,
+        {
+            canvas: document.getElementById('canvas'),
+            loop: true,
+            autoplay: true,
+            disableWebAssembly: true,
+            // 分片大小
+            chunkSize: 1 * 1024 * 1024,
+            videoBufferSize: 512 * 1024,
+        }
+    );
+  </script>
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg">
+      <div class="bg1"></div>
+      <div class="bg1 bg2"></div>
+    </div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-box">
+        <div class="mdui-toolbar">
+          <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+          <div class="mdui-toolbar-spacer">
+            <ul class="ulbox">坚持做到每日一更,上一次更新:2020/12/24</ul>
+            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2020/12/24</ul>
+          </div>
+          <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+          <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="fangchaolong">
+            <img src="/images/timg.png" alt="fangchaolong" alt="fangchaolong">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>45</div>
+        <div><span>标签</span>20</div>
+        <div><span>分类</span>10</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/archives" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/donate.html" title="请我喝茶">
+            <i class="mdui-list-item-icon nexmoefont icon-coffee"></i>
+            <div class="mdui-list-item-content">
+                请我喝茶
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/photo" title="我的相册">
+            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
+            <div class="mdui-list-item-content">
+                我的相册
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/leave" title="学习资源">
+            <i class="mdui-list-item-icon nexmoefont icon-dribbble"></i>
+            <div class="mdui-list-item-content">
+                学习资源
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="版本迭代">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                版本迭代
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">社交按钮</h3>
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/fangchaolong/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/git/">git</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/http/">http</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/js/">js</a>
+          <span class="category-list-count">4</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/js实例/">js实例</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/vue/">vue</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/前端/">前端</a>
+          <span class="category-list-count">23</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/快应用/">快应用</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/生活/">生活</a>
+          <span class="category-list-count">2</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">标签云</h3>
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 12.5px;">computed</a> <a href="/tags/es6/" style="font-size: 12.5px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 17.5px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 17.5px;">javascript</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/watch/" style="font-size: 12.5px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 15px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+    </div>
+    
+  </div>
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+    <!-- 左侧任务的footer -->
+    <div class="nexmoe-copyright">
+        &copy; 2021 fangchaolong
+        Powered by 搭建时间：2020-06-17
+        <!-- &copy; 2021 fangchaolong
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a> -->
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="/images/vue.png" height="100%" data-sizes="auto" alt="vue-router的核心原理" class="lazyload">
+          <h1>vue-router的核心原理</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年07月29日</a>
+    <a><i class="nexmoefont icon-areachart"></i>2.7k 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 12 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <p>手写Vue-router核心原理</p>
+<a id="more"></a>
+<h2 id="核心原理"><a href="#核心原理" class="headerlink" title="核心原理"></a>核心原理</h2><ol>
+<li><p>什么是前端路由？<br>在 Web 前端单页应用 SPA(Single Page Application)中，路由描述的是 URL 与 UI 之间的映射关系，这种映射是单向的，即 URL 变化引起 UI 更新（无需刷新页面）。</p>
+</li>
+<li><p>如何实现前端路由？<br> 要实现前端路由，需要解决两个核心：</p>
+</li>
+</ol>
+<pre><code>1. 如何改变 URL 却不引起页面刷新？
+
+2. 如何检测 URL 变化了？</code></pre><p>下面分别使用 hash 和 history 两种实现方式回答上面的两个核心问题。</p>
+<p><strong>hash 实现</strong><br>hash 是 URL 中 hash (#) 及后面的那部分，常用作锚点在页面内进行导航，改变 URL 中的 hash 部分不会引起页面刷新</p>
+<p>通过 hashchange 事件监听 URL 的变化，改变 URL 的方式只有这几种：</p>
+<ol>
+<li>通过浏览器前进后退改变 URL</li>
+<li>通过&lt;a&gt;标签改变 URL</li>
+<li>通过window.location改变URL</li>
+</ol>
+<p><strong>history 实现</strong></p>
+<p>history 提供了 pushState 和 replaceState 两个方法，这两个方法改变 URL 的 path 部分不会引起页面刷新</p>
+<p>history 提供类似 hashchange 事件的 popstate 事件，但 popstate 事件有些不同：</p>
+<ol>
+<li>通过浏览器前进后退改变 URL 时会触发 popstate 事件</li>
+<li>通过pushState/replaceState或&lt;a&gt;标签改变 URL 不会触发 popstate 事件。</li>
+<li>好在我们可以拦截 pushState/replaceState的调用和&lt;a&gt;标签的点击事件来检测 URL 变化</li>
+<li>通过js 调用history的back，go，forward方法课触发该事件</li>
+</ol>
+<p>所以监听 URL 变化可以实现，只是没有 hashchange 那么方便。</p>
+<h2 id="二、原生js实现前端路由"><a href="#二、原生js实现前端路由" class="headerlink" title="二、原生js实现前端路由"></a>二、原生js实现前端路由</h2><p><strong>1 .基于 hash 实现</strong></p>
+<p><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #643820; line-height: 26px;" class="hljs-meta">&lt;!DOCTYPE html&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">html</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">lang</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"en"</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">body</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span>        <span style="color: #007400; line-height: 26px;" class="hljs-comment">&lt;!-- 定义路由 --&gt;</span><br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">href</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"#/home"</span>&gt;</span>home<span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">href</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"#/about"</span>&gt;</span>about<span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><br><span><br><span>        <span style="color: #007400; line-height: 26px;" class="hljs-comment">&lt;!-- 渲染路由对应的 UI --&gt;</span><br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">id</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"routeView"</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span>&gt;</span><br><span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">body</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">script</span>&gt;</span><span style="line-height: 26px;" class="javascript"><br><span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> routerView = routeView<br><span>    <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'hashchange'</span>, ()=&gt;{<br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> hash = location.hash;<br><span>        routerView.innerHTML = hash<br><span>    })<br><span>    <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'DOMContentLoaded'</span>, ()=&gt;{<br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">if</span>(!location.hash){<span style="color: #007400; line-height: 26px;" class="hljs-comment">//如果不存在hash值，那么重定向到#/</span><br><span>            location.hash=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"/"</span><br><span>        }<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">else</span>{<span style="color: #007400; line-height: 26px;" class="hljs-comment">//如果存在hash值，那就渲染对应UI</span><br><span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> hash = location.hash;<br><span>            routerView.innerHTML = hash<br><span>        }<br><span>    })<br><span></span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">script</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">html</span>&gt;</span><br><span><br><span><br><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></p>
+<p>解释下上面代码，其实很简单：</p>
+<ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;" data-tool="mdnice编辑器">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">我们通过a标签的href属性来改变URL的hash值（当然，你触发浏览器的前进后退按钮也可以，或者在控制台输入window.location赋值来改变hash）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">我们监听<strong style="font-weight: bold; color: black;">hashchange</strong>事件。一旦事件触发，就改变<strong style="font-weight: bold; color: black;">routerView</strong>的内容，若是在vue中，这改变的应当是<strong style="font-weight: bold; color: black;">router-view</strong>这个组件的内容</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">为何又监听了load事件？这时应为页面第一次加载完不会触发 hashchange，因而用load事件来监听hash值，再将视图渲染成对应的内容。</section></li></ol>
+
+<p><strong>2. 基于 history 实现</strong></p>
+<p><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #643820; line-height: 26px;" class="hljs-meta">&lt;!DOCTYPE html&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">html</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">lang</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"en"</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">body</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">href</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'/home'</span>&gt;</span>home<span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">href</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'/about'</span>&gt;</span>about<span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">a</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">li</span>&gt;</span><br><span><br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">id</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"routeView"</span>&gt;</span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span>&gt;</span><br><span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">ul</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">body</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">script</span>&gt;</span><span style="line-height: 26px;" class="javascript"><br><span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> routerView = routeView<br><span>    <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'DOMContentLoaded'</span>, onLoad)<br><span>    <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'popstate'</span>, ()=&gt;{<br><span>        routerView.innerHTML = location.pathname<br><span>    })<br><span>    <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span> <span style="color: #1c00cf; line-height: 26px;" class="hljs-title">onLoad</span> (<span style="color: #5c2699; line-height: 26px;" class="hljs-params"></span>) </span>{<br><span>        routerView.innerHTML = location.pathname<br><span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">var</span> linkList = <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">document</span>.querySelectorAll(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'a[href]'</span>)<br><span>        linkList.forEach(<span style="line-height: 26px;" class="hljs-function"><span style="color: #5c2699; line-height: 26px;" class="hljs-params">el</span> =&gt;</span> el.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'click'</span>, <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span> (<span style="color: #5c2699; line-height: 26px;" class="hljs-params">e</span>) </span>{<br><span>            e.preventDefault()<br><span>            history.pushState(<span style="color: #aa0d91; line-height: 26px;" class="hljs-literal">null</span>, <span style="color: #c41a16; line-height: 26px;" class="hljs-string">''</span>, el.getAttribute(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'href'</span>))<br><span>            routerView.innerHTML = location.pathname<br><span>        }))<br><span>    }<br><span><br><span></span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">script</span>&gt;</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">html</span>&gt;</span><br><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></p>
+<p>解释下上面代码，其实也差不多：</p>
+<ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;" data-tool="mdnice编辑器">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">我们通过a标签的href属性来改变URL的path值（当然，你触发浏览器的前进后退按钮也可以，或者在控制台输入history.go,back,forward赋值来触发popState事件）。这里需要注意的就是，当改变path值时，默认会触发页面的跳转，所以需要拦截<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">&lt;a&gt;</code> 标签点击事件默认行为， 点击时使用 pushState 修改 URL并更新手动 UI，从而实现点击链接更新 URL 和 UI 的效果。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">我们监听<strong style="font-weight: bold; color: black;">popState</strong>事件。一旦事件触发，就改变<strong style="font-weight: bold; color: black;">routerView</strong>的内容。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">load事件则是一样的</section></li></ol>
+
+<p>有个问题：hash模式，也可以用history.go,back,forward来触发hashchange事件吗？</p>
+<p>A：也是可以的。因为不管什么模式，浏览器为保存记录都会有一个栈。</p>
+<h2 id="三、基于Vue实现VueRouter"><a href="#三、基于Vue实现VueRouter" class="headerlink" title="三、基于Vue实现VueRouter##"></a>三、基于Vue实现VueRouter##</h2><p>我们先利用vue-cli建一个项目</p>
+<p><img data-sizes="auto" data-src="/images/vue/9.jpg" alt="active" class="lazyload"></p>
+<p>删除一些不必要的组建后项目目录暂时如下：</p>
+<p><img data-sizes="auto" data-src="/images/vue/10.jpg" alt="active" class="lazyload"></p>
+<p>我们主要看下App.vue,About.vue,Home.vue,router/index.js</p>
+<p>代码如下:</p>
+<p>App.vue</p>
+<p><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable">&lt;template&gt;<br><span>  &lt;div id=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"app"</span>&gt;<br><span>    &lt;div id=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"nav"</span>&gt;<br><span>      &lt;router-link to=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"/home"</span>&gt;Home&lt;/router-link&gt; |<br><span>      &lt;router-link to=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"/about"</span>&gt;About&lt;/router-link&gt;<br><span>    &lt;/div&gt;<br><span>    &lt;router-view/&gt;<br><span>  &lt;/div&gt;<br><span>&lt;/template&gt;<br><span></span></span></span></span></span></span></span></span></span></code></p>
+<p>router/index.js</p>
+<p><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> Vue <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'vue'</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> VueRouter <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'vue-router'</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> Home <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'../views/Home.vue'</span><br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> About <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"../views/About.vue"</span><br><span>Vue.use(VueRouter)<br><span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">const</span> routes = [<br><span>  {<br><span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">path</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'/home'</span>,<br><span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">name</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'Home'</span>,<br><span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">component</span>: Home<br><span>  },<br><span>  {<br><span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">path</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'/about'</span>,<br><span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">name</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'About'</span>,<br><span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">component</span>: About<br><span>  }<br><span>]<br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">const</span> router = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">new</span> VueRouter({<br><span>  <span style="color: #836C28; line-height: 26px;" class="hljs-attr">mode</span>:<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"history"</span>,<br><span>  routes<br><span>})<br><span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">default</span> router<br><span><br><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></p>
+<p>Home.vue</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">template</span>&gt;</span>
+<span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">class</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"home"</span>&gt;</span>
+<span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">h1</span>&gt;</span>这是Home组件<span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">h1</span>&gt;</span>
+<span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span>&gt;</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">template</span>&gt;</span>
+<span></span></span></span></span></span><span class="copy-code-btn">复制代码</span></code></pre>
+
+<p>About.vue</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">template</span>&gt;</span>
+<span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span> <span style="color: #836C28; line-height: 26px;" class="hljs-attr">class</span>=<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"about"</span>&gt;</span>
+<span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">h1</span>&gt;</span>这是about组件<span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">h1</span>&gt;</span>
+<span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">div</span>&gt;</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-tag">&lt;/<span style="color: #aa0d91; line-height: 26px;" class="hljs-name">template</span>&gt;</span>
+<span></span></span></span></span></span><span class="copy-code-btn">复制代码</span></code></pre>
+
+<p>现在我们启动一下项目。看看项目初始化有没有成功。</p>
+<p><img data-sizes="auto" data-src="/images/vue/11.jpg" alt="active" class="lazyload"></p>
+<p>ok，没毛病，初始化成功。</p>
+<p>现在我们决定创建自己的VueRouter，于是创建myVueRouter.js文件</p>
+<p>目前目录如下</p>
+<p><img data-sizes="auto" data-src="/images/vue/12.jpg" alt="active" class="lazyload"></p>
+<p>再将VueRouter引入 改成我们的myVueRouter.js</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #007400; line-height: 26px;" class="hljs-comment">//router/index.js</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> Vue <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'vue'</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> VueRouter <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'./myVueRouter'</span> <span style="color: #007400; line-height: 26px;" class="hljs-comment">//修改代码</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> Home <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'../views/Home.vue'</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">import</span> About <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">from</span> <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"../views/About.vue"</span>
+<span>Vue.use(VueRouter)
+<span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">const</span> routes = [
+<span>  {
+<span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">path</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'/home'</span>,
+<span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">name</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'Home'</span>,
+<span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">component</span>: Home
+<span>  },
+<span>  {
+<span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">path</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'/about'</span>,
+<span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">name</span>: <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'About'</span>,
+<span>    <span style="color: #836C28; line-height: 26px;" class="hljs-attr">component</span>: About
+<span>  }
+<span>];
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">const</span> router = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">new</span> VueRouter({
+<span>  <span style="color: #836C28; line-height: 26px;" class="hljs-attr">mode</span>:<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"history"</span>,
+<span>  routes
+<span>})
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">default</span> router
+<span>
+<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+<h2 id="四、剖析VueRouter本质"><a href="#四、剖析VueRouter本质" class="headerlink" title="四、剖析VueRouter本质"></a>四、剖析VueRouter本质</h2><p>先抛出个问题，Vue项目中是怎么引入VueRouter。</p>
+<ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;" data-tool="mdnice编辑器">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">安装Vuex，再通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">import VueRouter from 'vue-router'</code>引入</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">先 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">const router = new VueRouter({...})</code>,再把router作为参数的一个属性值，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">new Vue({router})</code></section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">通过Vue.use(VueRouter) 使得每个组件都可以拥有store实例</section></li></ol>
+
+<p>从这个引入过程我们可以发现什么？</p>
+<ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;" data-tool="mdnice编辑器">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">我们是通过new VueRouter({...})获得一个router实例，也就是说，我们引入的VueRouter其实是一个类。</section></li></ol>
+
+<p>所以我们可以初步假设</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="line-height: 26px;" class="hljs-class"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">class</span> <span style="color: #5c2699; line-height: 26px;" class="hljs-title">VueRouter</span></span>{
+<span>    
+<span>}
+<span>
+<span></span></span></span></span></code></pre>
+
+<ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;" start="2" data-tool="mdnice编辑器">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">我们还使用了Vue.use(),而Vue.use的一个原则就是执行对象的install这个方法</section></li></ol>
+
+<p>所以，我们可以再一步 假设VueRouter有有install这个方法。</p>
+<p>到这里，你能大概地将VueRouter写出来吗？</p>
+<p>很简单，就是将上面的VueRouter导出，如下就是myVueRouter.js</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #007400; line-height: 26px;" class="hljs-comment">//myVueRouter.js</span>
+<span><span style="line-height: 26px;" class="hljs-class"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">class</span> <span style="color: #5c2699; line-height: 26px;" class="hljs-title">VueRouter</span></span>{
+<span>
+<span>}
+<span>VueRouter.install = <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span> (<span style="color: #5c2699; line-height: 26px;" class="hljs-params"></span>) </span>{
+<span>    
+<span>}
+<span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">default</span> VueRouter
+<span></span></span></span></span></span></span></span></span></span></code></pre>
+
+<h2 id="五、分析Vue-use"><a href="#五、分析Vue-use" class="headerlink" title="五、分析Vue.use"></a>五、分析Vue.use</h2><p>Vue.use(plugin);<br>（1）参数</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable">{ Object | Function } plugin
+<span></span></code></pre>
+
+<p>（2）用法<br>安装Vue.js插件。如果插件是一个对象，必须提供install方法。如果插件是一个函数，它会被作为install方法。调用install方法时，会将Vue作为参数传入。install方法被同一个插件多次调用时，插件也只会被安装一次。</p>
+<p>（3）作用<br>注册插件，此时只需要调用install方法并将Vue作为参数传入即可。但在细节上有两部分逻辑要处理：<br><font color=red><br>1、插件的类型，可以是install方法，也可以是一个包含install方法的对象。<br>2、插件只能被安装一次，保证插件列表中不能有重复的插件。<br></font><br>（4）实现</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable">Vue.use = <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span>(<span style="color: #5c2699; line-height: 26px;" class="hljs-params">plugin</span>)</span>{
+<span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">const</span> installedPlugins = (<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._installedPlugins || (<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._installedPlugins = []));
+<span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">if</span>(installedPlugins.indexOf(plugin)&gt;<span style="color: #1c00cf; line-height: 26px;" class="hljs-number">-1</span>){
+<span>  <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>;
+<span> }
+<span> &lt;!-- 其他参数 --&gt;
+<span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">const</span> args = toArray(<span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">arguments</span>,<span style="color: #1c00cf; line-height: 26px;" class="hljs-number">1</span>);
+<span> args.unshift(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>);
+<span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">if</span>(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">typeof</span> plugin.install === <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'function'</span>){
+<span>  plugin.install.apply(plugin,args);
+<span> }<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">else</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">if</span>(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">typeof</span> plugin === <span style="color: #c41a16; line-height: 26px;" class="hljs-string">'function'</span>){
+<span>  plugin.apply(<span style="color: #aa0d91; line-height: 26px;" class="hljs-literal">null</span>,plugin,args);
+<span> }
+<span> installedPlugins.push(plugin);
+<span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>;
+<span>}
+<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+
+<p>1、在Vue.js上新增了use方法，并接收一个参数plugin。</p>
+<p>2、首先判断插件是不是已经别注册过，如果被注册过，则直接终止方法执行，此时只需要使用indexOf方法即可。</p>
+<p>3、toArray方法我们在就是将类数组转成真正的数组。使用toArray方法得到arguments。除了第一个参数之外，剩余的所有参数将得到的列表赋值给args，然后将Vue添加到args列表的最前面。这样做的目的是保证install方法被执行时第一个参数是Vue，其余参数是注册插件时传入的参数。</p>
+<p>4、由于plugin参数支持对象和函数类型，所以通过判断plugin.install和plugin哪个是函数，即可知用户使用哪种方式祖册的插件，然后执行用户编写的插件并将args作为参数传入。</p>
+<p>5、最后，将插件添加到installedPlugins中，保证相同的插件不会反复被注册。(~~让我想起了曾经面试官问我为什么插件不会被重新加载！！！哭唧唧，现在总算明白了)</p>
+<p>第三点讲到，我们把Vue作为install的第一个参数，所以我们可以把Vue保存起来</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #007400; line-height: 26px;" class="hljs-comment">//myVueRouter.js</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> Vue = <span style="color: #aa0d91; line-height: 26px;" class="hljs-literal">null</span>;
+<span><span style="line-height: 26px;" class="hljs-class"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">class</span> <span style="color: #5c2699; line-height: 26px;" class="hljs-title">VueRouter</span></span>{
+<span>
+<span>}
+<span>VueRouter.install = <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span> (<span style="color: #5c2699; line-height: 26px;" class="hljs-params">v</span>) </span>{
+<span>    Vue = v;
+<span>};
+<span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">default</span> VueRouter
+<span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+<p>然后再通过传进来的Vue创建两个组件router-link和router-view</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #007400; line-height: 26px;" class="hljs-comment">//myVueRouter.js</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> Vue = <span style="color: #aa0d91; line-height: 26px;" class="hljs-literal">null</span>;
+<span><span style="line-height: 26px;" class="hljs-class"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">class</span> <span style="color: #5c2699; line-height: 26px;" class="hljs-title">VueRouter</span></span>{
+<span>
+<span>}
+<span>VueRouter.install = <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span> (<span style="color: #5c2699; line-height: 26px;" class="hljs-params">v</span>) </span>{
+<span>    Vue = v;
+<span>    <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">console</span>.log(v);
+<span>
+<span>    <span style="color: #007400; line-height: 26px;" class="hljs-comment">//新增代码</span>
+<span>    Vue.component(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'router-link'</span>,{
+<span>        render(h){
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> h(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'a'</span>,{},<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'首页'</span>)
+<span>        }
+<span>    })
+<span>    Vue.component(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'router-view'</span>,{
+<span>        render(h){
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> h(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'h1'</span>,{},<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'首页视图'</span>)
+<span>        }
+<span>    })
+<span>};
+<span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">default</span> VueRouter
+<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+<p>我们执行下项目，如果没报错，说明我们的假设没毛病。</p>
+<p><img data-sizes="auto" data-src="/images/vue/13.jpg" alt="" class="lazyload"></p>
+<h2 id="六、完善install方法"><a href="#六、完善install方法" class="headerlink" title="六、完善install方法"></a>六、完善install方法</h2><p>install 一般是给每个vue实例添加东西的</p>
+<p>在这里就是给每个组件添加$route和$router。</p>
+<p>$route和$router有什么区别？</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;" data-tool="mdnice编辑器">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">A：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">$router</code>是VueRouter的实例对象，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">$route</code>是当前路由对象，也就是说<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">$route</code>是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">$router</code>的一个属性
+注意每个组件添加的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">$route</code>是是同一个，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: rgb(239, 112, 96);">$router</code>也是同一个，所有组件共享的。</p>
+</blockquote>
+
+
+<p>看下VueRouter的完整代码吧</p>
+<pre style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;" data-tool="mdnice编辑器" class="custom"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code style="overflow-x: auto; padding: 16px; color: black; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;" class="hljs copyable"><span style="color: #007400; line-height: 26px;" class="hljs-comment">//myVueRouter.js</span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> Vue = <span style="color: #aa0d91; line-height: 26px;" class="hljs-literal">null</span>;
+<span><span style="line-height: 26px;" class="hljs-class"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">class</span> <span style="color: #5c2699; line-height: 26px;" class="hljs-title">HistoryRoute</span> </span>{
+<span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">constructor</span>(){
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.current = <span style="color: #aa0d91; line-height: 26px;" class="hljs-literal">null</span>
+<span>    }
+<span>}
+<span><span style="line-height: 26px;" class="hljs-class"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">class</span> <span style="color: #5c2699; line-height: 26px;" class="hljs-title">VueRouter</span></span>{
+<span>    <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">constructor</span>(options) {
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.mode = options.mode || <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"hash"</span>
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.routes = options.routes || [] <span style="color: #007400; line-height: 26px;" class="hljs-comment">//你传递的这个路由是一个数组表</span>
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.routesMap = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.createMap(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.routes)
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.history = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">new</span> HistoryRoute();
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.init()
+<span>
+<span>    }
+<span>    init(){
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">if</span> (<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.mode === <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"hash"</span>){
+<span>            <span style="color: #007400; line-height: 26px;" class="hljs-comment">// 先判断用户打开时有没有hash值，没有的话跳转到#/</span>
+<span>            location.hash? <span style="color: #c41a16; line-height: 26px;" class="hljs-string">''</span>:location.hash = <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"/"</span>;
+<span>            <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"load"</span>,()=&gt;{
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.history.current = location.hash.slice(<span style="color: #1c00cf; line-height: 26px;" class="hljs-number">1</span>)
+<span>            })
+<span>            <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"hashchange"</span>,()=&gt;{
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.history.current = location.hash.slice(<span style="color: #1c00cf; line-height: 26px;" class="hljs-number">1</span>)
+<span>            })
+<span>        } <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">else</span>{
+<span>            location.pathname? <span style="color: #c41a16; line-height: 26px;" class="hljs-string">''</span>:location.pathname = <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"/"</span>;
+<span>            <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'load'</span>,()=&gt;{
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.history.current = location.pathname
+<span>            })
+<span>            <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">window</span>.addEventListener(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"popstate"</span>,()=&gt;{
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.history.current = location.pathname
+<span>            })
+<span>        }
+<span>    }
+<span>
+<span>    createMap(routes){
+<span>        <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> routes.reduce(<span style="line-height: 26px;" class="hljs-function">(<span style="color: #5c2699; line-height: 26px;" class="hljs-params">pre,current</span>)=&gt;</span>{
+<span>            pre[current.path] = current.component
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> pre;
+<span>        },{})
+<span>    }
+<span>
+<span>}
+<span>VueRouter.install = <span style="line-height: 26px;" class="hljs-function"><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">function</span> (<span style="color: #5c2699; line-height: 26px;" class="hljs-params">v</span>) </span>{
+<span>    Vue = v;
+<span>    Vue.mixin({
+<span>        beforeCreate(){
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">if</span> (<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.$options &amp;&amp; <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.$options.router){ <span style="color: #007400; line-height: 26px;" class="hljs-comment">// 如果是根组件</span>
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._root = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>; <span style="color: #007400; line-height: 26px;" class="hljs-comment">//把当前实例挂载到_root上</span>
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._router = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.$options.router;
+<span>                Vue.util.defineReactive(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>,<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"xxx"</span>,<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._router.history)
+<span>            }<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">else</span> { <span style="color: #007400; line-height: 26px;" class="hljs-comment">//如果是子组件</span>
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._root= <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.$parent &amp;&amp; <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.$parent._root
+<span>            }
+<span>            <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">Object</span>.defineProperty(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>,<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'$router'</span>,{
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">get</span>(){
+<span>                    <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._root._router
+<span>                }
+<span>            });
+<span>            <span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">Object</span>.defineProperty(<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>,<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'$route'</span>,{
+<span>                <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">get</span>(){
+<span>                    <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._root._router.history.current
+<span>                }
+<span>            })
+<span>        }
+<span>    })
+<span>    Vue.component(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'router-link'</span>,{
+<span>        <span style="color: #836C28; line-height: 26px;" class="hljs-attr">props</span>:{
+<span>            <span style="color: #836C28; line-height: 26px;" class="hljs-attr">to</span>:<span style="color: #5c2699; line-height: 26px;" class="hljs-built_in">String</span>
+<span>        },
+<span>        render(h){
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> mode = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._self._root._router.mode;
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> to = mode === <span style="color: #c41a16; line-height: 26px;" class="hljs-string">"hash"</span>?<span style="color: #c41a16; line-height: 26px;" class="hljs-string">"#"</span>+<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.to:<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.to
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> h(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'a'</span>,{<span style="color: #836C28; line-height: 26px;" class="hljs-attr">attrs</span>:{<span style="color: #836C28; line-height: 26px;" class="hljs-attr">href</span>:to}},<span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>.$slots.default)
+<span>        }
+<span>    })
+<span>    Vue.component(<span style="color: #c41a16; line-height: 26px;" class="hljs-string">'router-view'</span>,{
+<span>        render(h){
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> current = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._self._root._router.history.current
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">let</span> routeMap = <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">this</span>._self._root._router.routesMap;
+<span>            <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">return</span> h(routeMap[current])
+<span>        }
+<span>    })
+<span>};
+<span>
+<span><span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">export</span> <span style="color: #aa0d91; line-height: 26px;" class="hljs-keyword">default</span> VueRouter
+<span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></code></pre>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/vue/">vue</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
+            
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2020/07/29/2020-07-29-vue-router%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;07&#x2F;29&#x2F;2020-07-29-vue-router%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;07&#x2F;29&#x2F;2020-07-29-vue-router%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
+    
+</section>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script >hljs.initHighlightingOnLoad();</script>
+
+<!-- 点击拷贝 start -->
+<!-- 
+    <script src="/js/copy.js"></script>
+ -->
+<!-- 点击拷贝 end -->
+
+
+<script src="/js/jquery.min.js"></script>
+
+<style>
+    @media screen and (max-width: 1023px) {
+        html,body{
+            overflow-x: hidden;
+        }
+    }
+    #totop{
+        position:fixed;
+        z-index:100;
+        bottom:-150px;
+        right:20px;
+        cursor: pointer;
+        transition: all 1.5s;
+        filter: drop-shadow(4px 8px 12px #fff);
+    }
+</style>
+<div id="totop">
+<a title="返回顶部"><svg t="1592474071178" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2765" width="64" height="64"><path d="M752.736 431.063C757.159 140.575 520.41 8.97 504.518 0.41V0l-0.45 0.205-0.41-0.205v0.41c-15.934 8.56-252.723 140.165-248.259 430.653-48.21 31.457-98.713 87.368-90.685 184.074 8.028 96.666 101.007 160.768 136.601 157.287 35.595-3.482 25.232-30.31 25.232-30.31l12.206-50.095s52.47 80.569 69.304 80.528c15.114-1.23 87-0.123 95.6 0h0.82c8.602-0.123 80.486-1.23 95.6 0 16.794 0 69.305-80.528 69.305-80.528l12.165 50.094s-10.322 26.83 25.272 30.31c35.595 3.482 128.574-60.62 136.602-157.286 8.028-96.665-42.475-152.617-90.685-184.074z m-248.669-4.26c-6.758-0.123-94.781-3.359-102.891-107.192 2.95-98.714 95.97-107.438 102.891-107.93 6.964 0.492 99.943 9.216 102.892 107.93-8.11 103.833-96.174 107.07-102.892 107.192z m-52.019 500.531c0 11.838-9.42 21.382-21.012 21.382a21.217 21.217 0 0 1-21.054-21.34V821.74c0-11.797 9.421-21.382 21.054-21.382 11.591 0 21.012 9.585 21.012 21.382v105.635z m77.333 57.222a21.504 21.504 0 0 1-21.34 21.626 21.504 21.504 0 0 1-21.34-21.626V827.474c0-11.96 9.543-21.668 21.299-21.668 11.796 0 21.38 9.708 21.38 21.668v157.082z m71.147-82.043c0 11.796-9.42 21.34-21.053 21.34a21.217 21.217 0 0 1-21.013-21.34v-75.367c0-11.755 9.421-21.299 21.013-21.299 11.632 0 21.053 9.544 21.053 21.3v75.366z" fill="#d81e06" p-id="2766"></path></svg></a>
+</div>
+
+<script src="/js/totop.js"></script>
+
+
+<script src="/js/copy.js"></script>
+
+<script src="/js/app.js?v=1636964062084"></script>
+  
+
+
+
+
+
+    <!-- baidu Analytics -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {var hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?f413bd7fe4e7c85daa3bc890f089390b';
+    var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"./live2d_models/live2d-widget-model-haru/02"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
