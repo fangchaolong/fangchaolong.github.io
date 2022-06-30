@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>分类：js - fcl个人博客</title>
+  <title>原生js实现pdf文件流转图片 - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,17 +16,24 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta property="og:type" content="website">
-<meta property="og:title" content="fcl个人博客">
-<meta property="og:url" content="http://yoursite.com/categories/js/index.html">
+  <meta name="description" content="原生js实现pdf文件流转图片">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生js实现pdf文件流转图片">
+<meta property="og:url" content="http://yoursite.com/2021/06/10/2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87/index.html">
 <meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="原生js实现pdf文件流转图片">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-10T12:46:25.000Z">
+<meta property="article:modified_time" content="2022-06-30T03:26:37.185Z">
 <meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="watch">
+<meta property="article:tag" content="computed">
 <meta name="twitter:card" content="summary">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1656559893058">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1656559892555">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -261,90 +268,255 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        
-<section class="nexmoe-archives">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
+          <img data-src="/images/vue/24.png" height="100%" data-sizes="auto" alt="原生js实现pdf文件流转图片" class="lazyload">
+          <h1>原生js实现pdf文件流转图片</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年06月10日</a>
+    <a><i class="nexmoefont icon-areachart"></i>11 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+</div>
 
-    <article>
-        
+  <div class="nexmoe-post-right">
+    
+  </div>
 
-        
-            <h2>
-                2021
-            </h2>
-            <ul>
+  <article>
+    <p>原生js实现pdf文件流转图片</p>
+<a id="more"></a>
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/computed/" rel="tag">computed</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/watch/" rel="tag">watch</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
             
-                <li><span>02-23</span><a href="/2021/02/23/2021-02-23-var-const-let%E7%9A%84%E5%8C%BA%E5%88%AB/" >javascript var、const、let的区别</a></li>
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
             
-            </ul>
-        
-            <h2>
-                2020
-            </h2>
-            <ul>
-            
-                <li><span>11-04</span><a href="/2020/11/04/2020-11-04-%E9%AA%A8%E6%9E%B6%E5%B1%8F%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF/" >骨架屏实现的思路</a></li>
-            
-                <li><span>08-13</span><a href="/2020/08/13/2020-08-13-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E5%92%8C%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%8C%BA%E5%88%AB/" >箭头函数和普通函数</a></li>
-            
-                <li><span>08-07</span><a href="/2020/08/07/2020-08-07-%E7%BD%91%E9%A1%B5%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%8D%87%E7%BA%A7/" >网页性能优化升级</a></li>
-            
-                <li><span>08-06</span><a href="/2020/08/06/2020-08-06-Promise%20%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0/" >Promise 理解与实现</a></li>
-            
-                <li><span>08-03</span><a href="/2020/08/03/2020-08-03-javascript%E6%A8%A1%E5%9D%97%E5%8C%96-AMD/" >javascript模块化-AMD</a></li>
-            
-                <li><span>07-27</span><a href="/2020/07/27/2020-07-30-%E6%89%8B%E5%86%99%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/" >手写防抖和节流函数</a></li>
-            
-            </ul>
-        
-    </article>
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2021/06/10/2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;06&#x2F;10&#x2F;2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;06&#x2F;10&#x2F;2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
     
 </section>
-
-<style>
-.nexmoe-archives article > *:first-child {
-    margin-top: 0;
-}
-.nexmoe-archives article > *:last-child {
-    margin-bottom: 0;
-}
-.nexmoe-archives ul {
-    list-style: none;
-    padding-left: 0!important;
-}
-.nexmoe-archives li {
-    position: relative;
-    padding: 10px 0;
-}
-.nexmoe-archives li::before {
-    content: "";
-    width: 14px;
-    height: 14px;
-    background: #ff4e6a;
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: -2px;
-    margin-right: 11px;
-    border-radius: 100%;
-    border: 3px solid #fff;
-    z-index: 100;
-    position: relative;
-}
-.nexmoe-archives li::after {
-    content: "";
-    height: 100%;
-    width: 2px;
-    background: rgba(255, 78, 106, 0.2);
-    position: absolute;
-    left: 6px;
-    top: 20px;
-}
-.nexmoe-archives li:last-child:after {
-    display: none;
-}
-.nexmoe-archives span {
-    margin-right: 15px;
-}
-</style>
+  </div>
+</div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
@@ -384,7 +556,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1656559893061"></script>
+<script src="/js/app.js?v=1656559892560"></script>
   
 
 
