@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>vue中$router和$route的区别 - fcl个人博客</title>
+  <title>原生js实现pdf文件流转图片 - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,26 +16,23 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta name="description" content="vue中$router和$route的区别">
+  <meta name="description" content="原生js实现pdf文件流转图片">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vue中$router和$route的区别">
-<meta property="og:url" content="http://yoursite.com/2021/06/10/2021-10-14-vue%E4%B8%AD$router%E5%92%8C$route%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:title" content="原生js实现pdf文件流转图片">
+<meta property="og:url" content="http://yoursite.com/2022/06/30/2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87/index.html">
 <meta property="og:site_name" content="fcl个人博客">
-<meta property="og:description" content="vue中$router和$route的区别">
+<meta property="og:description" content="原生js实现pdf文件流转图片">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/images/vue/25.png">
-<meta property="article:published_time" content="2021-06-10T12:46:25.000Z">
-<meta property="article:modified_time" content="2021-11-15T09:14:03.772Z">
+<meta property="article:published_time" content="2022-06-30T12:46:25.000Z">
+<meta property="article:modified_time" content="2022-07-04T06:04:19.643Z">
 <meta property="article:author" content="fangchaolong">
-<meta property="article:tag" content="vue">
-<meta property="article:tag" content="watch">
-<meta property="article:tag" content="computed">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="pdf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/vue/25.png">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1656559892561">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1657003329629">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -69,8 +66,8 @@
         <div class="mdui-toolbar">
           <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
           <div class="mdui-toolbar-spacer">
-            <ul class="ulbox">坚持做到每日一更,上一次更新:2020/12/24</ul>
-            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2020/12/24</ul>
+            <ul class="ulbox">坚持做到每日一更,上一次更新:2022/07/04</ul>
+            <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2022/07/04</ul>
           </div>
           <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
           <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
@@ -86,8 +83,8 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>46</div>
-        <div><span>标签</span>20</div>
+        <div><span>文章</span>48</div>
+        <div><span>标签</span>23</div>
         <div><span>分类</span>10</div>
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
@@ -145,7 +142,7 @@
     <aside id="nexmoe-sidebar">
   
   <div class="nexmoe-widget-wrap">
-    <div class="nexmoe-widget nexmoe-search">
+    <div class="nexmoe-widget nexmoe-search" style="display: none;">
         <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
             <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
         </form>
@@ -241,7 +238,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">标签云</h3>
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 13.33px;">computed</a> <a href="/tags/es6/" style="font-size: 11.67px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 16.67px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 16.67px;">javascript</a> <a href="/tags/js/" style="font-size: 18.33px;">js</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 20px;">vue</a> <a href="/tags/watch/" style="font-size: 13.33px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 15px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
+      <a href="/tags/Hooks/" style="font-size: 10px;">Hooks</a> <a href="/tags/React/" style="font-size: 12px;">React</a> <a href="/tags/ajax/" style="font-size: 10px;">ajax</a> <a href="/tags/amd/" style="font-size: 10px;">amd</a> <a href="/tags/cdn/" style="font-size: 10px;">cdn</a> <a href="/tags/chrome/" style="font-size: 10px;">chrome</a> <a href="/tags/computed/" style="font-size: 12px;">computed</a> <a href="/tags/es6/" style="font-size: 12px;">es6</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/http/" style="font-size: 16px;">http</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/js/" style="font-size: 20px;">js</a> <a href="/tags/pdf/" style="font-size: 10px;">pdf</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/vue/" style="font-size: 18px;">vue</a> <a href="/tags/watch/" style="font-size: 12px;">watch</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 14px;">前端</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">生活</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a> <a href="/tags/%E9%97%AD%E5%8C%85/" style="font-size: 10px;">闭包</a>
     </div>
     
   </div>
@@ -251,7 +248,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li></ul>
     </div>
   </div>
 
@@ -272,15 +269,14 @@
     <div class="nexmoe-primary">
         <div class="nexmoe-post">
   
-      <div class="nexmoe-post-cover" style="padding-bottom: 62.5%;"> 
-          <img data-src="/images/vue/24.png" height="100%" data-sizes="auto" alt="vue中$router和$route的区别" class="lazyload">
-          <h1>vue中$router和$route的区别</h1>
+      <div class="nexmoe-post-cover" style="background-color: rgba(58, 56, 188, 0.3);">
+          <h1>原生js实现pdf文件流转图片</h1>
       </div>
   
   
   <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2021年06月10日</a>
-    <a><i class="nexmoefont icon-areachart"></i>381 字</a>
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年06月30日</a>
+    <a><i class="nexmoefont icon-areachart"></i>163 字</a>
     <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
 </div>
 
@@ -289,36 +285,84 @@
   </div>
 
   <article>
-    <p>vue中$router和$route的区别</p>
+    <p>原生js实现pdf文件流转图片</p>
 <a id="more"></a>
-<h2 id="1、-route对象"><a href="#1、-route对象" class="headerlink" title="1、$route对象"></a>1、$route对象</h2><p><img data-sizes="auto" data-src="/images/vue/25.png" alt="active" class="lazyload"></p>
-<p>$route对象表示当前的路由信息，包含了当前 URL 解析得到的信息。包含当前的路径，参数，query对象等。</p>
-<pre><code>
-**1.$route.path**
-      字符串，对应当前路由的路径，总是解析为绝对路径，如 "/foo/bar"。
-**2.$route.params**
-      一个 key/value 对象，包含了 动态片段 和 全匹配片段，
-      如果没有路由参数，就是一个空对象。
-**3.$route.query**
-      一个 key/value 对象，表示 URL 查询参数。
-      例如，对于路径 /foo?user=1，则有 $route.query.user == 1，
-      如果没有查询参数，则是个空对象。
-**4.$route.hash**
-      当前路由的 hash 值 (不带 #) ，如果没有 hash 值，则为空字符串。锚点
-**5.$route.fullPath**
-      完成解析后的 URL，包含查询参数和 hash 的完整路径。
-**6.$route.matched**
-      数组，包含当前匹配的路径中所包含的所有片段所对应的配置参数对象。
-**7.$route.name    当前路径名字**
-**8.$route.meta  路由元信息
+<pre><code class="hljs language-javascript copyable">
+// 在页面引入
+&lt;script src="https://mozilla.github.io/pdf.js/build/pdf.js"&gt;&lt;/script&gt;
+&lt;script src="https://mozilla.github.io/pdf.js/build/pdf.worker.js"&gt;&lt;/script&gt;
+
+
+var oReq = new XMLHttpRequest();
+oReq.open("GET", url, true);
+oReq.setRequestHeader('X-Auth-token', token);
+oReq.responseType = "blob";
+oReq.onload = function () {
+    console.log(oReq.response)
+    console.log('------')
+    var file = new File([oReq.response], 'x.pdf', {
+        type: 'application/pdf'
+    });
+    // 拿到文件流字符串、手动生成url，如果直接给的是真是的pdf的url那就不需要走这一步
+    const fileURL = URL.createObjectURL(file)
+    let imgArr = [];
+    pdfjsLib.workerSrc = 'pdf.worker.js';
+    // 异步下载pdf
+    const loadingTask = pdfjsLib.getDocument(fileURL);
+    // 加载pdf
+    loadingTask.promise.then(function(pdf) {
+        let pageNum = pdf.numPages;
+        // console.log(pageNum);
+        for (let i=1; i<=pageNum; i++) {
+            pdf.getPage(i).then(function(page) {
+                console.log(page,'Page loaded');
+                let canvas = document.createElement("canvas");
+                let context = canvas.getContext('2d');
+                // 获取到屏幕倒是是几倍屏。
+                let getPixelRatio = function(context) {
+                    var backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;
+                    return (window.devicePixelRatio || 1) / backingStore;
+                };
+                // iphone6下得到是2 
+                const pixelRatio = getPixelRatio(canvas)*2;
+                // 如果生成的图片是镜像颠倒的
+                /*
+                    在 2.0.943 及更早版本中，它采用“常规”参数，即 格式为 getViewport(scale、rotate、dontFlip)。
+                    在 2.1.266 及更高版本中，它需要一个对象，即格式化为 getViewport({ 缩放，旋转，dontFlip })
+                */
+                let viewport = page.getViewport({scale: pixelRatio, rotate:'-180deg'});
+                canvas.height = pixelRatio * viewport.height;
+                canvas.width = pixelRatio * viewport.width;
+
+                let renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                let renderTask = page.render(renderContext);
+                // 【重要】默认转化的格式为png,也可设置为其他格式 ， 1mm = 3.7795 px转菜鸟尺寸
+                // 这里是渲染完毕
+                renderTask.promise.then(function (res) {
+                    console.log(canvas,'Page rendered');
+                    let imgUrl = canvas.toDataURL('image/jpeg'); //转换为base64
+                    if (imgUrl) {
+                        imgArr[i-1] = {}
+                        imgArr[i-1]['src'] = imgUrl;
+                        imgArr[i-1]['width'] = parseInt(viewport.width/3.7795);
+                        imgArr[i-1]['height'] = parseInt(viewport.height/3.7795);
+                    }
+                    resolve(imgArr)
+                });
+            });
+        }
+    })
+};
+oReq.send();
 </code></pre>
-
-<h2 id="2、-router"><a href="#2、-router" class="headerlink" title="2、$router"></a>2、$router</h2><p>$router是VueRouter的一个对象，通过Vue.use(VueRouter)和VueRouter构造函数得到一个router的实例对象，这个对象中是一个全局的对象，它包含所有的路由包含了许多关键的对象和属性</p>
-<p>举例：history对象</p>
-<p>$router.push({path:’home’});本质是向history栈中添加一个路由，在我们看来是 切换路由，但本质是在添加一个history记录</p>
-<p>方法：</p>
-<p>$router.replace({path:’home’});//替换路由，没有历史记录</p>
-
   </article>
 
   <div class="nexmoe-post-meta nexmoe-rainbow">
@@ -326,7 +370,7 @@
         <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
     
     
-        <a class="nexmoefont icon-tag-fill -link" href="/tags/computed/" rel="tag">computed</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/vue/" rel="tag">vue</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/watch/" rel="tag">watch</a>
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/js/" rel="tag">js</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/pdf/" rel="tag">pdf</a>
     
 </div>
   <div style="text-align: center;">
@@ -519,7 +563,7 @@
   <div class="nexmoe-post-copyright">
     <strong>本文作者：</strong>fangchaolong<br>
     <!-- 本文链接 -->
-    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2021/06/10/2021-10-14-vue%E4%B8%AD$router%E5%92%8C$route%E7%9A%84%E5%8C%BA%E5%88%AB/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;06&#x2F;10&#x2F;2021-10-14-vue%E4%B8%AD$router%E5%92%8C$route%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;06&#x2F;10&#x2F;2021-10-14-vue%E4%B8%AD$router%E5%92%8C$route%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;</a><br> -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2022/06/30/2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;06&#x2F;30&#x2F;2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;06&#x2F;30&#x2F;2022-06-30-%E5%8E%9F%E7%94%9Fjs%E5%AE%9E%E7%8E%B0pdf%E6%96%87%E4%BB%B6%E6%B5%81%E8%BD%AC%E5%9B%BE%E7%89%87&#x2F;</a><br> -->
     
       <strong>欢迎大家借鉴和讨论</strong>
     
@@ -586,7 +630,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1656559892572"></script>
+<script src="/js/app.js?v=1657003329633"></script>
   
 
 
