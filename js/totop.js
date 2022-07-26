@@ -15,10 +15,10 @@
 	$(window).scroll(function () {
 		var scrollTop = $(document).scrollTop();
 		if ( scrollTop > upperLimit ) {
-			$(scrollElem).css({'top': '150px'})
+			$(scrollElem).css({'bottom': '150px'})
 			// $(scrollElem).stop().fadeTo(300, 1); // fade back in
 		}else{
-			$(scrollElem).css({'top': '-150px'})
+			$(scrollElem).css({'bottom': '-150px'})
 			// $(scrollElem).stop().fadeTo(300, 0); // fade out
 		}
 	});
