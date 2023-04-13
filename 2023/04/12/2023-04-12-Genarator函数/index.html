@@ -16,15 +16,15 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta name="description" content="JS中Generator函数的详解 概念Generator 函数是 ES6 提供的一种异步编程解决方案。它既是一个生成器，也是一个状态机，内部拥有值及相关的状态，生成器返回一个迭代器 Iterator 对象，我们可以通过这个迭代器，手动地遍历相关的值、状态，保证正确的执行顺序。特征 function 关键字与函数名之间有一个星号（ES6 没有规定，function 关键字与函数名之间的星号，写在">
+  <meta name="description" content="JS中Generator函数的详解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Genarator函数">
 <meta property="og:url" content="http://yoursite.com/2023/04/12/2023-04-12-Genarator%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="fcl个人博客">
-<meta property="og:description" content="JS中Generator函数的详解 概念Generator 函数是 ES6 提供的一种异步编程解决方案。它既是一个生成器，也是一个状态机，内部拥有值及相关的状态，生成器返回一个迭代器 Iterator 对象，我们可以通过这个迭代器，手动地遍历相关的值、状态，保证正确的执行顺序。特征 function 关键字与函数名之间有一个星号（ES6 没有规定，function 关键字与函数名之间的星号，写在">
+<meta property="og:description" content="JS中Generator函数的详解">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-12T12:46:25.000Z">
-<meta property="article:modified_time" content="2023-04-12T06:17:14.291Z">
+<meta property="article:modified_time" content="2023-04-13T08:38:19.227Z">
 <meta property="article:author" content="fangchaolong">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="前端">
@@ -32,7 +32,7 @@
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1681293252784">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1681378927564">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -65,10 +65,10 @@
       <div class="mdui-box">
         <div class="mdui-toolbar">
           <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
-          <div class="mdui-toolbar-spacer">
+          <!-- <div class="mdui-toolbar-spacer">
             <ul class="ulbox">坚持做到每日一更,上一次更新:2022/07/04</ul>
             <ul class="ulbox" style="left: 100%;">坚持做到每日一更,上一次更新:2022/07/04</ul>
-          </div>
+          </div> -->
           <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
           <a href="/" title="fangchaolong" class="mdui-btn mdui-btn-icon"><img src="/images/timg.png" alt="fangchaolong"></a>
         </div>
@@ -83,7 +83,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>52</div>
+        <div><span>文章</span>53</div>
         <div><span>标签</span>24</div>
         <div><span>分类</span>10</div>
     </div>
@@ -209,7 +209,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/前端/">前端</a>
-          <span class="category-list-count">27</span>
+          <span class="category-list-count">28</span>
         </li>
 
         
@@ -269,7 +269,7 @@
     <div class="nexmoe-primary">
         <div class="nexmoe-post">
   
-      <div class="nexmoe-post-cover" style="background-color: rgba(189, 162, 153, 0.3);">
+      <div class="nexmoe-post-cover" style="background-color: rgba(52, 11, 20, 0.3);">
           <h1>Genarator函数</h1>
       </div>
   
@@ -285,8 +285,9 @@
   </div>
 
   <article>
-    <a id="more"></a>
-<p>JS中Generator函数的详解</p>
+    <p>JS中Generator函数的详解</p>
+<a id="more"></a>
+
 <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h4 id="Generator-函数是-ES6-提供的一种异步编程解决方案。它既是一个生成器，也是一个状态机，内部拥有值及相关的状态，生成器返回一个迭代器-Iterator-对象，我们可以通过这个迭代器，手动地遍历相关的值、状态，保证正确的执行顺序。"><a href="#Generator-函数是-ES6-提供的一种异步编程解决方案。它既是一个生成器，也是一个状态机，内部拥有值及相关的状态，生成器返回一个迭代器-Iterator-对象，我们可以通过这个迭代器，手动地遍历相关的值、状态，保证正确的执行顺序。" class="headerlink" title="Generator 函数是 ES6 提供的一种异步编程解决方案。它既是一个生成器，也是一个状态机，内部拥有值及相关的状态，生成器返回一个迭代器 Iterator 对象，我们可以通过这个迭代器，手动地遍历相关的值、状态，保证正确的执行顺序。"></a>Generator 函数是 ES6 提供的一种异步编程解决方案。它既是一个生成器，也是一个状态机，内部拥有值及相关的状态，生成器返回一个迭代器 Iterator 对象，我们可以通过这个迭代器，手动地遍历相关的值、状态，保证正确的执行顺序。</h4><h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ol>
 <li>function 关键字与函数名之间有一个星号（ES6 没有规定，function 关键字与函数名之间的星号，写在哪个位置）</li>
 <li>函数体内部使用 yield 表达式，定义不同的内部状态</li>
@@ -703,7 +704,7 @@ b.next(13)  // {value: 42, done: true}
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1681293252786"></script>
+<script src="/js/app.js?v=1681378927567"></script>
   
 
 
