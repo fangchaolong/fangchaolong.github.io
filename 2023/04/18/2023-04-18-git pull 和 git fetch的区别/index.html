@@ -4,7 +4,7 @@
 
 <head>
   
-  <title>标签：闭包 - fcl个人博客</title>
+  <title>git pul和git fetch的区别 - fcl个人博客</title>
   <meta charset="UTF-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
@@ -16,17 +16,22 @@
     <meta name="baidu-site-verification" content="http://www.baidu.com" />
 
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/png" />
-  <meta property="og:type" content="website">
-<meta property="og:title" content="fcl个人博客">
-<meta property="og:url" content="http://yoursite.com/tags/%E9%97%AD%E5%8C%85/index.html">
+  <meta name="description" content="git pul和git fetch的区别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git pul和git fetch的区别">
+<meta property="og:url" content="http://yoursite.com/2023/04/18/2023-04-18-git%20pull%20%E5%92%8C%20git%20fetch%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="fcl个人博客">
+<meta property="og:description" content="git pul和git fetch的区别">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-18T12:46:25.000Z">
+<meta property="article:modified_time" content="2023-04-18T07:51:00.182Z">
 <meta property="article:author" content="fangchaolong">
+<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/gh/nexmoe/nexmoe.github.io@latest/css/style.css,npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css" crossorigin> -->
   <link rel="stylesheet" href="/css/index.css" crossorigin>
   
-  <!--<link rel="stylesheet" href="/css/style.css?v=1681808160578">-->
+  <!--<link rel="stylesheet" href="/css/style.css?v=1681808159553">-->
   <link rel="stylesheet" href="/css/jsdelivr.css">
   <script src="/js/jquery.min.js"></script>
   
@@ -261,71 +266,275 @@
   </div>
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
-        
-<section class="nexmoe-archives">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 40%;"> 
+          <img data-src="http://www.itheima.com/images/newslistPIC/1639463859108_git命令大全.png" height="100%" data-sizes="auto" alt="git pul和git fetch的区别" class="lazyload">
+          <h1>git pul和git fetch的区别</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2023年04月18日</a>
+    <a><i class="nexmoefont icon-areachart"></i>892 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+</div>
 
-    <article>
-        
+  <div class="nexmoe-post-right">
+    
+  </div>
 
-        
-            <h2>
-                2018
-            </h2>
-            <ul>
+  <article>
+    <p>git pul和git fetch的区别</p>
+<a id="more"></a>
+<blockquote class="wp-block-quote">
+<p><strong>git fetch 和git pull区别</strong>有：1、目的不同；2、用途不同；3、用法不同；4、远端跟踪分支不同；5、拉取不同；6、commitID不同；7、安全性不同。其中，目的不同指fetch从远程获取最新版本到本地，但不会自动 merge，pull是从远程获取最新版本并 merge 到本地。</p>
+</blockquote>
+
+<h2 id="1、目的不同"><a href="#1、目的不同" class="headerlink" title="1、目的不同"></a>1、目的不同</h2><p><strong>git fetch：</strong>从远程获取最新版本到本地，但不会自动 merge，用于从远程跟踪分支下载和查看其他人完成的最新提交，但不将这些提交合并到本地存储库中。它从远程存储库中获取更改并将其存储在本地存储库中。(例如远程仓库master新创建了分支，其他基于master拉去的分支获取不到这个分支，使用git fetch可以获取到master的分支)</p>
+<p><strong>git pull：</strong>从远程获取最新版本并 merge 到本地，它会自动将提交合并到您的本地存储库中，而无需查看提交。（获取当前分支的远程分支的代码，在主分支更新的代码获取不到）</p>
+<h2 id="2、用途不同"><a href="#2、用途不同" class="headerlink" title="2、用途不同"></a>2、用途不同</h2><p><strong>git fetch</strong>：Fetch 只是通过将提交从远程存储库传输到本地存储库来使远程存储库的本地副本保持最新。将提交导入到本地分支将允许您跟上其他人所做的更改。</p>
+<p><strong>git pull</strong>：Pull 将更改引入本地代码存储库，以使用远程存储库更新本地存储库。</p>
+<h2 id="3、用法不同"><a href="#3、用法不同" class="headerlink" title="3、用法不同"></a>3、用法不同</h2><p><strong>git fetch</strong>：当您想要查看其他人正在处理的内容时，Fetch 命令非常有用，这使您可以在将更改与本地存储库集成之前轻松查看其他开发人员推送的提交。您可以通过使用命令“git fetch ”来做到这一点，该命令从远程存储库中获取所有分支。</p>
+<p><strong>git pull</strong>：您可以使用命令“git pull ”来执行拉取，该命令检索分支的远程副本并将其与本地副本合并。这与使用命令“git fetch ”后跟“git merge ”完全相同。</p>
+<h2 id="4、远端跟踪分支不同"><a href="#4、远端跟踪分支不同" class="headerlink" title="4、远端跟踪分支不同"></a>4、远端跟踪分支不同</h2><p><strong>git fetch</strong>：Git fetch能够直接更改远端跟踪分支。</p>
+<p><strong>git pull</strong>：git pull无法直接对远程跟踪分支操作，我们必须先切回本地分支然后创建一个新的commit提交。</p>
+<h2 id="5、拉取不同"><a href="#5、拉取不同" class="headerlink" title="5、拉取不同"></a>5、拉取不同</h2><p>git fetch：Git fetch会将数据拉取到本地仓库 – 它并不会自动合并或修改当前的工作。</p>
+<p>git pull：git pull是从远程获取最新版本并merge到本地，会自动合并或修改当前的工作。</p>
+<p>git pull = git fetch + git merge </p>
+<h2 id="6、commitID不同"><a href="#6、commitID不同" class="headerlink" title="6、commitID不同"></a>6、commitID不同</h2><p><strong>git fetch</strong>：使用Git fetch更新代码，本地的库中master的commitID不变，还是等于1。</p>
+<p><strong>git pull</strong>：使用git pull更新代码，本地的库中master的commitID发生改变，变成了2。</p>
+<h2 id="7、安全性不同"><a href="#7、安全性不同" class="headerlink" title="7、安全性不同"></a>7、安全性不同</h2><p><strong>git fetch</strong> ：git fetch是一个更安全的选择，因为它从你的远程仓库拉入所有的提交，但不会对你的本地文件做任何修改。这给了你足够时间去发现远程仓库自从你上次拉取后到现在为止发生的变化。你可以在合并前检查哪些文件有变化，哪些文件可能导致冲突。</p>
+<p><strong>git pull</strong>：git pull相当于运行git fetch，然后立即将你的改动合并到本地仓库。这样的确少了一个步骤，但是也会带来一些风险。</p>
+
+  </article>
+
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/git/">git</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -link" href="/tags/git/" rel="tag">git</a>
+    
+</div>
+  <div style="text-align: center;">
+  <style>
+    .tooltip {
+      display: inline;
+      position: relative;
+      z-index: 999;
+    }
+    .tooltip:after {
+      content:"";
+      position:absolute;
+      width:100%;
+      height:20px;
+      bottom:100%;
+      left:50%;
+      pointer-events:none;
+      -webkit-transform:translateX(-50%);
+      transform:translateX(-50%)
+    }
+    .tooltip:hover:after {
+      pointer-events:auto
+    }
+    .tooltip-content {
+      position:absolute;
+      z-index:9999;
+      width:370px;
+      left:50%;
+      bottom:100%;
+      font-size:20px;
+      line-height:1.4;
+      text-align:center;
+      font-weight:400;
+      color:#4d4d4d;
+      background:transparent;
+      opacity:0;
+      margin:0 0 -10px -185px;
+      cursor:default;
+      pointer-events:none;
+      font-family:Satisfy,cursive;
+      -webkit-font-smoothing:antialiased;
+      transition:opacity .3s .3s;
+      padding-bottom:80px;
+    }
+    .tooltip:hover .tooltip-content {
+      opacity:1;
+      pointer-events:auto;
+      transition-delay:0s
+    }
+    .tooltip-content span {
+      display:block
+    }
+    .tooltip-text {
+      border-bottom:10px solid #4d4d4d;
+      overflow:hidden;
+      -webkit-transform:scaleX(0);
+      transform:scaleX(0);
+      transition:-webkit-transform .3s .3s;
+      transition:transform .3s .3s;
+      transition:transform .3s .3s,-webkit-transform .3s .3s
+    }
+    .tooltip:hover .tooltip-text {
+      transition-delay:0s;
+      -webkit-transform:scaleX(1);
+      transform:scaleX(1)
+    }
+    .tooltip-inner {
+      background:rgba(36,193,246,.9);
+      padding:40px;
+      -webkit-transform:translate3d(0,100%,0);
+      transform:translate3d(0,100%,0);
+      -webkit-transition:-webkit-transform .3s;
+      transition:-webkit-transform .3s;
+      transition:transform .3s;
+      transition:transform .3s,-webkit-transform .3s
+    }
+    .tooltip:hover .tooltip-inner {
+      transition-delay:.3s;
+      -webkit-transform:translateZ(0);
+      transform:translateZ(0)
+    }
+    .tooltip-content:after {
+      content:"";
+      left:50%;
+      border:solid transparent;
+      height:0;
+      width:0;
+      position:absolute;
+      pointer-events:none;
+      border-color:transparent;
+      border-top-color:#4d4d4d;
+      border-width:10px;
+      margin-left:-10px
+    }
+    .shang{
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      width: 56px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: #fff;
+      background: #f44336;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+      transition: .4s ease-in-out;
+      filter: drop-shadow(2px 4px 6px black);
+    }
+    .shang:hover{
+      box-shadow:0 6px 12px rgba(0,0,0,.2),0 4px 15px rgba(0,0,0,.2)
+    }
+    .tooltip-content {
+      position: absolute;
+      z-index: 9999;
+      width: 370px;
+      left: 50%;
+      bottom: 100%;
+      font-size: 20px;
+      line-height: 1.4;
+      text-align: center;
+      font-weight: 400;
+      color: #4d4d4d;
+      background: transparent;
+      opacity: 0;
+      margin: 0 0 -10px -185px;
+      cursor: default;
+      pointer-events: none;
+      font-family: Satisfy,cursive;
+      -webkit-font-smoothing: antialiased;
+      transition: opacity .3s .3s;
+      padding-bottom: 80px;
+    }
+    .tooltip-content .reward-p{
+      color: #FFF;
+      margin: 0px;
+      margin-bottom: 20px;
+    }
+    .tooltip-content .reward-box {
+      display:-webkit-box;
+      display:-ms-flexbox;
+      display:flex;
+      -ms-flex-pack:distribute;
+      justify-content:space-around
+    }
+    .tooltip-content .reward-img{
+      width: 250px;
+    }
+    .tooltip-content .reward-type {
+      font-size:16px;
+      display:block;
+      color: #fff;
+    }
+    .tooltip-content .reward-img {
+      width:130px;
+      height:130px;
+      border:6px solid #fff;
+      border-radius:3px
+    }
+  </style>
+  <div class="tooltip">
+    <span class="shang">赏</span>
+    <span class="tooltip-content">
+      <span class="tooltip-text">
+        <span class="tooltip-inner">
+          <p class="reward-p"><i class="icon icon-quo-left"></i>无以生计，卖文苟延<i class="icon icon-quo-right"></i></p>
+          <div class="reward-box">
             
-                <li><span>09-20</span><a href="/2018/09/20/2018-09-20-%E9%97%AD%E5%8C%85/" >闭包</a></li>
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/wx_pay.jpg">
+              <span class="reward-type">微信</span>
+            </div>
             
-            </ul>
-        
-    </article>
+            <div class="reward-box-item">
+              <img class="reward-img" src="/images/zfbpay.png">
+              <span class="reward-type">支付宝</span>
+            </div>
+
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+  <div class="nexmoe-post-footer">
+    
+      
+  <div class="nexmoe-post-copyright">
+    <strong>本文作者：</strong>fangchaolong<br>
+    <!-- 本文链接 -->
+    <!-- <strong>本文链接：</strong><a href="http://yoursite.com/2023/04/18/2023-04-18-git%20pull%20%E5%92%8C%20git%20fetch%E7%9A%84%E5%8C%BA%E5%88%AB/" title="http:&#x2F;&#x2F;yoursite.com&#x2F;2023&#x2F;04&#x2F;18&#x2F;2023-04-18-git%20pull%20%E5%92%8C%20git%20fetch%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;yoursite.com&#x2F;2023&#x2F;04&#x2F;18&#x2F;2023-04-18-git%20pull%20%E5%92%8C%20git%20fetch%E7%9A%84%E5%8C%BA%E5%88%AB&#x2F;</a><br> -->
+    
+      <strong>欢迎大家借鉴和讨论</strong>
+    
+  </div>
+
+
+    
+    <section class="nexmoe-comment">
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '3f3682a9ee5f972998df',
+        clientSecret: '10a4390a4a666502dad2d61ce5d9691f20b38cc1',
+        id: localStorage.getItem('user') || '',
+        repo: 'fangchaolong.github.io',
+        owner: 'fangchaolong',
+        admin: 'fangchaolong'
+    })
+    gitalk.render('gitalk')
+</script>
     
 </section>
-
-<style>
-.nexmoe-archives article > *:first-child {
-    margin-top: 0;
-}
-.nexmoe-archives article > *:last-child {
-    margin-bottom: 0;
-}
-.nexmoe-archives ul {
-    list-style: none;
-    padding-left: 0!important;
-}
-.nexmoe-archives li {
-    position: relative;
-    padding: 10px 0;
-}
-.nexmoe-archives li::before {
-    content: "";
-    width: 14px;
-    height: 14px;
-    background: #ff4e6a;
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: -2px;
-    margin-right: 11px;
-    border-radius: 100%;
-    border: 3px solid #fff;
-    z-index: 100;
-    position: relative;
-}
-.nexmoe-archives li::after {
-    content: "";
-    height: 100%;
-    width: 2px;
-    background: rgba(255, 78, 106, 0.2);
-    position: absolute;
-    left: 6px;
-    top: 20px;
-}
-.nexmoe-archives li:last-child:after {
-    display: none;
-}
-.nexmoe-archives span {
-    margin-right: 15px;
-}
-</style>
+  </div>
+</div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
@@ -426,7 +635,7 @@
 
 <script src="/js/copy.js"></script>
 
-<script src="/js/app.js?v=1681808160581"></script>
+<script src="/js/app.js?v=1681808159556"></script>
   
 
 
